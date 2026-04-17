@@ -1,8 +1,9 @@
 export function Hero() {
   return (
     <section className="relative pt-24 md:pt-36">
-      <h1 className="display max-w-[18ch]">
-        Matthew Wolstoncroft
+      <h1 className="display" style={{ lineHeight: 0.95 }}>
+        <span className="block">Matthew</span>
+        <span className="block">Wolstoncroft</span>
       </h1>
       <p
         className="mt-8 max-w-prose italic font-body"
