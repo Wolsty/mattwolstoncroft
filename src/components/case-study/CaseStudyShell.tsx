@@ -68,7 +68,7 @@ export function CaseStudyShell({
           <section className="my-[var(--block-gap)]">{hero}</section>
 
           {/* Body */}
-          <div className="max-w-prose font-body" style={{ lineHeight: 1.55 }}>
+          <div className="case-body max-w-prose font-body" style={{ lineHeight: 1.55 }}>
             {children}
           </div>
         </article>

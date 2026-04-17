@@ -93,6 +93,26 @@
 
   .rule-top { border-top: 1px solid var(--rule); }
   .rule-bottom { border-bottom: 1px solid var(--rule); }
+
+  /* Case-study / long-form prose vertical rhythm.
+     Applies to the body wrapper on case studies and any homepage
+     block that opts in. Targets ~1em breathing room between Times
+     body paragraphs while leaving headings/figures to set their
+     own deliberate spacing. */
+  .case-body > p {
+    margin-top: 1em;
+  }
+  .case-body > p:first-child {
+    margin-top: 0;
+  }
+  .case-body > ul,
+  .case-body > ol {
+    margin-top: 1em;
+  }
+  .case-body > blockquote {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
