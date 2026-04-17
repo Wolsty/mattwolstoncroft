@@ -10,7 +10,7 @@ export function About() {
           I&apos;m a strategic product leader who ships across design and code.
           I architect AI-native products from 0-to-1, writing the prompts,
           drawing the flows, and standing next to engineering while it ships.
-          Right now that means LabNotes, where I co-founded an AI tutoring
+          Right now that means LabNotes.ai, where I co-founded an AI tutoring
           platform for higher-ed STEM, and Cengage, where I lead Content
           Studio, a generative-AI layer inside the Explore learning
           platform.

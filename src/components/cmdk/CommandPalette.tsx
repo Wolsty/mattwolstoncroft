@@ -79,7 +79,7 @@ export function CommandPalette() {
             </Command.Empty>
 
             <Command.Group heading="Case studies" className="cmdk-group">
-              <Item onSelect={() => go("/labnotes")}>Jump to LabNotes</Item>
+              <Item onSelect={() => go("/labnotes")}>Jump to LabNotes.ai</Item>
               <Item onSelect={() => go("/cengage")}>Jump to Cengage</Item>
               <Item onSelect={() => go("/seekwell")}>Jump to SeekWell</Item>
               <Item onSelect={() => go("/progrexion")}>Jump to Progrexion</Item>

@@ -8,7 +8,7 @@ import { PrevNext } from "@/components/case-study/PrevNext";
 export const metadata: Metadata = {
   title: "LabNotes.ai",
   description:
-    "An AI tutor maximally helpful to a single student is often actively harmful to their learning. LabNotes is the platform I built to resolve that.",
+    "An AI tutor maximally helpful to a single student is often actively harmful to their learning. LabNotes.ai is the platform I built to resolve that.",
 };
 
 export default function LabNotesPage() {
@@ -29,8 +29,8 @@ export default function LabNotesPage() {
         <FigureWithFallback
           src="/images/case-studies/labnotes/labnotes-product-mock.png"
           fallbackSrc="/images/case-studies/labnotes/ai-insights-integrity.png"
-          alt="LabNotes product overview: the AI-tutor and faculty-insights platform in use on a live chemistry course."
-          caption="LabNotes: the platform at a glance."
+          alt="LabNotes.ai product overview: the AI-tutor and faculty-insights platform in use on a live chemistry course."
+          caption="LabNotes.ai: the platform at a glance."
           width={2800}
           height={1600}
           wide
@@ -40,7 +40,7 @@ export default function LabNotesPage() {
     >
       <h2 className="font-display mt-0">Context</h2>
       <p>
-        LabNotes is an AI-powered tutoring and homework platform for higher-ed
+        LabNotes.ai is an AI-powered tutoring and homework platform for higher-ed
         STEM. I co-founded it with a chemistry professor who has run a course
         at a large public university for the better part of a decade: big
         sections, hundreds of students per semester, and a growing gap between
@@ -56,7 +56,7 @@ export default function LabNotesPage() {
         Both made the professor&apos;s job harder.
       </p>
       <p>
-        LabNotes is the platform we built instead. Students work through
+        LabNotes.ai is the platform we built instead. Students work through
         problems inside a tutor that escalates support in graduated steps
         instead of handing over solutions. Faculty get a read on where the
         class is actually struggling, which students need outreach, and,
@@ -87,7 +87,7 @@ export default function LabNotesPage() {
       </p>
       <p>
         This isn&apos;t a UX polish problem. It&apos;s the central design
-        question of AI in education, and every surface of LabNotes had to take
+        question of AI in education, and every surface of LabNotes.ai had to take
         a position on it.{" "}
         <em>
           &ldquo;Solving the fundamental tension between helpfulness and
@@ -143,7 +143,7 @@ export default function LabNotesPage() {
 
       <Figure
         src="/images/case-studies/labnotes/ai-insights-struggles.png"
-        alt="LabNotes AI Insights, Struggles tab ranking problems by struggle score, time-to-solve, and completion rate."
+        alt="LabNotes.ai AI Insights, Struggles tab ranking problems by struggle score, time-to-solve, and completion rate."
         caption="AI Insights, Struggles: the hardest problems by struggle score, time-to-solve, and completion rate."
         width={2800}
         height={1600}
@@ -174,7 +174,7 @@ export default function LabNotesPage() {
         <p>
           What I gave up: short-term student satisfaction, some conversion.
           What I gained: the only thing that makes the product defensible to
-          a professor. Without this call, LabNotes is a slightly more
+          a professor. Without this call, LabNotes.ai is a slightly more
           polished ChatGPT, and professors would correctly refuse to put it
           in their syllabus.
         </p>
@@ -187,7 +187,7 @@ export default function LabNotesPage() {
           probably converts well to administrators.
         </p>
         <p>
-          I built the opposite. Integrity in LabNotes is two signals exposed
+          I built the opposite. Integrity in LabNotes.ai is two signals exposed
           to the <em>instructor</em>, not the student:{" "}
           <strong>Minimal Engagement</strong> (the student is prompting the
           tutor without doing the reading) and{" "}
@@ -207,7 +207,7 @@ export default function LabNotesPage() {
         </p>
         <Figure
           src="/images/case-studies/labnotes/ai-insights-integrity.png"
-          alt="LabNotes AI Insights, Integrity tab showing 246 flagged interactions across the first semester cohort, with Minimal Engagement and Score-Time Mismatch as the two primary signals."
+          alt="LabNotes.ai AI Insights, Integrity tab showing 246 flagged interactions across the first semester cohort, with Minimal Engagement and Score-Time Mismatch as the two primary signals."
           caption="AI Insights, Integrity: 246 flags across the first semester cohort. Minimal Engagement and Score-Time Mismatch are the two signals I shipped first."
           width={2800}
           height={1600}
@@ -215,11 +215,11 @@ export default function LabNotesPage() {
         />
       </DecisionBlock>
 
-      <DecisionBlock heading="Decision 3: The professor's “Chat with LabNotes” is its own product, not a settings panel">
+      <DecisionBlock heading="Decision 3: The professor's “Chat with LabNotes.ai” is its own product, not a settings panel">
         <p>
           Faculty-facing AI in most edtech is buried: a query box inside an
           analytics dashboard. I lifted ours into its own first-class surface.
-          &ldquo;Chat with LabNotes&rdquo; answers the questions a professor
+          &ldquo;Chat with LabNotes.ai&rdquo; answers the questions a professor
           actually has on a Sunday night:{" "}
           <em>
             Which students need outreach this week? What problems should I
@@ -232,14 +232,14 @@ export default function LabNotesPage() {
           different retrieval, different prompt chain, different trust
           model than the student-facing tutor. It&apos;s the fastest way an
           instructor gets value out of the platform in their first fifteen
-          minutes. It&apos;s also the decision that makes LabNotes feel like
+          minutes. It&apos;s also the decision that makes LabNotes.ai feel like
           a product built <em>for</em> teaching, not one that treats teaching
           as an afterthought to the LMS integration.
         </p>
         <Figure
           src="/images/case-studies/labnotes/chat-with-labnotes.png"
-          alt="LabNotes: Chat with LabNotes surface for faculty, with quick-prompt chips for recurring questions and a sample response."
-          caption="Chat with LabNotes: the faculty-facing surface, with quick-prompt chips for recurring questions."
+          alt="LabNotes.ai, Chat with LabNotes.ai surface for faculty, with quick-prompt chips for recurring questions and a sample response."
+          caption="Chat with LabNotes.ai: the faculty-facing surface, with quick-prompt chips for recurring questions."
           width={2800}
           height={1600}
           wide
@@ -282,7 +282,7 @@ export default function LabNotesPage() {
           </ul>
         </li>
         <li>
-          <strong>Chat with LabNotes (faculty):</strong> agent for
+          <strong>Chat with LabNotes.ai (faculty):</strong> agent for
           professors, with quick-prompt chips for the recurring questions (
           <em>Create Problems, Student Check-in, Analyze Performance, Draft Message, Plan Next Class</em>
           ).
@@ -296,7 +296,7 @@ export default function LabNotesPage() {
 
       <Figure
         src="/images/case-studies/labnotes/course-dashboard.png"
-        alt="LabNotes Course Dashboard: per-problem performance and per-student engagement for a live chemistry course."
+        alt="LabNotes.ai Course Dashboard: per-problem performance and per-student engagement for a live chemistry course."
         caption="Course Dashboard: per-problem performance and per-student engagement, used to prep each class."
         width={2800}
         height={1600}
@@ -304,7 +304,7 @@ export default function LabNotesPage() {
       />
       <Figure
         src="/images/case-studies/labnotes/assignments.png"
-        alt="LabNotes Assignments: five assignments on the flagship course at an 86% class average across 37 submissions."
+        alt="LabNotes.ai Assignments: five assignments on the flagship course at an 86% class average across 37 submissions."
         caption="Assignments: drafting, publishing, grading, and submission tracking."
         width={2800}
         height={1600}
@@ -312,7 +312,7 @@ export default function LabNotesPage() {
       />
       <Figure
         src="/images/case-studies/labnotes/ai-insights-overview.png"
-        alt="LabNotes AI Insights Overview: class-level metrics (13 avg messages/problem, 1.6 avg hints/problem, 15 min avg time, 85% class score)."
+        alt="LabNotes.ai AI Insights Overview: class-level metrics (13 avg messages/problem, 1.6 avg hints/problem, 15 min avg time, 85% class score)."
         caption="AI Insights, Overview: 13 avg messages/problem, 1.6 avg hints/problem, 15 min avg time, 85% class score."
         width={2800}
         height={1600}
@@ -352,7 +352,7 @@ export default function LabNotesPage() {
         the next thing I&apos;m building.
       </p>
       <p>
-        The meta-lesson of LabNotes is that the good AI product decisions in
+        The meta-lesson of LabNotes.ai is that the good AI product decisions in
         2026 mostly look like restraint. The market rewards over-helpful
         models. The actual users (in this domain, professors and serious
         students) reward an AI that knows when not to answer. That asymmetry

@@ -25,13 +25,13 @@ const CARDS: Card[] = [
     title: "LabNotes.ai",
     meta: "2025–Present · Co-founder · Higher-Ed STEM · Shipped",
     tension:
-      "An AI tutor maximally helpful to a single student is often actively harmful to their learning. LabNotes is the platform I built to resolve that.",
+      "An AI tutor maximally helpful to a single student is often actively harmful to their learning. LabNotes.ai is the platform I built to resolve that.",
     detail:
       "Architected the AI experience layer end-to-end: graduated-assistance tutor, behavior-based escalation, and a faculty Integrity view that turns oversight into a teaching tool. Shipped to a live university course in the first semester.",
     image: {
       src: "/images/case-studies/labnotes/labnotes-product-mock.png",
       fallbackSrc: "/images/case-studies/labnotes/ai-insights-integrity.png",
-      alt: "LabNotes: AI tutor and faculty insights for a live chemistry course.",
+      alt: "LabNotes.ai: AI tutor and faculty insights for a live chemistry course.",
       width: 2800,
       height: 1600,
     },
