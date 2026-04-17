@@ -6,16 +6,21 @@ import { useTheme } from "@/lib/theme";
 /**
  * HeroShader
  *
- * Slow-moving fBM noise field rendered as a full-bleed canvas behind the
- * hero type. Near-monochrome dark palette (charcoal -> slate -> deep
- * blue/green) with an occasional faint terminal-green tracer and a soft
- * vignette. Reads as "surface of dark water at night."
+ * Slowly-drifting topographic contour lines rendered as a full-bleed WebGL
+ * canvas behind the hero type. Near-monochrome palette with an occasional
+ * terminal-green accent line. Reads as a moving topo map: clean hairlines
+ * at regular elevation intervals that breathe and flow as the underlying
+ * noise field drifts.
  *
- * - 30 fps cap
- * - IntersectionObserver pauses when offscreen
+ * - fBM noise field drifted by time; thresholded with fract() into iso-lines
+ * - fwidth()-based anti-aliasing keeps lines at roughly one device pixel
+ * - Every 6th line picks up a faint green tint
+ * - 30 fps cap; DPR clamped (1.5 desktop / 1.25 mobile)
+ * - IntersectionObserver pauses when the hero is offscreen
+ * - visibilitychange pauses when the tab is hidden
  * - prefers-reduced-motion renders a single static frame
- * - Light mode returns null (falls back to solid --bg)
- * - Mobile and low-end: DPR capped at 1.5
+ * - Dark and light palettes both rendered; only fallback is if WebGL / OES
+ *   derivatives are unavailable (returns null and shows solid --bg)
  */
 
 const VERT = `
@@ -25,13 +30,23 @@ void main() {
 }
 `;
 
+// NOTE: requires OES_standard_derivatives extension (WebGL1), which is
+// ubiquitous on modern browsers. We enable it and fall back if the
+// extension isn't available at runtime.
 const FRAG = `
-precision mediump float;
+#extension GL_OES_standard_derivatives : enable
+precision highp float;
 
 uniform vec2  u_resolution;
 uniform float u_time;
 
-// hash / value noise
+// Palette — passed from JS so we can switch dark/light without recompiling
+uniform vec3 u_bg;        // background tint
+uniform vec3 u_line;      // base contour color
+uniform vec3 u_accent;    // accent color (green on dark, something quieter on light)
+uniform float u_lineAlpha;   // strength of non-accent lines
+uniform float u_accentAlpha; // strength of accent lines
+
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
   p += dot(p, p + 45.32);
@@ -55,54 +70,51 @@ float fbm(vec2 p) {
   float amp = 0.5;
   for (int i = 0; i < 5; i++) {
     v += amp * noise(p);
-    p *= 2.02;
+    p = p * 2.03 + vec2(0.17, -0.11);
     amp *= 0.5;
   }
   return v;
 }
 
 void main() {
-  // Normalize to 0..1, preserve aspect in y via resolution
   vec2 uv = gl_FragCoord.xy / u_resolution.xy;
   vec2 p = uv;
   p.x *= u_resolution.x / u_resolution.y;
 
-  // Slow time: one full "breath" takes ~30s at scale 0.05
-  float t = u_time * 0.04;
+  // Slow drift: full cycle ~30s. Two-vector warp adds subtle parallax.
+  float t = u_time * 0.035;
+  vec2 q = p * 1.25;
+  vec2 warp = vec2(
+    fbm(q + vec2(t * 0.22, -t * 0.17)),
+    fbm(q + vec2(-t * 0.18, t * 0.25) + 5.2)
+  );
+  float n = fbm(q + warp * 0.45);
 
-  // Two drifting noise layers for parallax-y motion
-  float n1 = fbm(p * 1.6 + vec2(t * 0.35, -t * 0.22));
-  float n2 = fbm(p * 2.8 + vec2(-t * 0.18, t * 0.30) + n1 * 0.6);
+  // Iso-contours: 12 bands across the field.
+  const float BANDS = 12.0;
+  float v = n * BANDS;
+  float d = abs(fract(v) - 0.5);
 
-  // Low-contrast base: charcoal -> deep slate -> hint of deep blue/green
-  vec3 cCharcoal = vec3(0.055, 0.058, 0.065);   // ~#0E0F10
-  vec3 cSlate    = vec3(0.085, 0.098, 0.115);   // ~#16191D
-  vec3 cDeepBlue = vec3(0.060, 0.085, 0.118);   // ~#10161E
-  vec3 cDeepTeal = vec3(0.055, 0.098, 0.085);   // ~#0E1916
+  // fwidth() for resolution-independent line width (~1.0 device pixel).
+  // Using fwidth on the unfracted v makes the line width scale naturally
+  // with elevation gradient, so flat regions get softer lines and steep
+  // regions get crisper ones — reads like an actual topo print.
+  float aa = fwidth(v) * 0.75;
+  float line = 1.0 - smoothstep(0.0, aa, d);
 
-  // Soft blend driven by the noise fields
-  vec3 col = mix(cCharcoal, cSlate, smoothstep(0.25, 0.85, n1));
-  col = mix(col, cDeepBlue, smoothstep(0.45, 0.95, n2) * 0.65);
-  col = mix(col, cDeepTeal, smoothstep(0.30, 0.80, n1 * n2) * 0.30);
+  // Every 6th band picks up the accent tint (index mod 6 == 0).
+  float bandIdx = floor(v);
+  float accent = step(5.5, mod(bandIdx, 6.0));
 
-  // Occasional, faint specular tracer in terminal green (#22C55E = ~0.133, 0.773, 0.369).
-  // Thin ridge: high-frequency sharpened band of the noise, gated by a
-  // very slow cos so tracers fade in and out every ~25s instead of persisting.
-  float ridge = 1.0 - abs(n2 - 0.52) * 12.0;
-  ridge = clamp(ridge, 0.0, 1.0);
-  ridge = pow(ridge, 8.0);
-  float gate = 0.5 + 0.5 * cos(u_time * 0.18 + n1 * 6.28);
-  float tracer = ridge * gate * 0.10; // capped at 10% contribution
-  col += vec3(0.133, 0.773, 0.369) * tracer;
+  // Compose: base bg, add the non-accent and accent contributions.
+  vec3 col = u_bg;
+  col = mix(col, u_line,   line * u_lineAlpha   * (1.0 - accent));
+  col = mix(col, u_accent, line * u_accentAlpha * accent);
 
-  // Soft radial vignette pulls the eye toward the type column
+  // Gentle radial vignette so the corners don't fight the type.
   vec2 vv = uv - 0.5;
-  float vig = smoothstep(0.95, 0.35, length(vv));
-  col *= mix(0.70, 1.0, vig);
-
-  // Subtle film grain keyed to time, very low amplitude
-  float grain = (hash(gl_FragCoord.xy + u_time * 60.0) - 0.5) * 0.012;
-  col += grain;
+  float vig = smoothstep(1.05, 0.45, length(vv));
+  col = mix(u_bg, col, mix(0.80, 1.0, vig));
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -133,22 +145,59 @@ function link(gl: WebGLRenderingContext, vs: WebGLShader, fs: WebGLShader) {
   return p;
 }
 
+type Palette = {
+  bg: [number, number, number];
+  line: [number, number, number];
+  accent: [number, number, number];
+  lineAlpha: number;
+  accentAlpha: number;
+  canvasOpacity: number;
+};
+
+const DARK_PALETTE: Palette = {
+  // Near-black base matching --bg (#0E0E0E -> ~0.055)
+  bg: [0.055, 0.055, 0.058],
+  // Muted slate line, ~#434A52
+  line: [0.262, 0.291, 0.322],
+  // Terminal green #22C55E, slightly dimmed so it doesn't burn
+  accent: [0.133, 0.67, 0.34],
+  lineAlpha: 0.85,
+  accentAlpha: 0.9,
+  canvasOpacity: 0.8,
+};
+
+const LIGHT_PALETTE: Palette = {
+  // Warm off-white matching --bg (#FAFAF7 -> ~0.98)
+  bg: [0.98, 0.98, 0.97],
+  // Charcoal line, ~#3A3A3C
+  line: [0.227, 0.227, 0.235],
+  // Quiet ink green so the accent still reads without shouting on light bg
+  accent: [0.08, 0.42, 0.24],
+  lineAlpha: 0.35,
+  accentAlpha: 0.5,
+  canvasOpacity: 0.7,
+};
+
 export function HeroShader() {
   const { theme } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (theme !== "dark") return;
-
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
+
+    const palette = theme === "dark" ? DARK_PALETTE : LIGHT_PALETTE;
 
     const gl =
       canvas.getContext("webgl", { antialias: false, alpha: false, premultipliedAlpha: false }) ||
       (canvas.getContext("experimental-webgl") as WebGLRenderingContext | null);
     if (!gl) return;
+
+    // Required for fwidth() in WebGL1.
+    const derivExt = gl.getExtension("OES_standard_derivatives");
+    if (!derivExt) return;
 
     const vs = compile(gl, gl.VERTEX_SHADER, VERT);
     const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
@@ -159,6 +208,11 @@ export function HeroShader() {
     const positionLoc = gl.getAttribLocation(program, "a_position");
     const uResolution = gl.getUniformLocation(program, "u_resolution");
     const uTime = gl.getUniformLocation(program, "u_time");
+    const uBg = gl.getUniformLocation(program, "u_bg");
+    const uLine = gl.getUniformLocation(program, "u_line");
+    const uAccent = gl.getUniformLocation(program, "u_accent");
+    const uLineAlpha = gl.getUniformLocation(program, "u_lineAlpha");
+    const uAccentAlpha = gl.getUniformLocation(program, "u_accentAlpha");
 
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -172,11 +226,19 @@ export function HeroShader() {
     gl.enableVertexAttribArray(positionLoc);
     gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
 
+    // Palette uniforms — set once per mount (theme changes remount via deps).
+    if (uBg) gl.uniform3f(uBg, palette.bg[0], palette.bg[1], palette.bg[2]);
+    if (uLine) gl.uniform3f(uLine, palette.line[0], palette.line[1], palette.line[2]);
+    if (uAccent) gl.uniform3f(uAccent, palette.accent[0], palette.accent[1], palette.accent[2]);
+    if (uLineAlpha) gl.uniform1f(uLineAlpha, palette.lineAlpha);
+    if (uAccentAlpha) gl.uniform1f(uAccentAlpha, palette.accentAlpha);
+
+    canvas.style.opacity = String(palette.canvasOpacity);
+
     const reducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Cap DPR for perf, especially on mobile
     const getDpr = () => {
       const raw = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
       const isNarrow = window.innerWidth < 640;
@@ -204,7 +266,7 @@ export function HeroShader() {
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     };
 
-    // Always render at least one frame so the hero isn't blank on load
+    // Render at least one frame so the hero isn't blank on load.
     draw(0);
 
     if (reducedMotion) {
@@ -217,20 +279,19 @@ export function HeroShader() {
       };
     }
 
-    // Animate. Cap to ~30fps. Pause when offscreen.
     let rafId = 0;
     let lastRender = 0;
     let inView = true;
+    let tabVisible = typeof document !== "undefined" ? document.visibilityState === "visible" : true;
     const FRAME_MS = 1000 / 30;
     const startPerf = typeof performance !== "undefined" ? performance.now() : Date.now();
 
     const tick = (now: number) => {
       rafId = requestAnimationFrame(tick);
-      if (!inView) return;
+      if (!inView || !tabVisible) return;
       if (now - lastRender < FRAME_MS) return;
       lastRender = now;
-      const t = (now - startPerf) / 1000;
-      draw(t);
+      draw((now - startPerf) / 1000);
     };
     rafId = requestAnimationFrame(tick);
 
@@ -243,7 +304,7 @@ export function HeroShader() {
     io.observe(container);
 
     const onVisibility = () => {
-      inView = document.visibilityState === "visible" && inView;
+      tabVisible = document.visibilityState === "visible";
     };
     document.addEventListener("visibilitychange", onVisibility);
 
@@ -259,9 +320,6 @@ export function HeroShader() {
     };
   }, [theme]);
 
-  // Light mode: don't render — fall back to the solid --bg
-  if (theme !== "dark") return null;
-
   return (
     <div
       ref={containerRef}
@@ -275,7 +333,6 @@ export function HeroShader() {
           display: "block",
           width: "100%",
           height: "100%",
-          opacity: 0.55,
         }}
       />
     </div>
