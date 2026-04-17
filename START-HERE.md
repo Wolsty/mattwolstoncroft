@@ -1,19 +1,19 @@
-# mattwolstoncroft — start here
+# mattwolstoncroft: start here
 
 ## 1. Drop in your assets
 
 - **BL Arctic font files** → `public/fonts/` (`.woff2` for 400 regular + italic if you have it)
 - **LabNotes screenshots** → `public/images/case-studies/labnotes/`
-  - `ai-insights-integrity.png` (hero — 246 flags)
+  - `ai-insights-integrity.png` (hero: 246 flags)
   - `chat-with-labnotes.png`
   - `course-dashboard.png`
   - `ai-insights-struggles.png`
   - `assignments.png`
   - `ai-insights-overview.png`
-  - `labnotes-product-mock.png` (hero — product overview; falls back to `ai-insights-integrity.png` if missing)
-  - `tutor-interaction.png` (student view — optional)
+  - `labnotes-product-mock.png` (hero: product overview; falls back to `ai-insights-integrity.png` if missing)
+  - `tutor-interaction.png` (student view, optional)
 - **Cengage screenshots** → `public/images/case-studies/cengage/`
-  - `adapt-content.png` (hero — side-by-side)
+  - `adapt-content.png` (hero: side-by-side)
   - `select-content-populated.png`
   - `select-content-empty.png`
   - `explore-home.png`

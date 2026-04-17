@@ -9,17 +9,17 @@ import { Footer } from "@/components/nav/Footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://mattwolstoncroft.com"),
   title: {
-    default: "Matthew Wolstoncroft — AI-native product design",
+    default: "Matthew Wolstoncroft, AI-native product design",
     template: "%s · Matthew Wolstoncroft",
   },
   description:
-    "Strategic product leader building AI-powered products from 0-to-1 — shipping across design and code.",
+    "Strategic product leader building AI-powered products from 0-to-1, shipping across design and code.",
   openGraph: {
     type: "website",
     url: "/",
     title: "Matthew Wolstoncroft",
     description:
-      "Strategic product leader building AI-powered products from 0-to-1 — shipping across design and code.",
+      "Strategic product leader building AI-powered products from 0-to-1, shipping across design and code.",
   },
   twitter: {
     card: "summary_large_image",
@@ -33,7 +33,7 @@ export const viewport: Viewport = {
   ],
 };
 
-// Inline script — runs before React hydrates to set data-theme from cookie
+// Inline script: runs before React hydrates to set data-theme from cookie
 // or system preference. Prevents FOUC / theme flash.
 const themeInitScript = `
 (function(){try{

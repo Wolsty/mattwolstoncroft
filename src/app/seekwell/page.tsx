@@ -7,7 +7,7 @@ import { SEEKWELL_CASES } from "@/content/seekwell";
 export const metadata: Metadata = {
   title: "SeekWell / HelloEyes",
   description:
-    "Four sub-case studies across a mobile-first virtual vision platform — apps, assessment, AI exam, and a large-scale diary study.",
+    "Four sub-case studies across a mobile-first virtual vision platform: apps, assessment, AI exam, and a large-scale diary study.",
 };
 
 export default function SeekwellIndexPage() {
@@ -17,7 +17,7 @@ export default function SeekwellIndexPage() {
         title: "SeekWell / HelloEyes",
         status: "Shipped",
         metadata: [
-          "2022 — 2024",
+          "2022–2024",
           "Principal Designer",
           "Virtual Vision Platform",
           "Four sub-case studies",
@@ -26,7 +26,7 @@ export default function SeekwellIndexPage() {
       hero={
         <Figure
           src="/images/case-studies/seekwell/hero_HelloEyes.webp"
-          alt="HelloEyes — a first-of-its-kind mobile vision platform across iOS, Android, and an AI-powered vision exam."
+          alt="HelloEyes: a first-of-its-kind mobile vision platform across iOS, Android, and an AI-powered vision exam."
           wide
           priority
           width={2800}
@@ -36,7 +36,7 @@ export default function SeekwellIndexPage() {
     >
       <p>
         The four sub-case studies below capture the core of the SeekWell /
-        HelloEyes work. Each lives as its own page — pick any entry point;
+        HelloEyes work. Each lives as its own page; pick any entry point,
         the order reflects how the work compounded, from the shipping
         surfaces through the research that reshaped the roadmap.
       </p>

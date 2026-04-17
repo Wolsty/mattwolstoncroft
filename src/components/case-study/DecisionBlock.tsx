@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 type DecisionBlockProps = {
-  /** e.g. "Decision 1 — We don't give the student the answer, ever" */
+  /** e.g. "Decision 1: We don't give the student the answer, ever" */
   heading: string;
   children: ReactNode;
 };

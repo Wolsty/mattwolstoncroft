@@ -8,11 +8,11 @@ export function About() {
       <div className="max-w-prose space-y-5 font-body" style={{ lineHeight: 1.55 }}>
         <p>
           I&apos;m a strategic product leader who ships across design and code.
-          I architect AI-native products from 0-to-1 — writing the prompts,
+          I architect AI-native products from 0-to-1, writing the prompts,
           drawing the flows, and standing next to engineering while it ships.
           Right now that means LabNotes, where I co-founded an AI tutoring
           platform for higher-ed STEM, and Cengage, where I lead Content
-          Studio — a generative-AI layer inside the Explore learning
+          Studio, a generative-AI layer inside the Explore learning
           platform.
         </p>
         <p>

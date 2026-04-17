@@ -53,7 +53,7 @@ export function ContactForm() {
   if (state.kind === "success") {
     return (
       <p className="font-body" style={{ color: "var(--fg-muted)" }}>
-        Got it — I&apos;ll get back to you.
+        Got it. I&apos;ll get back to you.
       </p>
     );
   }

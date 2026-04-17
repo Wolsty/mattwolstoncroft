@@ -18,7 +18,7 @@ export function ProgrexionHero({ intro }: { intro: string }) {
         className="rounded p-8 md:p-12"
         style={{ border: "1px solid var(--rule)" }}
       >
-        <p className="meta mb-4">Progrexion — Four product surfaces</p>
+        <p className="meta mb-4">Progrexion: Four product surfaces</p>
         <p
           className="max-w-prose font-body"
           style={{ color: "var(--fg-muted)", lineHeight: 1.55 }}
@@ -37,7 +37,7 @@ export function ProgrexionHero({ intro }: { intro: string }) {
       >
         <Image
           src={src}
-          alt="Progrexion — consumer fintech product surfaces for credit repair and monitoring."
+          alt="Progrexion: consumer fintech product surfaces for credit repair and monitoring."
           width={2800}
           height={1600}
           priority

@@ -2,12 +2,12 @@ type Item = { year: string; label: string; note: string };
 
 const ITEMS: Item[] = [
   {
-    year: "2016 — 2017",
+    year: "2016–2017",
     label: "JAMS",
     note: "Design for the dispute resolution provider's product surfaces.",
   },
   {
-    year: "2015 — 2016",
+    year: "2015–2016",
     label: "iPR",
     note: "Consumer-facing personal reputation and identity platform.",
   },

@@ -18,7 +18,7 @@ export default function LabNotesPage() {
         title: "LabNotes.ai",
         status: "Shipped",
         metadata: [
-          "2025 — Present",
+          "2025–Present",
           "Co-founder",
           "Higher-Ed STEM",
           "Next.js · Anthropic · Postgres · Vercel",
@@ -29,8 +29,8 @@ export default function LabNotesPage() {
         <FigureWithFallback
           src="/images/case-studies/labnotes/labnotes-product-mock.png"
           fallbackSrc="/images/case-studies/labnotes/ai-insights-integrity.png"
-          alt="LabNotes product overview — the AI-tutor and faculty-insights platform in use on a live chemistry course."
-          caption="LabNotes — the platform at a glance."
+          alt="LabNotes product overview: the AI-tutor and faculty-insights platform in use on a live chemistry course."
+          caption="LabNotes: the platform at a glance."
           width={2800}
           height={1600}
           wide
@@ -42,7 +42,7 @@ export default function LabNotesPage() {
       <p>
         LabNotes is an AI-powered tutoring and homework platform for higher-ed
         STEM. I co-founded it with a chemistry professor who has run a course
-        at a large public university for the better part of a decade — big
+        at a large public university for the better part of a decade: big
         sections, hundreds of students per semester, and a growing gap between
         the support those students need and what any human faculty member can
         deliver.
@@ -59,8 +59,8 @@ export default function LabNotesPage() {
         LabNotes is the platform we built instead. Students work through
         problems inside a tutor that escalates support in graduated steps
         instead of handing over solutions. Faculty get a read on where the
-        class is actually struggling, which students need outreach, and —
-        critically — which students are working with the tutor honestly versus
+        class is actually struggling, which students need outreach, and,
+        critically, which students are working with the tutor honestly versus
         trying to extract answers from it.
       </p>
 
@@ -82,7 +82,7 @@ export default function LabNotesPage() {
       <p>
         The more fluently the model answers, the less the student has to
         think. The more friction we add to protect pedagogical integrity, the
-        more the tutor feels like an obstacle — and the more students bounce
+        more the tutor feels like an obstacle, and the more students bounce
         to ChatGPT in another tab.
       </p>
       <p>
@@ -93,7 +93,7 @@ export default function LabNotesPage() {
           &ldquo;Solving the fundamental tension between helpfulness and
           pedagogical integrity&rdquo;
         </em>{" "}
-        became the line I used internally for every scope decision — if a
+        became the line I used internally for every scope decision. If a
         feature didn&apos;t move us along that axis, it got cut.
       </p>
 
@@ -111,14 +111,14 @@ export default function LabNotesPage() {
         student&apos;s understanding of what the question is actually asking.
         Midway through, it asks targeted probes. Near the end, it reveals
         working only if the student has demonstrated enough of the structure
-        on their own. Students feel a tutor that trusts them more over time —
+        on their own. Students feel a tutor that trusts them more over time,
         not one that gives up on them.
       </p>
 
       <h3 className="font-display">2. Escalation logic that reads behavior, not sentiment.</h3>
       <p>
         Most &ldquo;adaptive AI&rdquo; tutors adjust tone based on frustration.
-        That&apos;s the wrong signal — a frustrated student who is thinking
+        That&apos;s the wrong signal: a frustrated student who is thinking
         hard should be encouraged to keep going, not bailed out. Our
         escalation logic reads <em>pattern of engagement</em> instead: how
         long the student has spent, whether their questions are getting more
@@ -133,8 +133,8 @@ export default function LabNotesPage() {
         The tutor is not a black box between the student and the platform.
         Everything it does is visible to the instructor through a structured
         Insights layer: which problems the class is struggling on, which
-        students are quietly falling behind, and — the screen I&apos;m proudest
-        of — an Integrity view that flags interactions that look like the
+        students are quietly falling behind, and (the screen I&apos;m proudest
+        of) an Integrity view that flags interactions that look like the
         tutor is being used to extract answers rather than understand them.
         The integrity flags aren&apos;t punitive. They&apos;re designed to
         surface exactly the kind of student conversation a professor would
@@ -143,8 +143,8 @@ export default function LabNotesPage() {
 
       <Figure
         src="/images/case-studies/labnotes/ai-insights-struggles.png"
-        alt="LabNotes AI Insights — Struggles tab ranking problems by struggle score, time-to-solve, and completion rate."
-        caption="AI Insights — Struggles: the hardest problems by struggle score, time-to-solve, and completion rate."
+        alt="LabNotes AI Insights, Struggles tab ranking problems by struggle score, time-to-solve, and completion rate."
+        caption="AI Insights, Struggles: the hardest problems by struggle score, time-to-solve, and completion rate."
         width={2800}
         height={1600}
         wide
@@ -156,7 +156,7 @@ export default function LabNotesPage() {
         make:
       </p>
 
-      <DecisionBlock heading="Decision 1 — We don't give the student the answer, ever">
+      <DecisionBlock heading="Decision 1: We don't give the student the answer, ever">
         <p>
           Not on the third try. Not on the tenth. Not when they say &ldquo;I
           give up.&rdquo; This is the most-debated product decision we&apos;ve
@@ -167,7 +167,7 @@ export default function LabNotesPage() {
           crosses a threshold. We deliberately built the opposite: when a
           student is truly stuck, the tutor offers to decompose the problem
           into smaller pieces or route the student to the relevant section of
-          the course material — but the final reasoning step always belongs
+          the course material, but the final reasoning step always belongs
           to the student. Faculty can see when that&apos;s happening and
           intervene if a student is stuck for genuinely structural reasons.
         </p>
@@ -180,7 +180,7 @@ export default function LabNotesPage() {
         </p>
       </DecisionBlock>
 
-      <DecisionBlock heading="Decision 2 — Integrity is a teaching tool, not a surveillance tool">
+      <DecisionBlock heading="Decision 2: Integrity is a teaching tool, not a surveillance tool">
         <p>
           There is a version of this product that leans hard on proctoring:
           session recording, keystroke telemetry, plagiarism matching. It
@@ -192,7 +192,7 @@ export default function LabNotesPage() {
           <strong>Minimal Engagement</strong> (the student is prompting the
           tutor without doing the reading) and{" "}
           <strong>Score-Time Mismatch</strong> (the student&apos;s
-          time-on-problem is inconsistent with their answer quality — a
+          time-on-problem is inconsistent with their answer quality, a
           telltale pattern for outsourced answers being pasted in). Both roll
           up into a flag list the professor can scan in a few seconds before
           lecture.
@@ -200,22 +200,22 @@ export default function LabNotesPage() {
         <p>
           That framing matters. The flags say &ldquo;this student might need
           a conversation,&rdquo; not &ldquo;this student cheated.&rdquo;
-          Professors have used them for exactly that — and students, after
+          Professors have used them for exactly that, and students, after
           the first week, have modulated their own behavior once they
           understood that the platform is watching the shape of their work,
           not the content of their keystrokes.
         </p>
         <Figure
           src="/images/case-studies/labnotes/ai-insights-integrity.png"
-          alt="LabNotes AI Insights — Integrity tab showing 246 flagged interactions across the first semester cohort, with Minimal Engagement and Score-Time Mismatch as the two primary signals."
-          caption="AI Insights — Integrity: 246 flags across the first semester cohort. Minimal Engagement and Score-Time Mismatch are the two signals I shipped first."
+          alt="LabNotes AI Insights, Integrity tab showing 246 flagged interactions across the first semester cohort, with Minimal Engagement and Score-Time Mismatch as the two primary signals."
+          caption="AI Insights, Integrity: 246 flags across the first semester cohort. Minimal Engagement and Score-Time Mismatch are the two signals I shipped first."
           width={2800}
           height={1600}
           wide
         />
       </DecisionBlock>
 
-      <DecisionBlock heading="Decision 3 — The professor's “Chat with LabNotes” is its own product, not a settings panel">
+      <DecisionBlock heading="Decision 3: The professor's “Chat with LabNotes” is its own product, not a settings panel">
         <p>
           Faculty-facing AI in most edtech is buried: a query box inside an
           analytics dashboard. I lifted ours into its own first-class surface.
@@ -228,8 +228,8 @@ export default function LabNotesPage() {
           </em>
         </p>
         <p>
-          This meant building a second RAG-backed agent over the course data
-          — different retrieval, different prompt chain, different trust
+          This meant building a second RAG-backed agent over the course data:
+          different retrieval, different prompt chain, different trust
           model than the student-facing tutor. It&apos;s the fastest way an
           instructor gets value out of the platform in their first fifteen
           minutes. It&apos;s also the decision that makes LabNotes feel like
@@ -238,8 +238,8 @@ export default function LabNotesPage() {
         </p>
         <Figure
           src="/images/case-studies/labnotes/chat-with-labnotes.png"
-          alt="LabNotes — Chat with LabNotes surface for faculty, with quick-prompt chips for recurring questions and a sample response."
-          caption="Chat with LabNotes — the faculty-facing surface, with quick-prompt chips for recurring questions."
+          alt="LabNotes: Chat with LabNotes surface for faculty, with quick-prompt chips for recurring questions and a sample response."
+          caption="Chat with LabNotes: the faculty-facing surface, with quick-prompt chips for recurring questions."
           width={2800}
           height={1600}
           wide
@@ -253,42 +253,42 @@ export default function LabNotesPage() {
       </p>
       <ul className="list-disc pl-6 space-y-2">
         <li>
-          <strong>Student tutor</strong> — graduated-assistance conversations
+          <strong>Student tutor:</strong> graduated-assistance conversations
           over real course problem sets, with the escalation logic above
           running against course-specific context and the professor&apos;s own
           solutions.
         </li>
         <li>
-          <strong>Course Dashboard</strong> — per-course view of problem
+          <strong>Course Dashboard:</strong> per-course view of problem
           performance (e.g., <em>Electron Configuration</em> sitting at 72%
           vs. <em>Quantum Numbers</em> at 92%) and per-student engagement,
           used by the instructor to prep each class.
         </li>
         <li>
-          <strong>AI Insights</strong> — three views over live class behavior:
+          <strong>AI Insights:</strong> three views over live class behavior:
           <ul className="list-[circle] pl-6 mt-2 space-y-1">
             <li>
-              <em>Struggles</em> — the hardest problems by struggle score,
+              <em>Struggles:</em> the hardest problems by struggle score,
               time-to-solve, and completion rate
             </li>
             <li>
-              <em>Integrity</em> — flagged interactions (246 detected across
+              <em>Integrity:</em> flagged interactions (246 detected across
               the first semester cohort) with Minimal Engagement and
               Score-Time Mismatch as the two signals I shipped first
             </li>
             <li>
-              <em>Growth</em> — improvement trajectories over the term
+              <em>Growth:</em> improvement trajectories over the term
             </li>
           </ul>
         </li>
         <li>
-          <strong>Chat with LabNotes (faculty)</strong> — agent for
+          <strong>Chat with LabNotes (faculty):</strong> agent for
           professors, with quick-prompt chips for the recurring questions (
           <em>Create Problems, Student Check-in, Analyze Performance, Draft Message, Plan Next Class</em>
           ).
         </li>
         <li>
-          <strong>Assignments</strong> — drafting, publishing, grading, and
+          <strong>Assignments:</strong> drafting, publishing, grading, and
           submission tracking; currently running five assignments on the
           flagship course at an 86% class average across 37 submissions.
         </li>
@@ -296,24 +296,24 @@ export default function LabNotesPage() {
 
       <Figure
         src="/images/case-studies/labnotes/course-dashboard.png"
-        alt="LabNotes Course Dashboard — per-problem performance and per-student engagement for a live chemistry course."
-        caption="Course Dashboard — per-problem performance and per-student engagement, used to prep each class."
+        alt="LabNotes Course Dashboard: per-problem performance and per-student engagement for a live chemistry course."
+        caption="Course Dashboard: per-problem performance and per-student engagement, used to prep each class."
         width={2800}
         height={1600}
         wide
       />
       <Figure
         src="/images/case-studies/labnotes/assignments.png"
-        alt="LabNotes Assignments — five assignments on the flagship course at an 86% class average across 37 submissions."
-        caption="Assignments — drafting, publishing, grading, and submission tracking."
+        alt="LabNotes Assignments: five assignments on the flagship course at an 86% class average across 37 submissions."
+        caption="Assignments: drafting, publishing, grading, and submission tracking."
         width={2800}
         height={1600}
         wide
       />
       <Figure
         src="/images/case-studies/labnotes/ai-insights-overview.png"
-        alt="LabNotes AI Insights Overview — class-level metrics: 13 avg messages/problem, 1.6 avg hints/problem, 15 min avg time, 85% class score."
-        caption="AI Insights — Overview: 13 avg messages/problem, 1.6 avg hints/problem, 15 min avg time, 85% class score."
+        alt="LabNotes AI Insights Overview: class-level metrics (13 avg messages/problem, 1.6 avg hints/problem, 15 min avg time, 85% class score)."
+        caption="AI Insights, Overview: 13 avg messages/problem, 1.6 avg hints/problem, 15 min avg time, 85% class score."
         width={2800}
         height={1600}
         wide
@@ -341,12 +341,12 @@ export default function LabNotesPage() {
       <p>
         <strong>Give the student their own reflection view.</strong> Right now
         the Integrity signal is faculty-facing. There&apos;s a version of it
-        that is a student-facing progress surface —{" "}
+        that is a student-facing progress surface (
         <em>
           here&apos;s how your thinking has changed across the last six
           problems
-        </em>{" "}
-        — that would be as differentiating as the faculty view, and would
+        </em>
+        ) that would be as differentiating as the faculty view, and would
         shift the product from &ldquo;AI tutor with oversight&rdquo; to
         &ldquo;AI tutor that helps you see yourself learn.&rdquo; That&apos;s
         the next thing I&apos;m building.
@@ -354,8 +354,8 @@ export default function LabNotesPage() {
       <p>
         The meta-lesson of LabNotes is that the good AI product decisions in
         2026 mostly look like restraint. The market rewards over-helpful
-        models. The actual users — in this domain, professors and serious
-        students — reward an AI that knows when not to answer. That asymmetry
+        models. The actual users (in this domain, professors and serious
+        students) reward an AI that knows when not to answer. That asymmetry
         is where I think most of the remaining opportunity in AI UX sits.
       </p>
 

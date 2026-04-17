@@ -17,7 +17,7 @@ export default function CengagePage() {
         title: "Cengage Content Studio",
         status: "In Production (Beta)",
         metadata: [
-          "2026 — Present",
+          "2026–Present",
           "Senior UX Manager",
           "Higher-Ed Adaptive Learning",
           "React Magma 3 · GenAI",
@@ -27,8 +27,8 @@ export default function CengagePage() {
       hero={
         <Figure
           src="/images/case-studies/cengage/adapt-content.png"
-          alt="Cengage Content Studio — Adapt Content side-by-side comparison: Adaptations panel on the left, original chapter in the middle, adapted version on the right tagged with its configuration."
-          caption="Adapt Content — side-by-side. Adaptations panel, original chapter, and adapted rendering tagged with the exact configuration that produced it."
+          alt="Cengage Content Studio, Adapt Content side-by-side comparison: Adaptations panel on the left, original chapter in the middle, adapted version on the right tagged with its configuration."
+          caption="Adapt Content, side-by-side. Adaptations panel, original chapter, and adapted rendering tagged with the exact configuration that produced it."
           wide
           priority
           width={3000}
@@ -39,12 +39,12 @@ export default function CengagePage() {
       <h2 className="font-display mt-0">Context</h2>
       <p>
         Cengage is one of the three large higher-education publishers in the
-        United States. Explore is the company&apos;s modern learning platform
-        — a single teacher-and-student surface wrapped around its catalog of
+        United States. Explore is the company&apos;s modern learning platform,
+        a single teacher-and-student surface wrapped around its catalog of
         courses, textbooks, and assessments. When I joined, the program I was
         asked to lead was Content Studio: an AI-powered layer inside Explore
-        that lets an instructor take any Cengage content and adapt it — by
-        reading level, by language, and with a set of accommodations — to
+        that lets an instructor take any Cengage content and adapt it (by
+        reading level, by language, and with a set of accommodations) to
         match the students actually in the room.
       </p>
       <p>
@@ -57,7 +57,7 @@ export default function CengagePage() {
       <h2 className="font-display mt-[var(--block-gap)]">Tension</h2>
       <p>
         Every edtech company is adding AI in 2026. The tension isn&apos;t{" "}
-        <em>whether</em> to add it — it&apos;s the shape it takes:
+        <em>whether</em> to add it. It&apos;s the shape it takes:
       </p>
       <blockquote
         className="pl-6 italic"
@@ -74,8 +74,8 @@ export default function CengagePage() {
         button that generates stuff&rdquo;?
       </blockquote>
       <p>
-        When AI is bolted on, the UX becomes a feature shelf —{" "}
-        <em>summarize, simplify, translate, rewrite</em> — each sitting in a
+        When AI is bolted on, the UX becomes a feature shelf (
+        <em>summarize, simplify, translate, rewrite</em>), each sitting in a
         menu, each producing output the user has to manually review.
         That&apos;s how most of the market ships AI. It treats AI as a stamp
         you press on top of finished content.
@@ -87,7 +87,7 @@ export default function CengagePage() {
         &ldquo;rewrite for 6th grade&rdquo; button that doesn&apos;t respect
         any of that produces content a professor can&apos;t responsibly put
         in front of students. We had to design for AI that understood the
-        source material&apos;s <em>pedagogical intent</em> — and render that
+        source material&apos;s <em>pedagogical intent</em>, and render that
         intent at a different reading level, in a different language, or with
         a different accommodation profile, without losing it.
       </p>
@@ -102,7 +102,7 @@ export default function CengagePage() {
         parameterized by a set of dials: Material Type, Reading Level,
         Language, and a short list of accommodations. The instructor picks
         the treatment; the system produces the rendering. The original stays
-        canonical — it&apos;s visible on the left at all times. The adapted
+        canonical; it&apos;s visible on the left at all times. The adapted
         rendering on the right is tagged with the parameters that produced
         it, so the instructor can always read the version as a{" "}
         <em>product of a configuration</em>, not as free-form AI output to be
@@ -110,8 +110,8 @@ export default function CengagePage() {
       </p>
       <Figure
         src="/images/case-studies/cengage/select-content-empty.png"
-        alt="Cengage Content Studio — Select Content, empty state with the unit/chapter/lesson tree."
-        caption="Select Content — the content-first entry point. Browse into any Cengage course before choosing a treatment."
+        alt="Cengage Content Studio: Select Content, empty state with the unit/chapter/lesson tree."
+        caption="Select Content: the content-first entry point. Browse into any Cengage course before choosing a treatment."
         width={2800}
         height={1600}
         wide
@@ -127,7 +127,7 @@ export default function CengagePage() {
         provost&apos;s office, the accessibility team, the learning science
         group) asks about before signing off on a tool. Writing them first
         gave us a shared language to push back on feature asks that violated
-        them, and it let engineering scope honestly — it&apos;s very
+        them, and it let engineering scope honestly. It&apos;s very
         different to scope &ldquo;AI rewrite&rdquo; versus &ldquo;AI rewrite
         that preserves lesson-level learning objectives.&rdquo;
       </p>
@@ -142,13 +142,13 @@ export default function CengagePage() {
         behavior is the <em>only</em> novelty in the product. Everything
         else is deliberately boring. That makes the new capability feel like
         a natural extension of existing tools, not a separate product to
-        learn — which matters enormously for adoption inside institutions
+        learn, which matters enormously for adoption inside institutions
         that spend years vetting new software.
       </p>
 
       <h2 className="font-display mt-[var(--block-gap)]">Decisions</h2>
 
-      <DecisionBlock heading="Decision 1 — Generative AI is a set of primitives, not a features menu">
+      <DecisionBlock heading="Decision 1: Generative AI is a set of primitives, not a features menu">
         <p>
           The easy version of Content Studio is a sidebar with{" "}
           <em>Summarize / Simplify / Translate / Rewrite</em> buttons. I
@@ -163,21 +163,21 @@ export default function CengagePage() {
           </em>
           ). The AI runs in the background to realize whatever configuration
           the instructor picks. From the instructor&apos;s perspective,
-          they&apos;re not invoking AI — they&apos;re choosing the version of
+          they&apos;re not invoking AI; they&apos;re choosing the version of
           the lesson they want their students to see.
         </p>
         <p>
           This reframing is the whole product. It moves the AI from something
           the user has to think about, to infrastructure the user uses
           without labeling it. The program&apos;s positioning inside
-          Cengage&apos;s broader catalog depends on that — it&apos;s the
+          Cengage&apos;s broader catalog depends on that; it&apos;s the
           difference between &ldquo;Content Studio has AI features&rdquo; and
           &ldquo;Content Studio is how AI shows up across Cengage.&rdquo;
           That positioning is what gets the program sustained investment.
         </p>
       </DecisionBlock>
 
-      <DecisionBlock heading="Decision 2 — Original and adapted render side-by-side, not sequentially">
+      <DecisionBlock heading="Decision 2: Original and adapted render side-by-side, not sequentially">
         <p>
           The first instinct most teams have is to show the adapted output in
           the main canvas and tuck the original away. I designed the
@@ -188,7 +188,7 @@ export default function CengagePage() {
         </p>
         <p>
           This does three things at once. It gives the teacher a ground-truth
-          reference every time they look at AI output — no context switching,
+          reference every time they look at AI output: no context switching,
           no misremembering what the source said. It makes the cost of a bad
           adaptation zero (a wrong rendering is immediately legible as wrong
           against the original, not as plausible output to be scrutinized in
@@ -206,10 +206,10 @@ export default function CengagePage() {
         </p>
       </DecisionBlock>
 
-      <DecisionBlock heading="Decision 3 — Save As is a deliberate ceremony">
+      <DecisionBlock heading="Decision 3: Save As is a deliberate ceremony">
         <p>
           Generating an adaptation is cheap. Saving one is not. A saved
-          adaptation can be assigned to students — it becomes a teaching
+          adaptation can be assigned to students; it becomes a teaching
           object with its own weight inside the platform.
         </p>
         <p>
@@ -235,41 +235,41 @@ export default function CengagePage() {
       <p>Live in Content Studio Beta inside Explore today:</p>
       <Figure
         src="/images/case-studies/cengage/select-content-populated.png"
-        alt="Cengage Content Studio — Select Content with a lesson selected, the preview populated, and the Adapt button active."
-        caption="Select Content — the lesson picked, preview populated, Adapt button active. The entry point into the adaptation flow."
+        alt="Cengage Content Studio: Select Content with a lesson selected, the preview populated, and the Adapt button active."
+        caption="Select Content: the lesson picked, preview populated, Adapt button active. The entry point into the adaptation flow."
         width={2800}
         height={1600}
         wide
       />
       <ul className="list-disc pl-6 space-y-2">
         <li>
-          <strong>Lesson selector</strong> — browse-and-search over the
+          <strong>Lesson selector:</strong> browse-and-search over the
           unit/chapter/lesson structure of any Cengage course, with a live
           preview pane before the teacher commits to adapting anything.
         </li>
         <li>
-          <strong>Adapt Content</strong> — the side-by-side original/new
+          <strong>Adapt Content:</strong> the side-by-side original/new
           canvas with the Adaptations panel: Material Type, Reading Level,
           Language, and accommodations (Chunking, Vocabulary Preview,
           Highlight Key Concepts).
         </li>
         <li>
-          <strong>Configuration tagging</strong> — every adapted rendering is
+          <strong>Configuration tagging:</strong> every adapted rendering is
           annotated with the exact parameters that produced it, so provenance
           is part of the artifact rather than a hidden metadata field.
         </li>
         <li>
-          <strong>View Original toggle + Edit</strong> — instructor-facing
+          <strong>View Original toggle + Edit:</strong> instructor-facing
           controls for verifying the adaptation and making manual refinements
           before saving.
         </li>
         <li>
-          <strong>Save As</strong> — turns a live adaptation into a durable
+          <strong>Save As:</strong> turns a live adaptation into a durable
           lesson object that can be assigned, tracked, and reported on
           alongside the rest of the course.
         </li>
         <li>
-          <strong>Explore-native integration</strong> — Content Studio lives
+          <strong>Explore-native integration:</strong> Content Studio lives
           in the primary Explore sidebar (Home, Assignments, Content,
           Gradebook, Reports, Groups, <em>Content Studio Beta</em>), so the
           AI capability is positioned as a first-class part of the platform
@@ -278,8 +278,8 @@ export default function CengagePage() {
       </ul>
       <Figure
         src="/images/case-studies/cengage/explore-home.png"
-        alt="Cengage Explore home — the Hi, Janine! landing view with Content Studio Beta listed in the primary sidebar."
-        caption="Explore-native integration — Content Studio lives in the primary Explore sidebar, not as a bolt-on."
+        alt="Cengage Explore home: the Hi, Janine! landing view with Content Studio Beta listed in the primary sidebar."
+        caption="Explore-native integration: Content Studio lives in the primary Explore sidebar, not as a bolt-on."
         width={2800}
         height={1600}
         wide
@@ -294,7 +294,7 @@ export default function CengagePage() {
       <p>
         The biggest thing I&apos;d change in retrospect is where I put the
         measurement surface. The Beta instruments which instructors adopt
-        which treatments — reading level, language, accommodations — but not
+        which treatments (reading level, language, accommodations), but not
         yet deeply enough to tell whether adaptation actually{" "}
         <em>moves the needle</em> for the students it&apos;s meant to help.
         That should have been in v1, not v2, because that&apos;s the dataset
@@ -306,7 +306,7 @@ export default function CengagePage() {
         is rarely &ldquo;what does the AI do.&rdquo; It&apos;s &ldquo;what
         shape does the product take when AI is infrastructure rather than a
         feature.&rdquo; Content Studio is a small, contained answer to that
-        question for a specific market — and it&apos;s the answer I want to
+        question for a specific market, and it&apos;s the answer I want to
         keep refining inside Cengage while I&apos;m there.
       </p>
 

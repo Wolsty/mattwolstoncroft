@@ -52,7 +52,7 @@ export function Footer() {
             className="link-underline font-body text-[1rem]"
             aria-label="Open command palette"
           >
-            <kbd style={{ fontFamily: "inherit" }}>⌘K</kbd> — command palette
+            <kbd style={{ fontFamily: "inherit" }}>⌘K</kbd>, command palette
           </button>
           <div>
             <button

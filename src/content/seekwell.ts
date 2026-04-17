@@ -1,5 +1,5 @@
 /**
- * SeekWell / HelloEyes — four sub-case studies, pulled verbatim from
+ * SeekWell / HelloEyes: four sub-case studies, pulled verbatim from
  * /docs/case-studies-content.md (sections 1-4) per the brief's content
  * reuse rules.
  *
@@ -35,7 +35,7 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
     blurb:
       "Turning a smartphone into a virtual vision center. Six flows, measured lift on each.",
     metadata: [
-      "2023 — 2024",
+      "2023–2024",
       "Principal Designer",
       "iOS · Android",
       "HIPAA-grade Auth · Computer Vision",
@@ -114,24 +114,24 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
     images: [
       {
         src: "/images/case-studies/seekwell/hC5kiBAHXbyBa1URDc7h1WXdrk.webp",
-        alt: "HelloEyes product catalog — women's eyeglasses grid browsing on mobile.",
+        alt: "HelloEyes product catalog: women's eyeglasses grid browsing on mobile.",
       },
       {
         src: "/images/case-studies/seekwell/SHGChn0d5MNLhIKURMp4QRL7Ptg.webp",
-        alt: "Checkout flow — order review and payment on the HelloEyes app.",
+        alt: "Checkout flow: order review and payment on the HelloEyes app.",
       },
       {
         src: "/images/case-studies/seekwell/89lOHTMGpOvoBwwMOLfsZxhqcx8.webp",
-        alt: "Post-exam prescription confirmation — the \"all done\" state of the Rx pairing flow.",
+        alt: "Post-exam prescription confirmation: the \"all done\" state of the Rx pairing flow.",
       },
     ],
   },
   {
     slug: "diary-study",
-    title: "Diary Study — Large Scale Usability Study",
+    title: "Diary Study: Large Scale Usability Study",
     thumbnailLabel: "Large Scale Usability · Study",
     blurb:
-      "A multi-month diary study across the end-to-end glasses ordering experience — what it revealed about trust, tool stability, and where to invest next.",
+      "A multi-month diary study across the end-to-end glasses ordering experience: what it revealed about trust, tool stability, and where to invest next.",
     metadata: [
       "2023",
       "Research Lead",
@@ -207,7 +207,7 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
     images: [
       {
         src: "/images/case-studies/seekwell/FU17fLidXjY1J7clSROV6zlEE.webp",
-        alt: "Diary-study recruiting screen — the \"Join our test group\" call to action shown to users during the study.",
+        alt: "Diary-study recruiting screen: the \"Join our test group\" call to action shown to users during the study.",
       },
       {
         src: "/images/case-studies/seekwell/76kbLcHfV5kqaiTB5gitURxyxc.webp",
@@ -220,7 +220,7 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
     title: "Online Vision Assessment",
     thumbnailLabel: "Online · Vision Assessment",
     blurb:
-      "A UX strategy disguised as a conversation — invisible qualification logic routed the right users to the right tools.",
+      "A UX strategy disguised as a conversation: invisible qualification logic routed the right users to the right tools.",
     metadata: [
       "2023",
       "Experience Strategy",
@@ -233,7 +233,7 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
       {
         kind: "paragraph",
         text:
-          "The Vision Assessment was designed as an entry point into the HelloEyes ecosystem — a free, guided quiz-like experience that helped users navigate their vision needs and matched them with the right tools, styles, and services. Launched from the homepage, it acted as a digital concierge for our broader experience.",
+          "The Vision Assessment was designed as an entry point into the HelloEyes ecosystem: a free, guided quiz-like experience that helped users navigate their vision needs and matched them with the right tools, styles, and services. Launched from the homepage, it acted as a digital concierge for our broader experience.",
       },
       {
         kind: "paragraph",
@@ -264,7 +264,7 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
       {
         kind: "list",
         items: [
-          { term: "Guided Personalization", body: "Framed the assessment as a concierge-style guide. Users answered short, friendly questions about their vision history, current eyewear, goals, and lifestyle. Based on their answers, we offered curated recommendations — from trying on glasses at home to exploring contacts or scheduling an in-person exam." },
+          { term: "Guided Personalization", body: "Framed the assessment as a concierge-style guide. Users answered short, friendly questions about their vision history, current eyewear, goals, and lifestyle. Based on their answers, we offered curated recommendations, from trying on glasses at home to exploring contacts or scheduling an in-person exam." },
           { term: "Invisible Qualification Logic", body: "Behind the scenes, layered in logic to identify high-fit candidates for the online vision exam. Rather than asking directly, we inferred eligibility through branching questions. When users did qualify, we introduced the exam as a tailored next step. This preserved the feeling of relevance, rather than rejection." },
           { term: "Universal Value Delivery", body: "Every user, regardless of qualification, received personalized results and recommendations. This ensured no one left empty-handed, reinforcing trust and helping users feel seen." },
           { term: "Seamless Integration", body: "Launched the assessment from multiple points across the site, including the homepage, product pages, and email flows. It became a flexible touchpoint that adapted to different user intents." },
@@ -284,13 +284,13 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
       {
         kind: "paragraph",
         text:
-          "The Vision Assessment wasn't just a quiz — it was a UX strategy disguised as a conversation. By embedding qualification logic into a helpful and empathetic experience, we turned what could have been a gatekeeping tool into a welcoming guide. It became the bridge between users' vision goals and HelloEyes' full range of offerings, balancing business outcomes with trust, clarity, and value at every step.",
+          "The Vision Assessment wasn't just a quiz. It was a UX strategy disguised as a conversation. By embedding qualification logic into a helpful and empathetic experience, we turned what could have been a gatekeeping tool into a welcoming guide. It became the bridge between users' vision goals and HelloEyes' full range of offerings, balancing business outcomes with trust, clarity, and value at every step.",
       },
     ],
     images: [
       {
         src: "/images/case-studies/seekwell/kCc4OvkH5MSPJvAShiHVp6zmJIQ.webp",
-        alt: "Vision Assessment intake — opening question in the guided, concierge-style quiz.",
+        alt: "Vision Assessment intake: opening question in the guided, concierge-style quiz.",
       },
       {
         src: "/images/case-studies/seekwell/4bJYHyoU8K7ZhWIyyJSQJ1tBBM.webp",
@@ -400,11 +400,11 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
     images: [
       {
         src: "/images/case-studies/seekwell/XDKW5HkRJnxNZ9r5SxVVYyD0M.webp",
-        alt: "AI-powered vision exam — setup flow introducing the at-home testing environment.",
+        alt: "AI-powered vision exam: setup flow introducing the at-home testing environment.",
       },
       {
         src: "/images/case-studies/seekwell/WlXE79U0DPjAjBLqOyalnq2xcM.webp",
-        alt: "Calibration step for the AI-powered vision exam — real-time visual guidance for phone positioning.",
+        alt: "Calibration step for the AI-powered vision exam: real-time visual guidance for phone positioning.",
       },
     ],
   },

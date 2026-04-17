@@ -1,5 +1,5 @@
 /**
- * Progrexion — four condensed sub-entries, pulled from
+ * Progrexion: four condensed sub-entries, pulled from
  * /docs/case-studies-content.md sections 5-8. Rendered inline on the
  * /progrexion umbrella page (no separate sub-routes).
  */
@@ -13,7 +13,7 @@ export type ProgrexionEntry = {
   outcomes?: string[];
 };
 
-export const PROGREXION_UMBRELLA_INTRO = `At Progrexion, I led end-to-end product & UX design across several consumer-facing brands including Lexington Law, CreditRepair.com, and Credit.com. My work focused on transforming complex credit repair processes into intuitive, empowering digital experiences. As lead product designer for the Lexington Law native app (iOS and Android), I crafted a mobile-first experience that put legal-backed credit repair directly into users' hands — combining credit monitoring, dispute management, and educational tools into one seamless interface. I also led the design of CreditRepair GO, a fast and self-service mobile and web product powered by CreditRepair.com to support a growing audience of independent users looking to manage their credit without advisor intervention. Beyond mobile, I drove conversion rate optimization (CRO) efforts across Credit.com, Lexington Law, and CreditRepair.com, refining sign-up flows and redesigning client-facing interfaces to better guide users toward credit confidence and financial progress.`;
+export const PROGREXION_UMBRELLA_INTRO = `At Progrexion, I led end-to-end product & UX design across several consumer-facing brands including Lexington Law, CreditRepair.com, and Credit.com. My work focused on transforming complex credit repair processes into intuitive, empowering digital experiences. As lead product designer for the Lexington Law native app (iOS and Android), I crafted a mobile-first experience that put legal-backed credit repair directly into users' hands, combining credit monitoring, dispute management, and educational tools into one seamless interface. I also led the design of CreditRepair GO, a fast and self-service mobile and web product powered by CreditRepair.com to support a growing audience of independent users looking to manage their credit without advisor intervention. Beyond mobile, I drove conversion rate optimization (CRO) efforts across Credit.com, Lexington Law, and CreditRepair.com, refining sign-up flows and redesigning client-facing interfaces to better guide users toward credit confidence and financial progress.`;
 
 export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
   {
@@ -29,7 +29,7 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
       { term: "New Personalized Dashboard", body: "Service-level dashboards that clearly communicate what actions are being taken and what's next." },
       { term: "Biometric Login & Account Recovery", body: "Face ID and fingerprint login, plus streamlined account setup and recovery." },
       { term: "Score Tracker & Game Plan", body: "Visual tools that help users track their credit score and understand the factors impacting it." },
-      { term: "Real-Time Progress Updates", body: "View bureau disputes, creditor interventions, and total items removed — transparency to a previously opaque process." },
+      { term: "Real-Time Progress Updates", body: "View bureau disputes, creditor interventions, and total items removed: transparency to a previously opaque process." },
     ],
     outcomes: [
       "Increased app retention among new users",
@@ -42,7 +42,7 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
     title: "CreditRepair GO",
     thumbnailLabel: "CreditRepair GO",
     overview:
-      "A streamlined, affordable, digital-first alternative to traditional credit repair — no long intake, no ongoing consultations. Led concept development, core flows, prototyping, and alignment with Product and Marketing on go-to-market messaging.",
+      "A streamlined, affordable, digital-first alternative to traditional credit repair: no long intake, no ongoing consultations. Led concept development, core flows, prototyping, and alignment with Product and Marketing on go-to-market messaging.",
     highlights: [
       { term: "Self-Guided Dispute Engine", body: "Users could select and submit dispute requests without speaking to a representative." },
       { term: "Progress Tracker", body: "A dynamic dashboard visualized dispute status, credit score movement, and completion milestones." },
@@ -55,12 +55,12 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
     title: "Lexington Law iOS & Android",
     thumbnailLabel: "Lexington Law iOS & Android",
     overview:
-      "Designed the Lexington Law native app as a personal credit advocate — translating legal expertise, real-time credit monitoring, and user-friendly tools into a single mobile surface. Led end-to-end design, user interviews, usability testing, and stakeholder alignment with compliance.",
+      "Designed the Lexington Law native app as a personal credit advocate, translating legal expertise, real-time credit monitoring, and user-friendly tools into a single mobile surface. Led end-to-end design, user interviews, usability testing, and stakeholder alignment with compliance.",
     highlights: [
       { term: "Dispute Progress Tracking", body: "Clear, modular view of each credit item being challenged, with plain-language explanations, legal context, and real-time status." },
       { term: "FICO® Score Insights", body: "Visualizations to help users track score changes and understand the impact of key events." },
-      { term: "Focus Tracks", body: "Intake flow that personalized the user's dispute strategy based on their life events — identity theft, divorce, medical debt." },
-      { term: "Credit Monitoring & Alerts", body: "ReportWatch — a suite of alerts keeping users informed about credit activity and potential risks." },
+      { term: "Focus Tracks", body: "Intake flow that personalized the user's dispute strategy based on their life events (identity theft, divorce, medical debt)." },
+      { term: "Credit Monitoring & Alerts", body: "ReportWatch, a suite of alerts keeping users informed about credit activity and potential risks." },
       { term: "Identity Theft Protection", body: "Secure identity monitoring hub with up to $1M in insurance coverage and actionable protection tips." },
       { term: "Digital Money Manager", body: "Lightweight personal finance dashboard for income, spending, budgets, debt, and net worth." },
       { term: "Case Setup Flow Optimization", body: "Consolidated three repeat bureau-specific intakes into a single intelligent step with logic-driven mapping to Equifax, Experian, and TransUnion." },
@@ -77,7 +77,7 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
     title: "Credit.com Platform & ExtraCredit Launch",
     thumbnailLabel: "Credit.com",
     overview:
-      "Led UX and product design across Credit.com's web and mobile platforms — from the core free credit score and Credit Report Card to the launch of ExtraCredit, a premium membership tier. Built design systems and documentation to support scalable design execution across a growing team.",
+      "Led UX and product design across Credit.com's web and mobile platforms, from the core free credit score and Credit Report Card to the launch of ExtraCredit, a premium membership tier. Built design systems and documentation to support scalable design execution across a growing team.",
     highlights: [
       { term: "Streamlined Credit Report Card UX", body: "Redesigned to surface actionable insights and reduce cognitive load. Users could quickly see their score, what affected it, and what to do next." },
       { term: "Clearer Onboarding & Progress Indicators", body: "Helped new users understand the value proposition and see progress sooner." },

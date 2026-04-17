@@ -11,7 +11,7 @@ export type CaseStudyMeta = {
 
 export type CaseStudyShellProps = {
   meta: CaseStudyMeta;
-  /** Pre-metadata hero element — typically a Figure. */
+  /** Pre-metadata hero element; typically a Figure. */
   hero: ReactNode;
   children: ReactNode;
   backHref?: string;

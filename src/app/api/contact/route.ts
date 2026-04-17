@@ -75,7 +75,7 @@ export async function POST(req: Request) {
       from,
       to,
       replyTo: email,
-      subject: `Portfolio contact — ${name}`,
+      subject: `Portfolio contact from ${name}`,
       text: [
         `From: ${name} <${email}>`,
         `IP: ${ip}`,

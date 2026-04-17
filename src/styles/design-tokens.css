@@ -1,4 +1,4 @@
-/* Design tokens — the only place hex values and raw measures live.
+/* Design tokens: the only place hex values and raw measures live.
    Components consume these via Tailwind (colors.bg, colors.fg, etc.) or CSS vars. */
 
 :root,
@@ -8,7 +8,7 @@
      --font-body stays on Times New Roman (system-available). */
   --font-body: "Times New Roman", Times, serif;
 
-  /* Color — light */
+  /* Color: light */
   --bg: #FAFAF7;
   --fg: #111111;
   --fg-muted: #555555;

@@ -32,8 +32,8 @@ export function SectionRenderer({ sections }: { sections: SeekwellSection[] }) {
           <ul key={i} className="list-disc pl-6 mt-4 space-y-3">
             {s.items.map((item, j) => (
               <li key={j}>
-                {item.term ? <strong>{item.term}</strong> : null}
-                {item.term ? " — " : null}
+                {item.term ? <strong>{item.term}:</strong> : null}
+                {item.term ? " " : null}
                 {item.body}
               </li>
             ))}

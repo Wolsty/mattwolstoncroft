@@ -20,7 +20,7 @@ export default function ProgrexionPage() {
         title: "Progrexion",
         status: "Shipped",
         metadata: [
-          "2018 — 2021",
+          "2018–2021",
           "Senior Product Designer",
           "Fintech / Credit",
           "4 product surfaces",
@@ -47,8 +47,8 @@ export default function ProgrexionPage() {
           <ul className="list-disc pl-6 mt-4 space-y-3">
             {e.highlights.map((h, j) => (
               <li key={j}>
-                {h.term ? <strong>{h.term}</strong> : null}
-                {h.term ? " — " : null}
+                {h.term ? <strong>{h.term}:</strong> : null}
+                {h.term ? " " : null}
                 {h.body}
               </li>
             ))}

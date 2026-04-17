@@ -23,7 +23,7 @@ const CARDS: Card[] = [
   {
     href: "/labnotes",
     title: "LabNotes.ai",
-    meta: "2025 — Present · Co-founder · Higher-Ed STEM · Shipped",
+    meta: "2025–Present · Co-founder · Higher-Ed STEM · Shipped",
     tension:
       "An AI tutor maximally helpful to a single student is often actively harmful to their learning. LabNotes is the platform I built to resolve that.",
     detail:
@@ -31,7 +31,7 @@ const CARDS: Card[] = [
     image: {
       src: "/images/case-studies/labnotes/labnotes-product-mock.png",
       fallbackSrc: "/images/case-studies/labnotes/ai-insights-integrity.png",
-      alt: "LabNotes — AI tutor and faculty insights for a live chemistry course.",
+      alt: "LabNotes: AI tutor and faculty insights for a live chemistry course.",
       width: 2800,
       height: 1600,
     },
@@ -39,14 +39,14 @@ const CARDS: Card[] = [
   {
     href: "/cengage",
     title: "Cengage Content Studio",
-    meta: "2026 — Present · Senior UX Manager · React Magma 3 · GenAI · In Production (Beta)",
+    meta: "2026–Present · Senior UX Manager · React Magma 3 · GenAI · In Production (Beta)",
     tension:
       "Embedding generative AI as a core differentiator of a content platform without reducing the experience to “here's a button that generates stuff.”",
     detail:
-      "Adaptation as a first-class content state: original and adapted render side-by-side, parameterized by dials the instructor picks. The AI becomes infrastructure the instructor uses without thinking about — a reframe I argued hard for and won.",
+      "Adaptation as a first-class content state: original and adapted render side-by-side, parameterized by dials the instructor picks. The AI becomes infrastructure the instructor uses without thinking about. A reframe I argued hard for and won.",
     image: {
       src: "/images/case-studies/cengage/adapt-content.png",
-      alt: "Cengage Content Studio — side-by-side Adapt Content view.",
+      alt: "Cengage Content Studio: side-by-side Adapt Content view.",
       width: 2400,
       height: 1500,
     },
@@ -54,14 +54,14 @@ const CARDS: Card[] = [
   {
     href: "/seekwell",
     title: "SeekWell / HelloEyes",
-    meta: "2022 — 2024 · Principal Designer · Health-Tech · Four sub-case studies",
+    meta: "2022–2024 · Principal Designer · Health-Tech · Four sub-case studies",
     tension:
-      "Compressing the typical PM + designer + analyst workflow into a single seat — a mobile-first virtual vision center built to earn clinical trust from a smartphone.",
+      "Compressing the typical PM + designer + analyst workflow into a single seat, a mobile-first virtual vision center built to earn clinical trust from a smartphone.",
     detail:
       "Led UX across iOS & Android apps, an AI-powered vision exam with a 30% completion lift, an invisible-qualification Vision Assessment, and a multi-month diary study that reshaped the exam and Lens Scanner roadmap.",
     image: {
       src: "/images/case-studies/seekwell/hero_HelloEyes.webp",
-      alt: "SeekWell / HelloEyes — mobile-first virtual vision platform.",
+      alt: "SeekWell / HelloEyes: mobile-first virtual vision platform.",
       width: 2400,
       height: 1500,
     },
@@ -69,14 +69,14 @@ const CARDS: Card[] = [
   {
     href: "/progrexion",
     title: "Progrexion",
-    meta: "2018 — 2021 · SENIOR PRODUCT DESIGNER · FINTECH / CREDIT · 4 PRODUCT SURFACES · SHIPPED",
+    meta: "2018–2021 · SENIOR PRODUCT DESIGNER · FINTECH / CREDIT · 4 PRODUCT SURFACES · SHIPPED",
     tension:
       "Translating opaque, legalistic credit-repair processes into mobile-first experiences users could trust, track, and act on.",
     detail:
-      "Led product design across Lexington Law iOS/Android, CreditRepair.com, CreditRepair GO, and Credit.com / ExtraCredit — score tracking, self-service dispute engines, Focus Tracks, biometric login, and the consolidated bureau intake that cut three steps to one.",
+      "Led product design across Lexington Law iOS/Android, CreditRepair.com, CreditRepair GO, and Credit.com / ExtraCredit: score tracking, self-service dispute engines, Focus Tracks, biometric login, and the consolidated bureau intake that cut three steps to one.",
     image: {
       src: "/images/case-studies/progrexion/progrexion-hero.png",
-      alt: "Progrexion — consumer fintech product surfaces for credit repair and monitoring.",
+      alt: "Progrexion: consumer fintech product surfaces for credit repair and monitoring.",
       width: 2400,
       height: 1500,
     },
