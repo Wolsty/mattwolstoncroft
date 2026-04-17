@@ -15,6 +15,8 @@ export type SeekwellSection =
   | { kind: "paragraph"; text: string }
   | { kind: "list"; items: Array<{ term?: string; body: string }> };
 
+export type SeekwellImage = { src: string; alt: string };
+
 export type SeekwellCase = {
   slug: string;
   title: string;
@@ -22,6 +24,7 @@ export type SeekwellCase = {
   blurb: string; // one-line tension for the index list
   metadata: string[];
   sections: SeekwellSection[];
+  images?: SeekwellImage[];
 };
 
 export const SEEKWELL_CASES: SeekwellCase[] = [
@@ -108,6 +111,20 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
         ],
       },
     ],
+    images: [
+      {
+        src: "/images/case-studies/seekwell/hC5kiBAHXbyBa1URDc7h1WXdrk.webp",
+        alt: "HelloEyes product catalog — women's eyeglasses grid browsing on mobile.",
+      },
+      {
+        src: "/images/case-studies/seekwell/SHGChn0d5MNLhIKURMp4QRL7Ptg.webp",
+        alt: "Checkout flow — order review and payment on the HelloEyes app.",
+      },
+      {
+        src: "/images/case-studies/seekwell/89lOHTMGpOvoBwwMOLfsZxhqcx8.webp",
+        alt: "Post-exam prescription confirmation — the \"all done\" state of the Rx pairing flow.",
+      },
+    ],
   },
   {
     slug: "diary-study",
@@ -187,6 +204,16 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
         ],
       },
     ],
+    images: [
+      {
+        src: "/images/case-studies/seekwell/FU17fLidXjY1J7clSROV6zlEE.webp",
+        alt: "Diary-study recruiting screen — the \"Join our test group\" call to action shown to users during the study.",
+      },
+      {
+        src: "/images/case-studies/seekwell/76kbLcHfV5kqaiTB5gitURxyxc.webp",
+        alt: "A participant engaging with the HelloEyes app during the multi-month diary study.",
+      },
+    ],
   },
   {
     slug: "vision-assessment",
@@ -258,6 +285,20 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
         kind: "paragraph",
         text:
           "The Vision Assessment wasn't just a quiz — it was a UX strategy disguised as a conversation. By embedding qualification logic into a helpful and empathetic experience, we turned what could have been a gatekeeping tool into a welcoming guide. It became the bridge between users' vision goals and HelloEyes' full range of offerings, balancing business outcomes with trust, clarity, and value at every step.",
+      },
+    ],
+    images: [
+      {
+        src: "/images/case-studies/seekwell/kCc4OvkH5MSPJvAShiHVp6zmJIQ.webp",
+        alt: "Vision Assessment intake — opening question in the guided, concierge-style quiz.",
+      },
+      {
+        src: "/images/case-studies/seekwell/4bJYHyoU8K7ZhWIyyJSQJ1tBBM.webp",
+        alt: "Branching quiz step covering frame style, color, and lifestyle preferences.",
+      },
+      {
+        src: "/images/case-studies/seekwell/VIdNOdCCfHMXbZymUjsnbptZ58.webp",
+        alt: "Personalized results page returned to every assessment taker, regardless of exam eligibility.",
       },
     ],
   },
@@ -354,6 +395,16 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
         kind: "paragraph",
         text:
           "By addressing key pain points through user-centered design and rigorous testing, the HelloEyes vision exam setup flow became more intuitive and efficient. This project exemplifies my commitment to enhancing user experiences through strategic research and design interventions.",
+      },
+    ],
+    images: [
+      {
+        src: "/images/case-studies/seekwell/XDKW5HkRJnxNZ9r5SxVVYyD0M.webp",
+        alt: "AI-powered vision exam — setup flow introducing the at-home testing environment.",
+      },
+      {
+        src: "/images/case-studies/seekwell/WlXE79U0DPjAjBLqOyalnq2xcM.webp",
+        alt: "Calibration step for the AI-powered vision exam — real-time visual guidance for phone positioning.",
       },
     ],
   },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyShell } from "@/components/case-study/CaseStudyShell";
+import { Figure } from "@/components/case-study/Figure";
 import { PrevNext } from "@/components/case-study/PrevNext";
 import { SectionRenderer } from "@/components/case-study/SectionRenderer";
 import {
@@ -60,6 +61,25 @@ export default async function SeekwellSubPage(
       backLabel="SeekWell"
     >
       <SectionRenderer sections={cs.sections} />
+
+      {cs.images && cs.images.length > 0 ? (
+        <section
+          aria-label="Selected screens"
+          className="rule-top mt-[var(--block-gap)] pt-[var(--block-gap)]"
+        >
+          <h2 className="meta mb-4">Selected screens</h2>
+          {cs.images.map((img) => (
+            <Figure
+              key={img.src}
+              src={img.src}
+              alt={img.alt}
+              wide
+              width={2400}
+              height={1500}
+            />
+          ))}
+        </section>
+      ) : null}
 
       <PrevNext
         prev={

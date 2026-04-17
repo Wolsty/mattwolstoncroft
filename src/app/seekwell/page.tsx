@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CaseStudyShell } from "@/components/case-study/CaseStudyShell";
+import { Figure } from "@/components/case-study/Figure";
 import { SEEKWELL_CASES } from "@/content/seekwell";
 
 export const metadata: Metadata = {
@@ -23,21 +24,14 @@ export default function SeekwellIndexPage() {
         ],
       }}
       hero={
-        <div
-          className="rounded p-8 md:p-12"
-          style={{ border: "1px solid var(--rule)" }}
-        >
-          <p className="meta mb-4">SeekWell / HelloEyes</p>
-          <p
-            className="italic max-w-prose font-body"
-            style={{ fontSize: "var(--type-tension)", color: "var(--fg-muted)", lineHeight: 1.4 }}
-          >
-            A first-of-its-kind mobile vision platform — compressing the
-            typical PM + designer + analyst workflow into a single seat
-            across iOS, Android, an AI-powered vision exam, and the research
-            that re-shaped the roadmap.
-          </p>
-        </div>
+        <Figure
+          src="/images/case-studies/seekwell/hero_HelloEyes.webp"
+          alt="HelloEyes — a first-of-its-kind mobile vision platform across iOS, Android, and an AI-powered vision exam."
+          wide
+          priority
+          width={2800}
+          height={1600}
+        />
       }
     >
       <p>
