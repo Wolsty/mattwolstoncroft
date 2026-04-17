@@ -7,7 +7,25 @@
       "Bash(curl:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git -c user.email=noreply@anthropic.com -c user.name=\"Claude\" commit -m \"chore: initial v1 scaffold\" -q)"
+      "Bash(git -c user.email=noreply@anthropic.com -c user.name=\"Claude\" commit -m \"chore: initial v1 scaffold\" -q)",
+      "Bash(git commit:*)",
+      "Bash(git reset:*)",
+      "Bash(lsof -iTCP -sTCP:LISTEN -P -n)",
+      "Bash(file *.avif *.webp)",
+      "Bash(done)",
+      "Bash(sips -s format png -Z 800 In7z2YMuzBhalGw1ZLRozYw6WjY.avif --out /tmp/In7z2YMuzBhalGw1ZLRozYw6WjY.png)",
+      "Read(//private/tmp/**)",
+      "Bash(mv WK9F5hwfyAQb0l8lMiZ9NMaiLjk.webp progrexion-hero.webp)",
+      "Bash(mv OekvoXnISDoMQCgr12N0akjVHwU.avif lexington-law-screens.avif)",
+      "Bash(mv sSGMCEuvqGkd9iZyO55e2vl6z9c.avif lexington-law-credit-reports.avif)",
+      "Bash(mv nUtnx3iwhxA6u4rH7fWCjXBtCmA.avif lexington-law-reportwatch.avif)",
+      "Bash(mv jAd6Omx2gueDwHvAT2yUcJuuRtE.avif creditrepair-com-onboarding.avif)",
+      "WebFetch(domain:cdn.21st.dev)",
+      "Bash(grep -oE \"MeshGradient[^\"\"'''']{0,800}\" /tmp/shader-ref.html)",
+      "Bash(python3:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(lsof -iTCP -sTCP:LISTEN -P)",
+      "Bash(kill 46565 46576 46578 49241 49251 49252)"
     ]
   }
 }
