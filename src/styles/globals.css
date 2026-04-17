@@ -1,0 +1,118 @@
+@import "./design-tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body), "Times New Roman", Times, serif;
+    font-size: var(--type-body);
+    line-height: var(--lead-prose);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), serif;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+
+  h1 { font-size: var(--type-h1); line-height: var(--lead-tight); }
+  h2 { font-size: var(--type-h2); line-height: var(--lead-snug); }
+  h3 { font-size: var(--type-h3); line-height: var(--lead-snug); }
+
+  ::selection {
+    background: var(--accent);
+    color: #000;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--rule);
+  }
+}
+
+@layer components {
+  .meta {
+    font-family: var(--font-body), "Times New Roman", Times, serif;
+    font-size: var(--type-meta);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+  }
+
+  .display {
+    font-family: var(--font-display), serif;
+    font-size: var(--type-display);
+    line-height: var(--lead-tight);
+    letter-spacing: -0.02em;
+  }
+
+  /* Link with accent underline that slides in on hover */
+  .link-underline {
+    position: relative;
+    color: inherit;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 150ms ease;
+  }
+  .link-underline:hover {
+    color: var(--accent);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .rule-top { border-top: 1px solid var(--rule); }
+  .rule-bottom { border-bottom: 1px solid var(--rule); }
+
+  .fade-in-on-scroll {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 200ms ease-out, transform 200ms ease-out;
+  }
+  .fade-in-on-scroll.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-in-on-scroll { opacity: 1; transform: none; }
+}

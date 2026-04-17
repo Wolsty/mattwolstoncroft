@@ -1,0 +1,59 @@
+/* Design tokens — the only place hex values and raw measures live.
+   Components consume these via Tailwind (colors.bg, colors.fg, etc.) or CSS vars. */
+
+:root,
+[data-theme="light"] {
+  /* Font family fallbacks.
+     --font-display is overridden by next/font/local (BL Arctic).
+     --font-body stays on Times New Roman (system-available). */
+  --font-body: "Times New Roman", Times, serif;
+
+  /* Color — light */
+  --bg: #FAFAF7;
+  --fg: #111111;
+  --fg-muted: #555555;
+  --rule: #E5E3DB;
+  --accent: #22C55E;
+
+  /* Overlay */
+  --overlay: rgba(0, 0, 0, 0.3);
+
+  /* Type scales (fluid) */
+  --type-display: clamp(3.5rem, 8vw, 7rem);
+  --type-h1: clamp(2.25rem, 5vw, 3.5rem);
+  --type-h2: clamp(1.625rem, 3vw, 2.25rem);
+  --type-h3: clamp(1.25rem, 2vw, 1.5rem);
+  --type-tension: clamp(1.25rem, 2vw, 1.5rem);
+  --type-body: 1.0625rem;
+  --type-caption: 0.875rem;
+  --type-meta: 0.75rem;
+
+  /* Rhythm */
+  --section-gap: clamp(6rem, 12vh, 10rem);
+  --block-gap: clamp(3rem, 6vh, 5rem);
+
+  /* Leading */
+  --lead-tight: 1.02;
+  --lead-snug: 1.2;
+  --lead-prose: 1.55;
+}
+
+[data-theme="dark"] {
+  --bg: #0E0E0E;
+  --fg: #EFECE4;
+  --fg-muted: #9A9A94;
+  --rule: #1E1E1E;
+  --accent: #22C55E;
+  --overlay: rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E0E0E;
+    --fg: #EFECE4;
+    --fg-muted: #9A9A94;
+    --rule: #1E1E1E;
+    --accent: #22C55E;
+    --overlay: rgba(0, 0, 0, 0.6);
+  }
+}
