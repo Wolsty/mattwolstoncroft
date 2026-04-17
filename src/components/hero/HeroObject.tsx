@@ -143,7 +143,7 @@ void main(){
     rotateX(time * 0.7 + (mouse.y - 0.5) * mouseInfluence * 0.6) *
     rotateZ(time * 0.1);
 
-  float scale = 0.35;
+  float scale = 0.52;
   // Inverted blur: lines near cursor feather out; lines far stay crisp.
   float blur = mix(0.0001, 0.05, mouseInfluence);
   float thickness = mix(0.002, 0.003, mouseInfluence);
@@ -151,7 +151,9 @@ void main(){
   float shape = drawIcosahedron(st, rotation, scale, thickness, blur);
 
   float dimming = 1.0 - mouseInfluence * 0.25;
-  float a = shape * dimming;
+  // Global alpha damp — keep the wireframe subtle enough to sit behind
+  // the hero text without competing with it.
+  float a = shape * dimming * 0.55;
   gl_FragColor = vec4(u_lineColor, a);
 }
 `;
@@ -353,8 +355,8 @@ export function HeroObject() {
     <div
       ref={wrapRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 md:left-auto md:right-0 md:w-[55%]"
-      style={{ zIndex: 0 }}
+      className="pointer-events-none absolute bottom-0 left-0 right-0"
+      style={{ zIndex: 0, top: "100px" }}
     >
       <canvas ref={canvasRef} className="h-full w-full" />
     </div>
