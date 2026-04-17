@@ -45,18 +45,6 @@ export function CommandPalette() {
     close();
   }, [close]);
 
-  const focusChat = useCallback(() => {
-    close();
-    // Focus homepage chat if present; otherwise navigate home.
-    const el = document.getElementById("homepage-chat-input") as HTMLInputElement | null;
-    if (el) {
-      el.focus();
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-    } else {
-      router.push("/#homepage-chat-input");
-    }
-  }, [close, router]);
-
   return (
     <Command.Dialog
       open={open}
@@ -103,7 +91,6 @@ export function CommandPalette() {
               </Item>
               <Item onSelect={copyEmail}>Copy email address</Item>
               <Item onSelect={() => go("/resume")}>Download resume</Item>
-              <Item onSelect={focusChat}>Ask the AI</Item>
               <Item
                 onSelect={() => {
                   window.open(

@@ -28,10 +28,9 @@ claude --model claude-opus-4-7
 Then paste the prompt from `docs/claude-code-prompt.md` (everything from `You are building...` down to `Ship it.`).
 
 Claude Code will pause and ask for:
-- `ANTHROPIC_API_KEY`
 - `RESEND_API_KEY`
 
-…when it reaches those steps. You don't need them upfront.
+…when it reaches that step. You don't need it upfront.
 
 If you don't have Claude Code installed:
 
