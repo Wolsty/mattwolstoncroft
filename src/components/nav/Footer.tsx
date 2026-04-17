@@ -38,7 +38,7 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <EmailCopy email="matt@mattwolstoncroft.com" />
+              <EmailCopy email="wolstoncroft.1@gmail.com" />
             </li>
           </ul>
         </section>

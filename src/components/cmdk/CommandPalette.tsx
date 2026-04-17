@@ -38,7 +38,7 @@ export function CommandPalette() {
 
   const copyEmail = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText("matt@mattwolstoncroft.com");
+      await navigator.clipboard.writeText("wolstoncroft.1@gmail.com");
     } catch {
       /* no-op */
     }

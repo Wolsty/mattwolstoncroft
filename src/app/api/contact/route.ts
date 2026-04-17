@@ -22,9 +22,9 @@ const ContactSchema = z.object({
 
 export async function POST(req: Request) {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_EMAIL_TO ?? "matt@mattwolstoncroft.com";
+  const to = process.env.CONTACT_EMAIL_TO ?? "wolstoncroft.1@gmail.com";
   const from =
-    process.env.CONTACT_EMAIL_FROM ?? "portfolio@mattwolstoncroft.com";
+    process.env.CONTACT_EMAIL_FROM ?? "wolstoncroft.1@gmail.com";
 
   if (!apiKey) {
     return Response.json(
