@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CaseStudyShell } from "@/components/case-study/CaseStudyShell";
+import { Figure } from "@/components/case-study/Figure";
 import { ProgrexionHero } from "@/components/case-study/ProgrexionHero";
 import { PrevNext } from "@/components/case-study/PrevNext";
 import {
@@ -63,6 +64,19 @@ export default function ProgrexionPage() {
               </ul>
             </>
           ) : null}
+          {e.images && e.images.length > 0
+            ? e.images.map((img) => (
+                <Figure
+                  key={img.src}
+                  src={img.src}
+                  alt={img.alt}
+                  caption={img.caption}
+                  width={img.width}
+                  height={img.height}
+                  wide={img.wide}
+                />
+              ))
+            : null}
         </section>
       ))}
 

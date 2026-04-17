@@ -11,6 +11,14 @@ export type ProgrexionEntry = {
   overview: string;
   highlights: Array<{ term?: string; body: string }>;
   outcomes?: string[];
+  images?: Array<{
+    src: string;
+    alt: string;
+    caption?: string;
+    width: number;
+    height: number;
+    wide?: boolean;
+  }>;
 };
 
 export const PROGREXION_UMBRELLA_INTRO = `At Progrexion, I led end-to-end product & UX design across several consumer-facing brands including Lexington Law, CreditRepair.com, and Credit.com. My work focused on transforming complex credit repair processes into intuitive, empowering digital experiences. As lead product designer for the Lexington Law native app (iOS and Android), I crafted a mobile-first experience that put legal-backed credit repair directly into users' hands, combining credit monitoring, dispute management, and educational tools into one seamless interface. I also led the design of CreditRepair GO, a fast and self-service mobile and web product powered by CreditRepair.com to support a growing audience of independent users looking to manage their credit without advisor intervention. Beyond mobile, I drove conversion rate optimization (CRO) efforts across Credit.com, Lexington Law, and CreditRepair.com, refining sign-up flows and redesigning client-facing interfaces to better guide users toward credit confidence and financial progress.`;
@@ -36,6 +44,16 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
       "Higher engagement with personalized features like score tracking and dispute updates",
       "Improved app store ratings due to smoother onboarding and more actionable insights",
     ],
+    images: [
+      {
+        src: "/images/case-studies/progrexion/creditrepair-com-onboarding.avif",
+        alt: "CreditRepair.com mobile onboarding: three intro screens introducing the service, results, and tenure before the sign-up CTA.",
+        caption: "CreditRepair.com: mobile onboarding and value-proposition screens.",
+        width: 1315,
+        height: 879,
+        wide: true,
+      },
+    ],
   },
   {
     slug: "creditrepair-go",
@@ -48,6 +66,15 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
       { term: "Progress Tracker", body: "A dynamic dashboard visualized dispute status, credit score movement, and completion milestones." },
       { term: "Actionable Insights", body: "Tailored tips educated users on steps they could take alongside disputes to build stronger credit faster." },
       { term: "Simple Onboarding", body: "A 3-step account creation and credit pull process let users get started in minutes." },
+    ],
+    images: [
+      {
+        src: "/images/case-studies/progrexion/creditrepair-go-landing.avif",
+        alt: "CreditRepair GO marketing landing page: self-service credit repair, $39.99 pricing, three-benefit breakdown, and free trial sign-up.",
+        caption: "CreditRepair GO: self-service marketing page and pricing.",
+        width: 1440,
+        height: 4080,
+      },
     ],
   },
   {
@@ -71,6 +98,32 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
       "Increased enrollment in identity protection and monitoring services by 18%",
       "Strong qualitative feedback from users who felt \"more in control\" and \"less overwhelmed\"",
     ],
+    images: [
+      {
+        src: "/images/case-studies/progrexion/lexington-law-screens.avif",
+        alt: "Lexington Law iOS: FICO Score overview, TransUnion dispute case details, case overview with 86% removal, and score factor breakdown.",
+        caption: "Lexington Law: FICO Score, dispute case, case overview, and score factors.",
+        width: 1702,
+        height: 845,
+        wide: true,
+      },
+      {
+        src: "/images/case-studies/progrexion/lexington-law-credit-reports.avif",
+        alt: "Lexington Law Credit Reports: TransUnion report list, report picker, account list, and account detail with payment history.",
+        caption: "Credit Reports: bureau selection, account list, and per-account history.",
+        width: 1701,
+        height: 879,
+        wide: true,
+      },
+      {
+        src: "/images/case-studies/progrexion/lexington-law-reportwatch.avif",
+        alt: "Lexington Law utility and rent reporting: confirmation that utilities are being reported to Equifax, payments dashboard, and individual payment detail.",
+        caption: "Utility and rent reporting: a positive tradeline, not just dispute work.",
+        width: 1196,
+        height: 1123,
+        wide: true,
+      },
+    ],
   },
   {
     slug: "credit-com",
@@ -89,6 +142,16 @@ export const PROGREXION_ENTRIES: ProgrexionEntry[] = [
       "Increased activation and retention for free users engaging with their credit score and report card",
       "Successful launch of ExtraCredit with strong early adoption and upsell performance",
       "Improved user satisfaction, reflected in feedback and behavior metrics post-launch",
+    ],
+    images: [
+      {
+        src: "/images/case-studies/progrexion/credit-com-extracredit.avif",
+        alt: "Credit.com and ExtraCredit mobile: Welcome with FICO 802, Track IT score history, Guard IT identity threat level, and Build IT rent/utility reporting.",
+        caption: "Credit.com & ExtraCredit: Track It, Guard It, and Build It premium tiers.",
+        width: 2048,
+        height: 1056,
+        wide: true,
+      },
     ],
   },
 ];

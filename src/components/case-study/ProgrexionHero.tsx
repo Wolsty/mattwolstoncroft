@@ -10,7 +10,7 @@ import { useState } from "react";
  */
 export function ProgrexionHero({ intro }: { intro: string }) {
   const [failed, setFailed] = useState(false);
-  const src = "/images/case-studies/progrexion/progrexion-hero.png";
+  const src = "/images/case-studies/progrexion/progrexion-hero.webp";
 
   if (failed) {
     return (
@@ -38,8 +38,8 @@ export function ProgrexionHero({ intro }: { intro: string }) {
         <Image
           src={src}
           alt="Progrexion: consumer fintech product surfaces for credit repair and monitoring."
-          width={2800}
-          height={1600}
+          width={1800}
+          height={1200}
           priority
           sizes="(max-width: 1120px) 100vw, 1120px"
           className="h-auto w-full"

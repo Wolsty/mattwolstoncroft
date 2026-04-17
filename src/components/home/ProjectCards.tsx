@@ -75,10 +75,10 @@ const CARDS: Card[] = [
     detail:
       "Led product design across Lexington Law iOS/Android, CreditRepair.com, CreditRepair GO, and Credit.com / ExtraCredit: score tracking, self-service dispute engines, Focus Tracks, biometric login, and the consolidated bureau intake that cut three steps to one.",
     image: {
-      src: "/images/case-studies/progrexion/progrexion-hero.png",
-      alt: "Progrexion: consumer fintech product surfaces for credit repair and monitoring.",
-      width: 2400,
-      height: 1500,
+      src: "/images/case-studies/progrexion/lexington-law-screens.avif",
+      alt: "Progrexion: Lexington Law iOS screens showing FICO score, dispute case details, case overview, and score factors.",
+      width: 1702,
+      height: 845,
     },
   },
 ];

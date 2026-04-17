@@ -97,8 +97,9 @@
   /* Case-study / long-form prose vertical rhythm.
      Applies to the body wrapper on case studies and any homepage
      block that opts in. Targets ~1em breathing room between Times
-     body paragraphs while leaving headings/figures to set their
-     own deliberate spacing. */
+     body paragraphs, and larger breathing room around headings so
+     sub-sections (Approach, Decisions, Shipped, etc.) read as
+     distinct beats. */
   .case-body > p {
     margin-top: 1em;
   }
@@ -112,6 +113,16 @@
   .case-body > blockquote {
     margin-top: 1.25em;
     margin-bottom: 1.25em;
+  }
+  .case-body > h3,
+  .case-body > h4 {
+    margin-top: 2em;
+    margin-bottom: 0.25em;
+  }
+  .case-body > h2 + p,
+  .case-body > h3 + p,
+  .case-body > h4 + p {
+    margin-top: 0.25em;
   }
 }
 

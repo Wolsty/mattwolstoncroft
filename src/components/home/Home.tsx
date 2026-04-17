@@ -1,7 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
 import { ProjectCards } from "@/components/home/ProjectCards";
-import { Earlier } from "@/components/home/Earlier";
 
 export function Home() {
   return (
@@ -9,7 +8,6 @@ export function Home() {
       <Hero />
       <About />
       <ProjectCards />
-      <Earlier />
     </main>
   );
 }

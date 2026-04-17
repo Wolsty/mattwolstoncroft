@@ -7,20 +7,26 @@ export function About() {
       <h2 id="home-about" className="meta mb-6">About</h2>
       <div className="max-w-prose space-y-5 font-body" style={{ lineHeight: 1.55 }}>
         <p>
-          I&apos;m a strategic product leader who ships across design and code.
-          I architect AI-native products from 0-to-1, writing the prompts,
-          drawing the flows, and standing next to engineering while it ships.
-          Right now that means LabNotes.ai, where I co-founded an AI tutoring
-          platform for higher-ed STEM, and Cengage, where I lead Content
-          Studio, a generative-AI layer inside the Explore learning
-          platform.
+          Full-stack product builder with 10+ years of experience shaping
+          intuitive, data-driven digital experiences across ed-tech,
+          health-tech, fintech, and enterprise platforms. I pair UX design and
+          product thinking with hands-on AI fluency, using modern models as a
+          core material in the work, from rapid prototyping to shipped
+          production features.
         </p>
         <p>
-          Before that: principal design work at SeekWell / HelloEyes on a
-          mobile-first vision platform, and end-to-end product design across
-          Progrexion&apos;s consumer finance brands. Based in New York.
-          Mountain biking and long days in the mountains are how I keep the
-          product instincts sharp.
+          Most recently at LabNotes.ai, I led design and build for AI-powered
+          classroom tools that give teachers real-time insight into how
+          students learn. Earlier, I scaled mobile health platforms at
+          SeekWell and drove conversion at Credit.com. Across every role
+          I&apos;ve stayed close to users and close to the build, defining
+          vision, aligning cross-functional teams, and delivering solutions
+          that drive retention, trust, and growth.
+        </p>
+        <p>
+          Outside of work you&apos;ll find me in the mountains, skiing, riding
+          my bike, or chasing music under the open sky. I&apos;m happiest off
+          the grid, chasing climbs, trails, and the perfect playlist.
         </p>
       </div>
     </section>
