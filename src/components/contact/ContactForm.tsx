@@ -102,7 +102,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={state.kind === "submitting"}
-          className="link-underline font-body"
+          className="link-underline font-body disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {state.kind === "submitting" ? "Sending…" : "Send →"}
         </button>

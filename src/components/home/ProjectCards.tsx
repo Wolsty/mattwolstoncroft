@@ -148,7 +148,7 @@ function Card(c: Card) {
         {c.tension}
       </p>
       <p
-        className="mt-3 font-body opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100"
+        className="mt-3 font-body"
         style={{ color: "var(--fg-muted)" }}
       >
         {c.detail}

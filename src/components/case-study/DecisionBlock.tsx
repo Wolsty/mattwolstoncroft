@@ -10,7 +10,7 @@ export function DecisionBlock({ heading, children }: DecisionBlockProps) {
   return (
     <section className="my-[var(--block-gap)] rule-top pt-6">
       <h3 className="mb-4">{heading}</h3>
-      <div className="prose-body max-w-prose space-y-4 font-body">
+      <div className="max-w-prose space-y-4 font-body">
         {children}
       </div>
     </section>

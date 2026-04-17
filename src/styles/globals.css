@@ -93,16 +93,6 @@
 
   .rule-top { border-top: 1px solid var(--rule); }
   .rule-bottom { border-bottom: 1px solid var(--rule); }
-
-  .fade-in-on-scroll {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 200ms ease-out, transform 200ms ease-out;
-  }
-  .fade-in-on-scroll.is-visible {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -114,5 +104,4 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .fade-in-on-scroll { opacity: 1; transform: none; }
 }

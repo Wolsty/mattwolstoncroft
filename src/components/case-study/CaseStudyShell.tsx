@@ -68,7 +68,7 @@ export function CaseStudyShell({
           <section className="my-[var(--block-gap)]">{hero}</section>
 
           {/* Body */}
-          <div className="case-body max-w-prose font-body" style={{ lineHeight: 1.55 }}>
+          <div className="max-w-prose font-body" style={{ lineHeight: 1.55 }}>
             {children}
           </div>
         </article>
@@ -99,13 +99,11 @@ function MiniHeader({
       }}
     >
       <div className="mx-auto flex h-full w-full max-w-content items-center justify-between px-6 md:px-10">
-        <Link href={backHref} className="link-underline meta" aria-label={`${backLabel} to home`}>
+        <Link href={backHref} className="link-underline meta" aria-label={`Back to ${backLabel}`}>
           ← {backLabel}
         </Link>
-        <div className="meta flex items-center gap-3">
-          <span className="hidden sm:inline" style={{ color: "var(--fg)" }}>
-            {title}
-          </span>
+        <div className="meta hidden sm:flex items-center gap-3">
+          <span style={{ color: "var(--fg)" }}>{title}</span>
           {status ? <span>· {status}</span> : null}
         </div>
       </div>
