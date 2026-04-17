@@ -3,7 +3,6 @@ import { Figure } from "@/components/case-study/Figure";
 import { Metadata } from "@/components/case-study/Metadata";
 import { DecisionBlock } from "@/components/case-study/DecisionBlock";
 import { PrevNext } from "@/components/case-study/PrevNext";
-import { LiveArtifact } from "@/components/live-artifact/LiveArtifact";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -11,7 +10,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Metadata,
     DecisionBlock,
     PrevNext,
-    LiveArtifact,
     ...components,
   };
 }

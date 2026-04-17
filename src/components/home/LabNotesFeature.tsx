@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LiveArtifact } from "@/components/live-artifact/LiveArtifact";
+import { FigureWithFallback } from "@/components/case-study/FigureWithFallback";
 
 export function LabNotesFeature() {
   return (
@@ -35,7 +35,14 @@ export function LabNotesFeature() {
           </p>
         </div>
         <div>
-          <LiveArtifact />
+          <FigureWithFallback
+            src="/images/case-studies/labnotes/labnotes-product-mock.png"
+            fallbackSrc="/images/case-studies/labnotes/ai-insights-integrity.png"
+            alt="LabNotes product overview — AI tutor and faculty insights in a live chemistry course."
+            width={2800}
+            height={1600}
+            wide
+          />
         </div>
       </div>
     </section>

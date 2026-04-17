@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CaseStudyShell } from "@/components/case-study/CaseStudyShell";
-import { LiveArtifact } from "@/components/live-artifact/LiveArtifact";
 import { Figure } from "@/components/case-study/Figure";
+import { FigureWithFallback } from "@/components/case-study/FigureWithFallback";
 import { DecisionBlock } from "@/components/case-study/DecisionBlock";
 import { PrevNext } from "@/components/case-study/PrevNext";
 
@@ -25,7 +25,18 @@ export default function LabNotesPage() {
           "Shipped",
         ],
       }}
-      hero={<LiveArtifact />}
+      hero={
+        <FigureWithFallback
+          src="/images/case-studies/labnotes/labnotes-product-mock.png"
+          fallbackSrc="/images/case-studies/labnotes/ai-insights-integrity.png"
+          alt="LabNotes product overview — the AI-tutor and faculty-insights platform in use on a live chemistry course."
+          caption="LabNotes — the platform at a glance."
+          width={2800}
+          height={1600}
+          wide
+          priority
+        />
+      }
     >
       <h2 className="font-display mt-0">Context</h2>
       <p>

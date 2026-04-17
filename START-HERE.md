@@ -10,7 +10,8 @@
   - `ai-insights-struggles.png`
   - `assignments.png`
   - `ai-insights-overview.png`
-  - `tutor-interaction.png` (student view — optional; the LiveArtifact component covers this if missing)
+  - `labnotes-product-mock.png` (hero — product overview; falls back to `ai-insights-integrity.png` if missing)
+  - `tutor-interaction.png` (student view — optional)
 - **Cengage screenshots** → `public/images/case-studies/cengage/`
   - `adapt-content.png` (hero — side-by-side)
   - `select-content-populated.png`
