@@ -91,18 +91,6 @@ export function CommandPalette() {
               </Item>
               <Item onSelect={copyEmail}>Copy email address</Item>
               <Item onSelect={() => go("/resume")}>Download resume</Item>
-              <Item
-                onSelect={() => {
-                  window.open(
-                    "https://github.com/mattwolstoncroft/mattwolstoncroft.com",
-                    "_blank",
-                    "noopener,noreferrer",
-                  );
-                  close();
-                }}
-              >
-                View source
-              </Item>
             </Command.Group>
           </Command.List>
         </Command>

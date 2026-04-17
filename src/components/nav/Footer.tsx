@@ -33,11 +33,6 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a className="link-underline" href="https://github.com/mattwolstoncroft" target="_blank" rel="noopener noreferrer">
-                GitHub
-              </a>
-            </li>
-            <li>
               <a className="link-underline" href="https://www.linkedin.com/in/matthewwolstoncroft/" target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </a>
