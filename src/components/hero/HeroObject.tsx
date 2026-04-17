@@ -143,7 +143,7 @@ void main(){
     rotateX(time * 0.7 + (mouse.y - 0.5) * mouseInfluence * 0.6) *
     rotateZ(time * 0.1);
 
-  float scale = 0.62;
+  float scale = 0.55;
   // Inverted blur: lines near cursor feather out; lines far stay crisp.
   float blur = mix(0.0001, 0.05, mouseInfluence);
   float thickness = mix(0.002, 0.003, mouseInfluence);
