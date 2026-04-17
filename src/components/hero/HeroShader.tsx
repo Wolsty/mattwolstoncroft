@@ -4,23 +4,27 @@ import { useEffect, useRef } from "react";
 import { useTheme } from "@/lib/theme";
 
 /**
- * HeroShader
+ * HeroShader — flowing liquid / silk-gradient
  *
- * Slowly-drifting topographic contour lines rendered as a full-bleed WebGL
- * canvas behind the hero type. Near-monochrome palette with an occasional
- * terminal-green accent line. Reads as a moving topo map: clean hairlines
- * at regular elevation intervals that breathe and flow as the underlying
- * noise field drifts.
+ * Adapted from the paper-design/shaders-react MeshGradient technique: five
+ * color "poles" drift across the viewport on sin/cos orbits; each fragment
+ * gets an inverse-distance weighted blend of all poles; the uv is first
+ * warped by a two-iteration sin/cos distortion and then swirled radially
+ * so the pole boundaries read as flowing edges rather than hard gradients.
  *
- * - fBM noise field drifted by time; thresholded with fract() into iso-lines
- * - fwidth()-based anti-aliasing keeps lines at roughly one device pixel
- * - Every 6th line picks up a faint green tint
- * - 30 fps cap; DPR clamped (1.5 desktop / 1.25 mobile)
- * - IntersectionObserver pauses when the hero is offscreen
- * - visibilitychange pauses when the tab is hidden
- * - prefers-reduced-motion renders a single static frame
- * - Dark and light palettes both rendered; only fallback is if WebGL / OES
- *   derivatives are unavailable (returns null and shows solid --bg)
+ * Palette is the only thing that changes from that reference:
+ *  - four low-saturation dark poles (near-black, deep slate, dark navy,
+ *    oil-tinted slate)
+ *  - one accent pole in terminal green (#22C55E) with low alpha, so it
+ *    contributes a subtle highlight rather than a color pillar.
+ *
+ * The brightest pixel the shader can produce is the green-pole RGB scaled
+ * by its weight (alpha 0.4), which stays well below the hero text's
+ * foreground color.
+ *
+ * Dark and light palettes both render. Light palette uses warm off-white
+ * with soft charcoal flows. If WebGL is unavailable, returns null and the
+ * solid --bg shows through.
  */
 
 const VERT = `
@@ -30,91 +34,83 @@ void main() {
 }
 `;
 
-// NOTE: requires OES_standard_derivatives extension (WebGL1), which is
-// ubiquitous on modern browsers. We enable it and fall back if the
-// extension isn't available at runtime.
 const FRAG = `
-#extension GL_OES_standard_derivatives : enable
 precision highp float;
 
 uniform vec2  u_resolution;
 uniform float u_time;
+uniform vec4  u_colors[5];
+uniform float u_distortion;
+uniform float u_swirl;
 
-// Palette — passed from JS so we can switch dark/light without recompiling
-uniform vec3 u_bg;        // background tint
-uniform vec3 u_line;      // base contour color
-uniform vec3 u_accent;    // accent color (green on dark, something quieter on light)
-uniform float u_lineAlpha;   // strength of non-accent lines
-uniform float u_accentAlpha; // strength of accent lines
-
-float hash(vec2 p) {
-  p = fract(p * vec2(123.34, 456.21));
-  p += dot(p, p + 45.32);
-  return fract(p.x * p.y);
+vec2 rot(vec2 p, float a) {
+  float c = cos(a); float s = sin(a);
+  return mat2(c, -s, s, c) * p;
 }
 
-float noise(vec2 p) {
-  vec2 i = floor(p);
-  vec2 f = fract(p);
-  float a = hash(i);
-  float b = hash(i + vec2(1.0, 0.0));
-  float c = hash(i + vec2(0.0, 1.0));
-  float d = hash(i + vec2(1.0, 1.0));
-  vec2 u = f * f * (3.0 - 2.0 * f);
-  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
-}
-
-// 5-octave fBM
-float fbm(vec2 p) {
-  float v = 0.0;
-  float amp = 0.5;
-  for (int i = 0; i < 5; i++) {
-    v += amp * noise(p);
-    p = p * 2.03 + vec2(0.17, -0.11);
-    amp *= 0.5;
-  }
-  return v;
+vec2 getPosition(int i, float t) {
+  float fi = float(i);
+  float a = fi * 0.37;
+  float b = 0.6 + mod(fi, 3.0) * 0.3;
+  float c = 0.8 + mod(fi + 1.0, 4.0) * 0.25;
+  float x = sin(t * b + a);
+  float y = cos(t * c + a * 1.5);
+  return 0.5 + 0.5 * vec2(x, y);
 }
 
 void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-  vec2 p = uv;
-  p.x *= u_resolution.x / u_resolution.y;
 
-  // Slow drift: full cycle ~30s. Two-vector warp adds subtle parallax.
-  float t = u_time * 0.035;
-  vec2 q = p * 1.25;
-  vec2 warp = vec2(
-    fbm(q + vec2(t * 0.22, -t * 0.17)),
-    fbm(q + vec2(-t * 0.18, t * 0.25) + 5.2)
-  );
-  float n = fbm(q + warp * 0.45);
+  // Light aspect compensation so the flowing shapes don't read as flat bars
+  // on ultra-wide viewports. Center around 0.5 so corrections are symmetric.
+  float aspect = u_resolution.x / u_resolution.y;
+  vec2 shape_uv = uv;
+  shape_uv.x = 0.5 + (uv.x - 0.5) * (aspect > 1.0 ? 1.0 : 1.0 / aspect);
+  shape_uv.y = 0.5 + (uv.y - 0.5) * (aspect > 1.0 ? aspect : 1.0);
 
-  // Iso-contours: 12 bands across the field.
-  const float BANDS = 12.0;
-  float v = n * BANDS;
-  float d = abs(fract(v) - 0.5);
+  // Slow time. Coefficient 0.28 lands one full visual cycle in ~20s, well
+  // inside the 15–25s target. The +41.5 offset just skips past a dead-looking
+  // initial frame so the shader isn't boring on first paint.
+  float t = 0.28 * u_time + 41.5;
 
-  // fwidth() for resolution-independent line width (~1.0 device pixel).
-  // Using fwidth on the unfracted v makes the line width scale naturally
-  // with elevation gradient, so flat regions get softer lines and steep
-  // regions get crisper ones — reads like an actual topo print.
-  float aa = fwidth(v) * 0.75;
-  float line = 1.0 - smoothstep(0.0, aa, d);
+  // Two-iteration sin/cos warp. Biased toward the center via (1 - radius).
+  float radius = smoothstep(0.0, 1.0, length(shape_uv - 0.5));
+  float center = 1.0 - radius;
 
-  // Every 6th band picks up the accent tint (index mod 6 == 0).
-  float bandIdx = floor(v);
-  float accent = step(5.5, mod(bandIdx, 6.0));
+  for (float i = 1.0; i <= 2.0; i += 1.0) {
+    shape_uv.x += u_distortion * center / i
+      * sin(t + i * 0.4 * smoothstep(0.0, 1.0, shape_uv.y))
+      * cos(0.2 * t + i * 2.4 * smoothstep(0.0, 1.0, shape_uv.y));
+    shape_uv.y += u_distortion * center / i
+      * cos(t + i * 2.0 * smoothstep(0.0, 1.0, shape_uv.x));
+  }
 
-  // Compose: base bg, add the non-accent and accent contributions.
-  vec3 col = u_bg;
-  col = mix(col, u_line,   line * u_lineAlpha   * (1.0 - accent));
-  col = mix(col, u_accent, line * u_accentAlpha * accent);
+  // Radial swirl pinned to the warped uv so it reads as "fluid rotating past".
+  vec2 uvR = shape_uv - 0.5;
+  float angle = 3.0 * u_swirl * radius;
+  uvR = rot(uvR, -angle);
+  uvR += 0.5;
 
-  // Gentle radial vignette so the corners don't fight the type.
+  // Inverse-distance-weighted blend across the five poles.
+  vec3 col = vec3(0.0);
+  float totalWeight = 0.0;
+
+  for (int i = 0; i < 5; i++) {
+    vec2 pos = getPosition(i, t);
+    float a = u_colors[i].a;
+    vec3 rgb = u_colors[i].rgb * a;
+    float dist = length(uvR - pos);
+    dist = pow(dist, 3.5);
+    float w = 1.0 / (dist + 1e-3);
+    col += rgb * w;
+    totalWeight += a * w;
+  }
+  col /= max(totalWeight, 1e-6);
+
+  // Gentle vignette so corners stay quieter than the type column.
   vec2 vv = uv - 0.5;
-  float vig = smoothstep(1.05, 0.45, length(vv));
-  col = mix(u_bg, col, mix(0.80, 1.0, vig));
+  float vig = smoothstep(1.1, 0.45, length(vv));
+  col *= mix(0.82, 1.0, vig);
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -145,37 +141,46 @@ function link(gl: WebGLRenderingContext, vs: WebGLShader, fs: WebGLShader) {
   return p;
 }
 
+type Pole = { r: number; g: number; b: number; a: number };
 type Palette = {
-  bg: [number, number, number];
-  line: [number, number, number];
-  accent: [number, number, number];
-  lineAlpha: number;
-  accentAlpha: number;
+  poles: [Pole, Pole, Pole, Pole, Pole];
+  distortion: number;
+  swirl: number;
   canvasOpacity: number;
 };
 
+/**
+ * Dark palette. Four low-sat dark poles + one quiet terminal-green accent.
+ * All poles are tested to produce a lower max brightness than the hero text.
+ */
 const DARK_PALETTE: Palette = {
-  // Near-black base matching --bg (#0E0E0E -> ~0.055)
-  bg: [0.055, 0.055, 0.058],
-  // Muted slate line, ~#434A52
-  line: [0.262, 0.291, 0.322],
-  // Terminal green #22C55E, slightly dimmed so it doesn't burn
-  accent: [0.133, 0.67, 0.34],
-  lineAlpha: 0.85,
-  accentAlpha: 0.9,
-  canvasOpacity: 0.8,
+  poles: [
+    { r: 0.070, g: 0.085, b: 0.110, a: 1.0 },   // #12161C  near-black + hint of blue
+    { r: 0.114, g: 0.145, b: 0.188, a: 1.0 },   // #1D2530  deep slate-blue
+    { r: 0.047, g: 0.086, b: 0.125, a: 1.0 },   // #0C1620  dark navy
+    { r: 0.090, g: 0.122, b: 0.098, a: 1.0 },   // #171F19  oil-tinted slate
+    { r: 0.133, g: 0.773, b: 0.369, a: 0.38 },  // #22C55E  terminal green streak, low weight
+  ],
+  distortion: 0.85,
+  swirl: 0.55,
+  canvasOpacity: 0.85,
 };
 
+/**
+ * Light palette. Soft charcoal flows on warm off-white. Low-alpha accent
+ * is an ink green so it doesn't shout on a bright base.
+ */
 const LIGHT_PALETTE: Palette = {
-  // Warm off-white matching --bg (#FAFAF7 -> ~0.98)
-  bg: [0.98, 0.98, 0.97],
-  // Charcoal line, ~#3A3A3C
-  line: [0.227, 0.227, 0.235],
-  // Quiet ink green so the accent still reads without shouting on light bg
-  accent: [0.08, 0.42, 0.24],
-  lineAlpha: 0.35,
-  accentAlpha: 0.5,
-  canvasOpacity: 0.7,
+  poles: [
+    { r: 0.980, g: 0.980, b: 0.968, a: 1.0 },   // base warm off-white
+    { r: 0.860, g: 0.855, b: 0.840, a: 1.0 },   // paper grey
+    { r: 0.680, g: 0.680, b: 0.680, a: 1.0 },   // soft charcoal
+    { r: 0.760, g: 0.770, b: 0.760, a: 1.0 },   // cool grey
+    { r: 0.133, g: 0.400, b: 0.230, a: 0.25 },  // quiet ink green
+  ],
+  distortion: 0.75,
+  swirl: 0.45,
+  canvasOpacity: 0.80,
 };
 
 export function HeroShader() {
@@ -195,10 +200,6 @@ export function HeroShader() {
       (canvas.getContext("experimental-webgl") as WebGLRenderingContext | null);
     if (!gl) return;
 
-    // Required for fwidth() in WebGL1.
-    const derivExt = gl.getExtension("OES_standard_derivatives");
-    if (!derivExt) return;
-
     const vs = compile(gl, gl.VERTEX_SHADER, VERT);
     const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
     if (!vs || !fs) return;
@@ -208,11 +209,8 @@ export function HeroShader() {
     const positionLoc = gl.getAttribLocation(program, "a_position");
     const uResolution = gl.getUniformLocation(program, "u_resolution");
     const uTime = gl.getUniformLocation(program, "u_time");
-    const uBg = gl.getUniformLocation(program, "u_bg");
-    const uLine = gl.getUniformLocation(program, "u_line");
-    const uAccent = gl.getUniformLocation(program, "u_accent");
-    const uLineAlpha = gl.getUniformLocation(program, "u_lineAlpha");
-    const uAccentAlpha = gl.getUniformLocation(program, "u_accentAlpha");
+    const uDistortion = gl.getUniformLocation(program, "u_distortion");
+    const uSwirl = gl.getUniformLocation(program, "u_swirl");
 
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -226,12 +224,16 @@ export function HeroShader() {
     gl.enableVertexAttribArray(positionLoc);
     gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
 
-    // Palette uniforms — set once per mount (theme changes remount via deps).
-    if (uBg) gl.uniform3f(uBg, palette.bg[0], palette.bg[1], palette.bg[2]);
-    if (uLine) gl.uniform3f(uLine, palette.line[0], palette.line[1], palette.line[2]);
-    if (uAccent) gl.uniform3f(uAccent, palette.accent[0], palette.accent[1], palette.accent[2]);
-    if (uLineAlpha) gl.uniform1f(uLineAlpha, palette.lineAlpha);
-    if (uAccentAlpha) gl.uniform1f(uAccentAlpha, palette.accentAlpha);
+    // Upload color poles. Individual uniform per array slot is the most
+    // portable way to set a uniform array in WebGL1.
+    for (let i = 0; i < palette.poles.length; i++) {
+      const loc = gl.getUniformLocation(program, `u_colors[${i}]`);
+      if (!loc) continue;
+      const p = palette.poles[i];
+      gl.uniform4f(loc, p.r, p.g, p.b, p.a);
+    }
+    if (uDistortion) gl.uniform1f(uDistortion, palette.distortion);
+    if (uSwirl) gl.uniform1f(uSwirl, palette.swirl);
 
     canvas.style.opacity = String(palette.canvasOpacity);
 
@@ -239,10 +241,12 @@ export function HeroShader() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // DPR cap. Narrow viewports drop to 1.0 effective, per the "half-res
+    // canvas with CSS upscale is fine on mobile" direction.
     const getDpr = () => {
       const raw = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
       const isNarrow = window.innerWidth < 640;
-      return Math.min(raw, isNarrow ? 1.25 : 1.5);
+      return Math.min(raw, isNarrow ? 1.0 : 1.5);
     };
 
     const resize = () => {
@@ -266,7 +270,7 @@ export function HeroShader() {
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     };
 
-    // Render at least one frame so the hero isn't blank on load.
+    // Render a single "settled" frame so the hero isn't blank on load.
     draw(0);
 
     if (reducedMotion) {
