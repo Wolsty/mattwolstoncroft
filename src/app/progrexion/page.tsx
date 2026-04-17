@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CaseStudyShell } from "@/components/case-study/CaseStudyShell";
+import { ProgrexionHero } from "@/components/case-study/ProgrexionHero";
 import { PrevNext } from "@/components/case-study/PrevNext";
 import {
   PROGREXION_ENTRIES,
@@ -7,48 +8,28 @@ import {
 } from "@/content/progrexion";
 
 export const metadata: Metadata = {
-  title: "Progrexion — Archive",
+  title: "Progrexion",
   description:
     "Four Progrexion-era projects condensed into a single umbrella: Lexington Law iOS & Android, CreditRepair.com, CreditRepair GO, and Credit.com / ExtraCredit.",
 };
 
-export default function ProgrexionArchivePage() {
+export default function ProgrexionPage() {
   return (
     <CaseStudyShell
       meta={{
         title: "Progrexion",
-        status: "Archive",
+        status: "Shipped",
         metadata: [
-          "2017 — 2022",
-          "Lead Product Designer",
-          "Lexington Law · CreditRepair.com · Credit.com",
-          "iOS · Android · Web",
+          "2018 — 2021",
+          "Senior Product Designer",
+          "Fintech / Credit",
+          "4 product surfaces",
+          "Shipped",
         ],
       }}
-      backHref="/archive"
-      backLabel="Archive"
-      hero={
-        <div
-          className="rounded p-8 md:p-12"
-          style={{ border: "1px solid var(--rule)" }}
-        >
-          <p className="meta mb-4">Progrexion — Four projects</p>
-          <p
-            className="max-w-prose font-body"
-            style={{ color: "var(--fg-muted)", lineHeight: 1.55 }}
-          >
-            {PROGREXION_UMBRELLA_INTRO}
-          </p>
-        </div>
-      }
+      hero={<ProgrexionHero intro={PROGREXION_UMBRELLA_INTRO} />}
     >
-      <p>
-        Four sub-entries below. Condensed to the framing, the design
-        decisions that carried weight, and the outcomes that landed — each
-        draws on the original modal copy from the earlier site.
-      </p>
-
-      {PROGREXION_ENTRIES.map((e, i) => (
+      {PROGREXION_ENTRIES.map((e) => (
         <section
           key={e.slug}
           className="mt-[var(--block-gap)] rule-top pt-6"
@@ -86,7 +67,7 @@ export default function ProgrexionArchivePage() {
       ))}
 
       <PrevNext
-        prev={{ href: "/archive", label: "Archive" }}
+        prev={{ href: "/seekwell", label: "SeekWell / HelloEyes" }}
         next={{ href: "/", label: "Home" }}
       />
     </CaseStudyShell>

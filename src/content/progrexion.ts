@@ -1,7 +1,7 @@
 /**
- * Progrexion archive — four condensed sub-entries, pulled from
+ * Progrexion — four condensed sub-entries, pulled from
  * /docs/case-studies-content.md sections 5-8. Rendered inline on the
- * /archive/progrexion umbrella page (no separate sub-routes).
+ * /progrexion umbrella page (no separate sub-routes).
  */
 
 export type ProgrexionEntry = {

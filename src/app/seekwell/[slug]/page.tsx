@@ -70,7 +70,7 @@ export default async function SeekwellSubPage(
         next={
           next
             ? { href: `/seekwell/${next.slug}`, label: next.title }
-            : { href: "/archive", label: "Archive" }
+            : { href: "/progrexion", label: "Progrexion" }
         }
       />
     </CaseStudyShell>

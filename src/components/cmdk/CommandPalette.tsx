@@ -82,7 +82,7 @@ export function CommandPalette() {
               <Item onSelect={() => go("/labnotes")}>Jump to LabNotes</Item>
               <Item onSelect={() => go("/cengage")}>Jump to Cengage</Item>
               <Item onSelect={() => go("/seekwell")}>Jump to SeekWell</Item>
-              <Item onSelect={() => go("/archive")}>Jump to Archive</Item>
+              <Item onSelect={() => go("/progrexion")}>Jump to Progrexion</Item>
             </Command.Group>
 
             <Command.Group heading="Site">

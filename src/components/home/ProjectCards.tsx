@@ -67,7 +67,7 @@ const CARDS: Card[] = [
     },
   },
   {
-    href: "/archive/progrexion",
+    href: "/progrexion",
     title: "Progrexion",
     meta: "2018 — 2021 · SENIOR PRODUCT DESIGNER · FINTECH / CREDIT · 4 PRODUCT SURFACES · SHIPPED",
     tension:
