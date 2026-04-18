@@ -15,9 +15,14 @@ export function About() {
           production features.
         </p>
         <p>
-          Most recently at LabNotes.ai, I led design and build for AI-powered
-          classroom tools that give teachers real-time insight into how
-          students learn. Earlier, I scaled mobile health platforms at
+          I co-founded LabNotes.ai, an AI tutoring and faculty-insights
+          platform for higher-ed STEM. Students work through problems with a
+          tutor that escalates help in graduated steps instead of handing
+          over answers, and faculty get a live read on how their class is
+          actually learning and which students need outreach. In parallel, I
+          lead UX at Cengage for Content Studio, where generative AI is
+          becoming the core material instructors use to author and adapt
+          their courses. Earlier, I scaled mobile health platforms at
           SeekWell and drove conversion at Credit.com. Across every role
           I&apos;ve stayed close to users and close to the build, defining
           vision, aligning cross-functional teams, and delivering solutions
