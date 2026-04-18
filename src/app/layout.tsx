@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { displayFont } from "@/lib/fonts";
 import { ThemeProvider } from "@/lib/theme";
 import { CommandPalette } from "@/components/cmdk/CommandPalette";
+import { ContactModal } from "@/components/contact/ContactModal";
 import { Footer } from "@/components/nav/Footer";
 
 export const metadata: Metadata = {
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <Footer />
           <CommandPalette />
+          <ContactModal />
         </ThemeProvider>
         <Analytics />
       </body>

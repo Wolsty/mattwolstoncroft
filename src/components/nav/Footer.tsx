@@ -1,13 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import { useTheme } from "@/lib/theme";
+
+const EMAIL = "wolstoncroft.1@gmail.com";
 
 export function Footer() {
   const { theme, toggle } = useTheme();
 
   const openCmdK = () => {
     window.dispatchEvent(new Event("cmdk:open"));
+  };
+
+  const openContact = () => {
+    window.dispatchEvent(new Event("contact:open"));
   };
 
   return (
@@ -20,7 +25,22 @@ export function Footer() {
         <section aria-labelledby="footer-contact">
           <h2 id="footer-contact" className="meta mb-4">Contact</h2>
           <p className="font-body">
-            <EmailCopy email="wolstoncroft.1@gmail.com" />
+            <button
+              type="button"
+              onClick={openContact}
+              className="link-underline"
+              style={{
+                background: "transparent",
+                border: 0,
+                padding: 0,
+                cursor: "pointer",
+                font: "inherit",
+                color: "inherit",
+                textAlign: "left",
+              }}
+            >
+              {EMAIL}
+            </button>
           </p>
         </section>
 
@@ -71,24 +91,3 @@ export function Footer() {
   );
 }
 
-function EmailCopy({ email }: { email: string }) {
-  const onClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    try {
-      await navigator.clipboard.writeText(email);
-      const btn = e.currentTarget;
-      const prev = btn.textContent;
-      btn.textContent = "Copied";
-      setTimeout(() => {
-        btn.textContent = prev;
-      }, 1200);
-    } catch {
-      window.location.href = `mailto:${email}`;
-    }
-  };
-  return (
-    <a href={`mailto:${email}`} onClick={onClick} className="link-underline">
-      {email}
-    </a>
-  );
-}
