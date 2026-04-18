@@ -15,18 +15,18 @@ export function About() {
           production features.
         </p>
         <p>
-          I co-founded LabNotes.ai, an AI tutoring and faculty-insights
-          platform for higher-ed STEM. Students work through problems with a
-          tutor that escalates help in graduated steps instead of handing
-          over answers, and faculty get a live read on how their class is
-          actually learning and which students need outreach. In parallel, I
-          lead UX at Cengage for Content Studio, where generative AI is
-          becoming the core material instructors use to author and adapt
-          their courses. Earlier, I scaled mobile health platforms at
-          SeekWell and drove conversion at Credit.com. Across every role
-          I&apos;ve stayed close to users and close to the build, defining
-          vision, aligning cross-functional teams, and delivering solutions
-          that drive retention, trust, and growth.
+          I co-founded LabNotes.ai, an AI tutoring platform for higher-ed
+          STEM. The tutor guides students in graduated steps instead of
+          handing over answers, and faculty see how their class is actually
+          learning. In parallel, I lead UX at Cengage for Content Studio,
+          where generative AI is becoming the core material instructors use
+          to author and adapt their courses. Earlier, I led design at
+          SeekWell, the first-to-market AI-powered platform for getting new
+          vision prescriptions approved by board-certified ophthalmologists,
+          and drove conversion at Credit.com. Across every role I&apos;ve
+          stayed close to users and close to the build, defining vision,
+          aligning cross-functional teams, and delivering solutions that
+          drive retention, trust, and growth.
         </p>
         <p>
           Outside of work you&apos;ll find me in the mountains, skiing, riding
