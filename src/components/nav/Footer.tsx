@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { ContactForm } from "@/components/contact/ContactForm";
 import { useTheme } from "@/lib/theme";
 
 export function Footer() {
@@ -20,7 +19,9 @@ export function Footer() {
         {/* Contact */}
         <section aria-labelledby="footer-contact">
           <h2 id="footer-contact" className="meta mb-4">Contact</h2>
-          <ContactForm />
+          <p className="font-body">
+            <EmailCopy email="wolstoncroft.1@gmail.com" />
+          </p>
         </section>
 
         {/* Links */}
@@ -36,9 +37,6 @@ export function Footer() {
               <a className="link-underline" href="https://www.linkedin.com/in/matthewwolstoncroft/" target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </a>
-            </li>
-            <li>
-              <EmailCopy email="wolstoncroft.1@gmail.com" />
             </li>
           </ul>
         </section>
