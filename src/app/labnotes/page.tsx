@@ -27,10 +27,10 @@ export default function LabNotesPage() {
       }}
       hero={
         <FigureWithFallback
-          src="/images/case-studies/labnotes/labnotes-product-mock.png"
+          src="/images/case-studies/labnotes/course-dashboard.png"
           fallbackSrc="/images/case-studies/labnotes/ai-insights-integrity.png"
-          alt="LabNotes.ai product overview: the AI-tutor and faculty-insights platform in use on a live chemistry course."
-          caption="LabNotes.ai: the platform at a glance."
+          alt="LabNotes.ai course dashboard: faculty view of a live chemistry course, with class-wide signal and per-student activity."
+          caption="LabNotes.ai: the faculty course dashboard."
           width={2800}
           height={1600}
           wide
@@ -145,6 +145,73 @@ export default function LabNotesPage() {
         src="/images/case-studies/labnotes/ai-insights-struggles.png"
         alt="LabNotes.ai AI Insights, Struggles tab ranking problems by struggle score, time-to-solve, and completion rate."
         caption="AI Insights, Struggles: the hardest problems by struggle score, time-to-solve, and completion rate."
+        width={2800}
+        height={1600}
+        wide
+      />
+
+      <h2 className="font-display mt-[var(--block-gap)]">The student surface</h2>
+      <p>
+        The three trust boundaries only become real inside the student UI.
+        Graduated assistance, behavior-based escalation, and the transparent
+        faculty layer all have to feel like a tutor at 11pm, not like
+        architecture. A walk through what the student actually sees.
+      </p>
+
+      <p>
+        The workspace is deliberately quiet. One problem at a time, with the
+        student&apos;s own working and the tutor side by side. The frame is
+        &ldquo;you are working on chemistry,&rdquo; not &ldquo;you are using
+        an AI product.&rdquo;
+      </p>
+      <Figure
+        src="/images/case-studies/labnotes/student-problem-view.png"
+        alt="LabNotes.ai student problem view: a single problem with the student's working area on one side and the tutor panel on the other."
+        caption="The student problem view: one problem at a time, student workspace on the left, tutor on the right."
+        width={2800}
+        height={1600}
+        wide
+      />
+
+      <p>
+        The tutor is a conversation, not a command line. It begins with the
+        student&apos;s own reading of the question, not with working. That
+        single move, asking first, sets the tone for every turn that follows.
+      </p>
+      <Figure
+        src="/images/case-studies/labnotes/student-tutor-chat.png"
+        alt="LabNotes.ai student tutor chat: the tutor opens by asking the student to articulate their understanding of the problem before offering any working."
+        caption="Tutor chat: the tutor opens with the student&rsquo;s own understanding of the question, not with working."
+        width={2800}
+        height={1600}
+        wide
+      />
+
+      <p>
+        When the student asks for more help, the response is tagged with the
+        kind of support it is offering: a probe, a decomposition, a concept
+        refresher. The student can see how much scaffolding they have used.
+        The ladder is visible, which is itself a pedagogical move.
+      </p>
+      <Figure
+        src="/images/case-studies/labnotes/student-hint-escalation.png"
+        alt="LabNotes.ai hint escalation: the tutor offers a graduated hint labeled by its type, with earlier scaffolding preserved in the thread."
+        caption="Hint escalation: each level of help is labeled, so the student sees how much scaffolding they have used."
+        width={2800}
+        height={1600}
+        wide
+      />
+
+      <p>
+        Post-submission feedback mirrors the faculty view in miniature: what
+        landed, where reasoning drifted, and a pointer back to the course
+        material. This is the seed of the student-facing reflection surface
+        referenced in the Reflection section below.
+      </p>
+      <Figure
+        src="/images/case-studies/labnotes/student-feedback.png"
+        alt="LabNotes.ai student feedback: a per-problem breakdown of what the student got right, where reasoning drifted, and a pointer back to the relevant course material."
+        caption="Student feedback: a per-problem breakdown that points the student back to the material, not just the answer."
         width={2800}
         height={1600}
         wide
