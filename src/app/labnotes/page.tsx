@@ -40,28 +40,32 @@ export default function LabNotesPage() {
     >
       <h2 className="font-display mt-0">Context</h2>
       <p>
-        LabNotes.ai is an AI-powered tutoring and homework platform for higher-ed
-        STEM. I co-founded it with a chemistry professor who has run a course
-        at a large public university for the better part of a decade: big
-        sections, hundreds of students per semester, and a growing gap between
-        the support those students need and what any human faculty member can
-        deliver.
+        LabNotes.ai is an AI-powered tutoring and homework platform for
+        higher-ed STEM. I co-founded it with Dr. Rebecca Coates, an associate
+        professor of chemistry with a PhD in physical chemistry from the
+        University of Utah and fourteen years of classroom teaching behind
+        her. Becky has been at the front of the room while generative AI
+        quietly rewrote what homework meant in her course.
       </p>
       <p>
-        We started from a single observation: generative AI had made homework
-        trivially easy to outsource, and most of the tools built in response
-        were either pure proctoring systems that treated every student as a
-        suspect, or pure tutoring layers that handed answers over the moment a
-        student got frustrated. Neither served the actual pedagogical goal.
-        Both made the professor&apos;s job harder.
+        She started seeing it a couple of years ago: homework that was
+        technically correct but conceptually hollow. Right answers, arrived
+        at through shortcuts that skipped the thinking entirely. The pattern
+        wasn&apos;t local to her classroom, and the response across higher
+        ed was defensive. Ban AI. Rewrite syllabi. Add proctoring. Build
+        walls.
       </p>
       <p>
-        LabNotes.ai is the platform we built instead. Students work through
-        problems inside a tutor that escalates support in graduated steps
-        instead of handing over solutions. Faculty get a read on where the
-        class is actually struggling, which students need outreach, and,
-        critically, which students are working with the tutor honestly versus
-        trying to extract answers from it.
+        Becky&apos;s frame was different. Preventing students from using AI
+        is a losing battle, and it doesn&apos;t prepare them for a world
+        where these tools are everywhere. The real question is not how to
+        stop students from using AI. It is how to make AI actually help them
+        learn. LabNotes.ai is our answer to that question. Students work
+        through problems inside a tutor that escalates support in graduated
+        steps instead of handing over solutions. Faculty get a read on where
+        the class is actually struggling, which students need outreach, and,
+        critically, which students are working with the tutor honestly
+        versus trying to extract answers from it.
       </p>
 
       <h2 className="font-display mt-[var(--block-gap)]">Tension</h2>
@@ -388,9 +392,12 @@ export default function LabNotesPage() {
 
       <p>
         I built the AI experience layer end-to-end: prompt chains, retrieval,
-        escalation logic, and the full front-end surface. My co-founder built
-        the backend data model and the pedagogy of the problem sets. We
-        shipped a production deployment in the first semester of the company.
+        escalation logic, and the full front-end surface. Becky brought the
+        pedagogical spine: the problem sets, the escalation decisions
+        grounded in fourteen years of watching where students actually get
+        stuck, and the faculty network that pressure-tested our product
+        thinking. We shipped a production deployment in the first semester
+        of the company.
       </p>
 
       <h2 className="font-display mt-[var(--block-gap)]">Reflection</h2>
