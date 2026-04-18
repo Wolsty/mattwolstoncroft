@@ -136,12 +136,24 @@ export function LoginForm() {
 
           <p className="meta mt-10" style={{ color: "var(--fg-muted)" }}>
             <span className="italic">Don&rsquo;t have access?</span>{" "}
-            <a
-              href="mailto:wolstoncroft.1@gmail.com?subject=Portfolio%20access%20request"
+            <button
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(new Event("contact:open"))
+              }
               className="link-underline"
+              style={{
+                background: "transparent",
+                border: 0,
+                padding: 0,
+                cursor: "pointer",
+                font: "inherit",
+                color: "inherit",
+                letterSpacing: "inherit",
+              }}
             >
               Get in touch
-            </a>
+            </button>
             .
           </p>
         </div>
