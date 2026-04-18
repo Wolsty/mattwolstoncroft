@@ -54,7 +54,7 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a className="link-underline" href="https://www.linkedin.com/in/matthewwolstoncroft/" target="_blank" rel="noopener noreferrer">
+              <a className="link-underline" href="https://www.linkedin.com/in/matthew-wolstoncroft/" target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </a>
             </li>
