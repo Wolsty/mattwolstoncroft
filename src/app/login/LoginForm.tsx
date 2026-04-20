@@ -1,6 +1,6 @@
 "use client";
 
-import { HeroObject } from "@/components/hero/HeroObject";
+import { LatentSpaceHero } from "@/components/hero/LatentSpaceHero";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
@@ -56,7 +56,7 @@ export function LoginForm() {
             transformOrigin: "center center",
           }}
         >
-          <HeroObject />
+          <LatentSpaceHero />
         </div>
         <div
           className="relative flex w-full max-w-md flex-col items-center text-center"
