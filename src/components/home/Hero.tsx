@@ -1,9 +1,9 @@
-import { HeroObject } from "@/components/hero/HeroObject";
+import { LatentSpaceHero } from "@/components/hero/LatentSpaceHero";
 
 export function Hero() {
   return (
     <section className="relative isolate pt-24 md:pt-36">
-      <HeroObject />
+      <LatentSpaceHero />
       <div className="relative" style={{ zIndex: 1 }}>
         <h1 className="display" style={{ lineHeight: 0.95 }}>
           <span className="block">Matthew</span>
