@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# deploy.sh — ship the JAMS + iPR case studies and the SeekWell date fix.
+# deploy.sh — ship the click-to-enlarge lightbox across all case-study figures.
 #
 # What this does:
 #   1. Clears any stale .git/index.lock (safe if no git process is running)
 #   2. Runs typecheck to make sure nothing is broken
-#   3. Stages and commits all three changes together
+#   3. Stages and commits the Figure + FigureWithFallback changes
 #   4. Pushes main to origin, which triggers a Vercel deploy
 #
 # Run from the repo root:  bash scripts/deploy.sh
@@ -51,14 +51,8 @@ echo "▸ Staging changes…"
 # NOTE: no error suppression here — if a path is missing or git fails,
 # we want to see it loudly, not "succeed" with nothing staged.
 git add \
-  src/app/jams/page.tsx \
-  src/app/ipr/page.tsx \
-  public/images/case-studies/jams \
-  public/images/case-studies/ipr \
-  src/app/progrexion/page.tsx \
-  src/app/seekwell/page.tsx \
-  src/components/cmdk/CommandPalette.tsx \
-  src/components/home/ProjectCards.tsx \
+  src/components/case-study/Figure.tsx \
+  src/components/case-study/FigureWithFallback.tsx \
   scripts/deploy.sh
 
 echo ""
@@ -69,32 +63,28 @@ echo ""
 if git diff --cached --quiet; then
   echo "  · Nothing new to commit."
 else
-  git commit -m "add JAMS + iPR case studies; fix SeekWell date to 2022–2025
+  git commit -m "add click-to-enlarge lightbox to all case-study figures
 
-JAMS Access (/jams):
-  - New case study page built on CaseStudyShell
-  - Context → Tension → Approach → 3 Decisions → Shipped → Reflection
-  - Persona boards, portal site map, file-management whiteboard flows
-  - Hero is the shipped Case List; Documents and Submit a Case wizard
-    shown inside decisions
+Figure and FigureWithFallback now open a full-viewport lightbox when
+clicked, so readers can inspect dense UI screenshots at full resolution
+— especially helpful for the LabNotes shots, which render small in the
+prose column.
 
-iPR Software (/ipr):
-  - New case study page framed around the two-job tension:
-    enterprise brand newsroom integrator + platform product designer
-  - Covers client newsrooms for Target, Toyota, Xerox, NVIDIA,
-    Forever 21, Dunkin, American Heart Association
-  - Hero is the multi-client iPad composition;
-    Forever 21 newsroom used inside approach
+Figure:
+  - Converted to a client component
+  - Wraps the image in a zoomable button with a 'Click to enlarge' hint
+  - ESC / overlay click / close button dismisses
+  - Body scroll locked while the lightbox is open
+  - Plain <img> inside the lightbox so Next's responsive sizing doesn't
+    cap the natural resolution
+  - zoomable={false} prop available to opt out per-instance
 
-Wiring:
-  - ProjectCards: JAMS + iPR appended after Progrexion
-  - Progrexion PrevNext → /jams
-  - JAMS PrevNext → /ipr
-  - iPR PrevNext → /
-  - CommandPalette: Jump to JAMS, Jump to iPR
+FigureWithFallback:
+  - Same lightbox treatment
+  - Preserves the onError fallback-src path
 
-Fix:
-  - SeekWell date: 2022–2024 → 2022–2025 (homepage + seekwell index)"
+ExpandableFigure is left in place for back-compat (seekwell/[slug] uses
+it; its behavior is now equivalent to Figure)."
   echo "  ✓ Committed:"
   git log -1 --oneline
 fi
