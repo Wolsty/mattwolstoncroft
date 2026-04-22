@@ -17,7 +17,7 @@ export default function SeekwellIndexPage() {
         title: "SeekWell / HelloEyes",
         status: "Shipped",
         metadata: [
-          "2022–2024",
+          "2022–2025",
           "Principal Designer",
           "Virtual Vision Platform",
           "Four sub-case studies",

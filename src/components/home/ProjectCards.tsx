@@ -54,7 +54,7 @@ const CARDS: Card[] = [
   {
     href: "/seekwell",
     title: "SeekWell / HelloEyes",
-    meta: "2022–2024 · Principal Designer · Health-Tech · Four sub-case studies",
+    meta: "2022–2025 · Principal Designer · Health-Tech · Four sub-case studies",
     tension:
       "Compressing the typical PM + designer + analyst workflow into a single seat, a mobile-first virtual vision center built to earn clinical trust from a smartphone.",
     detail:
@@ -79,6 +79,36 @@ const CARDS: Card[] = [
       alt: "Progrexion: CreditRepair.com onboarding flow designed for mobile-first sign-up.",
       width: 1702,
       height: 845,
+    },
+  },
+  {
+    href: "/jams",
+    title: "JAMS Access",
+    meta: "2025–2026 · Lead Product Designer · LegalTech / ADR · Five user types · Shipped",
+    tension:
+      "Five user types, one product surface. Each role sees a different case, a different set of permissions, and a different meaning of the word “document” — but they all have to be in the same conversation, on the same day.",
+    detail:
+      "Complete redesign of the JAMS alternative dispute resolution platform. One information architecture resolved five ways; a case-type-aware document layer; a nine-step Submit a Case wizard; a single role-aware sidebar. Live at access.jamsadr.com.",
+    image: {
+      src: "/images/case-studies/jams/case-list.png",
+      alt: "JAMS Access Case List: 100+ cases filtered by type, with Case Name & Ref #, Type, Neutral, and Case Manager columns.",
+      width: 1440,
+      height: 1191,
+    },
+  },
+  {
+    href: "/ipr",
+    title: "iPR Software",
+    meta: "2014–2017 · UX Designer / Lead · PR & Marketing SaaS · Enterprise brand newsrooms · Shipped",
+    tension:
+      "Every brand newsroom I shipped had to look and feel like the brand, not like iPR. Every product decision I made had to survive every brand newsroom it was about to power.",
+    detail:
+      "Integrated and shipped iPR-powered online newsrooms for Target, Toyota, Xerox, NVIDIA, Forever 21, Dunkin, and the American Heart Association — while leading product design on the CMS platform they all ran on. My first time designing for real users.",
+    image: {
+      src: "/images/case-studies/ipr/online-newsrooms.png",
+      alt: "iPR-powered brand newsrooms across iPad devices: Toyota, Forever 21, American Heart Association, and more.",
+      width: 1920,
+      height: 1402,
     },
   },
 ];

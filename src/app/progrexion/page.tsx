@@ -82,7 +82,7 @@ export default function ProgrexionPage() {
 
       <PrevNext
         prev={{ href: "/seekwell", label: "SeekWell / HelloEyes" }}
-        next={{ href: "/", label: "Home" }}
+        next={{ href: "/jams", label: "JAMS Access" }}
       />
     </CaseStudyShell>
   );
