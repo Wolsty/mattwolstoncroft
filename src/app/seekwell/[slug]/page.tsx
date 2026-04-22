@@ -44,18 +44,30 @@ export default async function SeekwellSubPage(
         metadata: cs.metadata,
       }}
       hero={
-        <div
-          className="rounded p-8 md:p-12"
-          style={{ border: "1px solid var(--rule)" }}
-        >
-          <p className="meta mb-4">{cs.thumbnailLabel}</p>
-          <p
-            className="italic max-w-prose font-body"
-            style={{ fontSize: "var(--type-tension)", color: "var(--fg-muted)", lineHeight: 1.4 }}
+        cs.featuredImage ? (
+          <Figure
+            src={cs.featuredImage.src}
+            alt={cs.featuredImage.alt}
+            caption={cs.featuredImage.caption}
+            width={cs.featuredImage.width ?? 2800}
+            height={cs.featuredImage.height ?? 1600}
+            wide
+            priority
+          />
+        ) : (
+          <div
+            className="rounded p-8 md:p-12"
+            style={{ border: "1px solid var(--rule)" }}
           >
-            {cs.blurb}
-          </p>
-        </div>
+            <p className="meta mb-4">{cs.thumbnailLabel}</p>
+            <p
+              className="italic max-w-prose font-body"
+              style={{ fontSize: "var(--type-tension)", color: "var(--fg-muted)", lineHeight: 1.4 }}
+            >
+              {cs.blurb}
+            </p>
+          </div>
+        )
       }
       backHref="/seekwell"
       backLabel="SeekWell"

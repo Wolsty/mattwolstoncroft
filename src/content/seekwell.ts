@@ -17,6 +17,14 @@ export type SeekwellSection =
 
 export type SeekwellImage = { src: string; alt: string };
 
+export type SeekwellFeaturedImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+
 export type SeekwellCase = {
   slug: string;
   title: string;
@@ -24,6 +32,8 @@ export type SeekwellCase = {
   blurb: string; // one-line tension for the index list
   metadata: string[];
   sections: SeekwellSection[];
+  /** Optional hero/featured image shown above the sections. */
+  featuredImage?: SeekwellFeaturedImage;
   images?: SeekwellImage[];
 };
 
@@ -139,6 +149,12 @@ export const SEEKWELL_CASES: SeekwellCase[] = [
       "Cross-Functional Synthesis",
       "Shipped",
     ],
+    featuredImage: {
+      src: "/images/case-studies/seekwell/diary-study.png",
+      alt: "Diary study: longitudinal research artifacts from the end-to-end glasses ordering experience.",
+      width: 2800,
+      height: 994,
+    },
     sections: [
       { kind: "heading", text: "Overview" },
       {
