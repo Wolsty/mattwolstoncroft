@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyShell } from "@/components/case-study/CaseStudyShell";
+import { ExpandableFigure } from "@/components/case-study/ExpandableFigure";
 import { Figure } from "@/components/case-study/Figure";
 import { PrevNext } from "@/components/case-study/PrevNext";
 import { SectionRenderer } from "@/components/case-study/SectionRenderer";
@@ -45,7 +46,7 @@ export default async function SeekwellSubPage(
       }}
       hero={
         cs.featuredImage ? (
-          <Figure
+          <ExpandableFigure
             src={cs.featuredImage.src}
             alt={cs.featuredImage.alt}
             caption={cs.featuredImage.caption}
