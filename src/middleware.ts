@@ -23,7 +23,9 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     // Everything except: _next internals, favicon, static folders, login page,
-    // and the auth API routes.
-    "/((?!_next/static|_next/image|favicon.ico|images/|fonts/|login|api/auth).*)",
+    // the auth API routes, and the public shareable readout page
+    // (/seekwell/weekly-readout) which is intentionally accessible without
+    // the site password.
+    "/((?!_next/static|_next/image|favicon.ico|images/|fonts/|login|api/auth|seekwell/weekly-readout).*)",
   ],
 };
