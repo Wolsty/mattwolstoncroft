@@ -104,7 +104,7 @@ function MiniHeader({ solid }: { solid: boolean }) {
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <h2 className="meta" style={{ color: "var(--accent)", marginBottom: "0.75rem" }}>
+    <h2 className="meta" style={{ color: "var(--fg)", marginBottom: "0.75rem" }}>
       {children}
     </h2>
   );
