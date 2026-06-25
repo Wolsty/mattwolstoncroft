@@ -51,16 +51,11 @@ export function ThemeProvider({
 }) {
   const [theme, setThemeState] = useState<Theme>(initialTheme ?? "light");
 
-  // On first mount: hydrate from cookie or system preference.
+  // On first mount: hydrate from the saved cookie, otherwise default to light.
+  // Dark is opt-in via the toggle; we no longer follow the OS preference.
   useEffect(() => {
     const cookieTheme = readCookie(COOKIE_NAME) as Theme | null;
-    if (cookieTheme === "dark" || cookieTheme === "light") {
-      setThemeState(cookieTheme);
-      applyTheme(cookieTheme);
-      return;
-    }
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const t: Theme = prefersDark ? "dark" : "light";
+    const t: Theme = cookieTheme === "dark" || cookieTheme === "light" ? cookieTheme : "light";
     setThemeState(t);
     applyTheme(t);
   }, []);

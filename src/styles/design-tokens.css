@@ -49,14 +49,5 @@
   --overlay: rgba(0, 0, 0, 0.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0E0E0E;
-    --fg: #EFECE4;
-    --fg-muted: #9A9A94;
-    --fg-error: #C97A5C;
-    --rule: #1E1E1E;
-    --accent: #22C55E;
-    --overlay: rgba(0, 0, 0, 0.6);
-  }
-}
+/* No OS-preference fallback: the site defaults to light, and dark applies
+   only when [data-theme="dark"] is set explicitly via the theme toggle. */
