@@ -18,7 +18,7 @@ export function Footer() {
   return (
     <footer
       className="rule-top mt-[var(--section-gap)]"
-      style={{ background: "var(--bg)" }}
+      style={{ background: "var(--bg-subtle)" }}
     >
       <div className="mx-auto grid w-full max-w-content grid-cols-1 gap-12 px-6 py-16 md:grid-cols-3 md:px-10">
         {/* Contact */}

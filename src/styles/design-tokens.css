@@ -10,6 +10,7 @@
 
   /* Color: light */
   --bg: #FAFAF7;
+  --bg-subtle: #F2F0E9;     /* recessed plane — footer floor, seats the page */
   --fg: #111111;
   --fg-muted: #57524B;      /* warm neutral; darker than #555 for crisper meta caps */
   --fg-error: #9A4A30;
@@ -47,6 +48,7 @@
 
 [data-theme="dark"] {
   --bg: #0E0E0E;
+  --bg-subtle: #121211;
   --fg: #EFECE4;
   --fg-muted: #9A9A94;
   --fg-error: #C97A5C;

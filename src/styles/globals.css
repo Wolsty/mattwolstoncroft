@@ -116,6 +116,22 @@
     .surface-card:hover { transform: none; }
   }
 
+  /* Framed media (case-study figures, hero images). Same white-surface lift
+     as cards, but no translate on hover — the figure already has its own
+     zoom affordance, so we only deepen the shadow to signal interactivity. */
+  .surface-media {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-sm);
+    transition:
+      box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 220ms ease;
+  }
+  .surface-media:hover {
+    border-color: var(--rule-strong);
+    box-shadow: var(--shadow-md);
+  }
+
   /* Case-study / long-form prose vertical rhythm.
      Applies to the body wrapper on case studies and any homepage
      block that opts in. Targets ~1em breathing room between Times

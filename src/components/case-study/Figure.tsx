@@ -80,8 +80,7 @@ export function Figure({
             type="button"
             onClick={() => setOpen(true)}
             aria-label={`Enlarge: ${alt}`}
-            className="group relative block w-full cursor-zoom-in overflow-hidden rounded p-0 text-left"
-            style={{ border: "1px solid var(--rule)", background: "var(--bg)" }}
+            className="surface-media group relative block w-full cursor-zoom-in overflow-hidden rounded-lg p-0 text-left"
           >
             {image}
             <span
@@ -97,10 +96,7 @@ export function Figure({
             </span>
           </button>
         ) : (
-          <div
-            className="relative overflow-hidden rounded"
-            style={{ border: "1px solid var(--rule)", background: "var(--bg)" }}
-          >
+          <div className="surface-media relative overflow-hidden rounded-lg">
             {image}
           </div>
         )}
