@@ -41,9 +41,9 @@
   --block-gap: clamp(3rem, 6vh, 5rem);
 
   /* Leading */
-  --lead-tight: 1.02;
-  --lead-snug: 1.2;
-  --lead-prose: 1.55;
+  --lead-tight: 1.0;
+  --lead-snug: 1.14;
+  --lead-prose: 1.45;
 }
 
 [data-theme="dark"] {

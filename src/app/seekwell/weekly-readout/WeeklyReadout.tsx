@@ -168,7 +168,7 @@ export function WeeklyReadout() {
                 borderLeft: "2px solid var(--accent)",
                 color: "var(--fg)",
                 fontSize: "var(--type-tension)",
-                lineHeight: 1.4,
+                lineHeight: 1.3,
                 fontFamily: "var(--font-body)",
               }}
             >

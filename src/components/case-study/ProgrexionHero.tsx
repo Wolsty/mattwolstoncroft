@@ -21,7 +21,7 @@ export function ProgrexionHero({ intro }: { intro: string }) {
         <p className="meta mb-4">Progrexion: Four product surfaces</p>
         <p
           className="max-w-prose font-body"
-          style={{ color: "var(--fg-muted)", lineHeight: 1.55 }}
+          style={{ color: "var(--fg-muted)", lineHeight: "var(--lead-prose)" }}
         >
           {intro}
         </p>

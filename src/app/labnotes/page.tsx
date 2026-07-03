@@ -76,7 +76,7 @@ export default function LabNotesPage() {
           borderLeft: "2px solid var(--accent)",
           color: "var(--fg)",
           fontSize: "var(--type-tension)",
-          lineHeight: 1.35,
+          lineHeight: 1.3,
           margin: "2rem 0",
         }}
       >

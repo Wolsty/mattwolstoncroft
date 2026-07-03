@@ -172,7 +172,7 @@ function Card(c: Card) {
       <p className="meta mt-3">{c.meta}</p>
       <p
         className="mt-4 italic font-body"
-        style={{ color: "var(--fg-muted)", lineHeight: 1.4 }}
+        style={{ color: "var(--fg-muted)", lineHeight: 1.3 }}
       >
         {c.tension}
       </p>

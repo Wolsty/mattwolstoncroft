@@ -11,7 +11,7 @@ export function Hero() {
         </h1>
         <p
           className="mt-8 max-w-prose italic font-body"
-          style={{ fontSize: "var(--type-tension)", color: "var(--fg-muted)", lineHeight: 1.35 }}
+          style={{ fontSize: "var(--type-tension)", color: "var(--fg-muted)", lineHeight: 1.3 }}
         >
           Strategic product leader building AI-powered products from 0-to-1,
           shipping across design and code.

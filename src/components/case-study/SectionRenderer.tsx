@@ -14,7 +14,7 @@ export function SectionRenderer({ sections }: { sections: SeekwellSection[] }) {
             <h2
               key={i}
               className="font-display mt-[var(--block-gap)] first:mt-0"
-              style={{ fontSize: "var(--type-h2)", lineHeight: 1.2 }}
+              style={{ fontSize: "var(--type-h2)", lineHeight: "var(--lead-snug)" }}
             >
               {s.text}
             </h2>

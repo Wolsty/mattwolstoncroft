@@ -40,7 +40,7 @@ export default function ProgrexionPage() {
           <h2
             id={`prog-${e.slug}`}
             className="font-display"
-            style={{ fontSize: "var(--type-h2)", lineHeight: 1.2 }}
+            style={{ fontSize: "var(--type-h2)", lineHeight: "var(--lead-snug)" }}
           >
             {e.title}
           </h2>

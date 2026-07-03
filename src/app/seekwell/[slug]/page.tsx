@@ -63,7 +63,7 @@ export default async function SeekwellSubPage(
             <p className="meta mb-4">{cs.thumbnailLabel}</p>
             <p
               className="italic max-w-prose font-body"
-              style={{ fontSize: "var(--type-tension)", color: "var(--fg-muted)", lineHeight: 1.4 }}
+              style={{ fontSize: "var(--type-tension)", color: "var(--fg-muted)", lineHeight: 1.3 }}
             >
               {cs.blurb}
             </p>

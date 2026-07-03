@@ -72,7 +72,7 @@ export function LoginForm() {
             style={{
               fontSize: "var(--type-tension)",
               color: "var(--fg-muted)",
-              lineHeight: 1.35,
+              lineHeight: 1.3,
             }}
           >
             This site is password-protected. Enter to continue.

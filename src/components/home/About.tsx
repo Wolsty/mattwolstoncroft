@@ -5,7 +5,7 @@ export function About() {
       className="rule-top mt-[var(--section-gap)] pt-[var(--block-gap)]"
     >
       <h2 id="home-about" className="meta mb-6">About</h2>
-      <div className="max-w-prose space-y-5 font-body" style={{ lineHeight: 1.55 }}>
+      <div className="max-w-prose space-y-5 font-body" style={{ lineHeight: "var(--lead-prose)" }}>
         <p>
           Full-stack product builder with 10+ years of experience shaping
           intuitive, data-driven digital experiences across ed-tech,
