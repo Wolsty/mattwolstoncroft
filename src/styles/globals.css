@@ -94,6 +94,28 @@
   .rule-top { border-top: 1px solid var(--rule); }
   .rule-bottom { border-bottom: 1px solid var(--rule); }
 
+  /* Elevated card surface. Lifts interactive blocks (project cards, framed
+     media) off the flat background with a soft shadow and a hairline border,
+     and gives a quiet lift on hover. Restrained on purpose — the editorial
+     feel comes from the type, not the chrome. */
+  .surface-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-sm);
+    transition:
+      box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 220ms ease,
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .surface-card:hover {
+    border-color: var(--rule-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .surface-card:hover { transform: none; }
+  }
+
   /* Case-study / long-form prose vertical rhythm.
      Applies to the body wrapper on case studies and any homepage
      block that opts in. Targets ~1em breathing room between Times

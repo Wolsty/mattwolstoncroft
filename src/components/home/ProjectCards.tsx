@@ -135,8 +135,7 @@ function Card(c: Card) {
   return (
     <Link
       href={c.href}
-      className="group block rounded p-6 transition-colors"
-      style={{ border: "1px solid var(--rule)" }}
+      className="surface-card group block rounded-lg p-6"
     >
       {c.image && src && !failed ? (
         <div
