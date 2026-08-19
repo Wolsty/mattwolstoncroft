@@ -94,6 +94,39 @@
   .rule-top { border-top: 1px solid var(--rule); }
   .rule-bottom { border-bottom: 1px solid var(--rule); }
 
+  /* Text field. Same white-surface language as .surface-card so an input
+     reads as a real target instead of floating text on the page. Focus
+     replaces the global :focus-visible ring (which would double up on the
+     border) with a border-color shift plus a soft accent halo. */
+  .field {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    box-shadow: var(--shadow-sm);
+    color: var(--fg);
+    padding: 0.75rem 0.9rem;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+  .field::placeholder { color: var(--fg-muted); opacity: 0.7; }
+  .field:hover { border-color: var(--fg-muted); }
+  .field:focus,
+  .field:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-sm), 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  .field[aria-invalid="true"] {
+    border-color: var(--fg-error);
+  }
+  .field[aria-invalid="true"]:focus,
+  .field[aria-invalid="true"]:focus-visible {
+    border-color: var(--fg-error);
+    box-shadow: var(--shadow-sm), 0 0 0 3px color-mix(in srgb, var(--fg-error) 22%, transparent);
+  }
+
   /* Elevated card surface. Lifts interactive blocks (project cards, framed
      media) off the flat background with a soft shadow and a hairline border,
      and gives a quiet lift on hover. Restrained on purpose — the editorial

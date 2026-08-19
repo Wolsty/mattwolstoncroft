@@ -77,17 +77,15 @@ export function LoginForm() {
                 setPassword(e.target.value);
                 if (error) setError("");
               }}
-              className="mt-2 w-full bg-transparent outline-none"
+              placeholder="••••••••"
+              className="field mt-2"
               style={{
-                borderBottom: `1px solid ${error ? "var(--fg-error)" : "var(--rule)"}`,
-                color: "var(--fg)",
-                padding: "0.4rem 0",
                 fontFamily:
                   '"SFMono-Regular", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
                 fontSize: "var(--type-tension)",
                 letterSpacing: 0,
               }}
-              aria-invalid={error ? true : undefined}
+              aria-invalid={error ? true : false}
               aria-describedby={error ? "login-error" : "login-hint"}
             />
 
