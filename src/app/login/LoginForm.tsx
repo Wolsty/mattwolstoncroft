@@ -1,6 +1,5 @@
 "use client";
 
-import { LatentSpaceHero } from "@/components/hero/LatentSpaceHero";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
@@ -46,22 +45,8 @@ export function LoginForm() {
       id="main"
       className="mx-auto w-full max-w-content px-6 md:px-10"
     >
-      <section className="relative isolate flex min-h-[calc(100vh-10rem)] flex-col items-center justify-center py-16">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            zIndex: 0,
-            transform: "scale(0.74)",
-            transformOrigin: "center center",
-          }}
-        >
-          <LatentSpaceHero />
-        </div>
-        <div
-          className="relative flex w-full max-w-md flex-col items-center text-center"
-          style={{ zIndex: 1 }}
-        >
+      <section className="flex min-h-[calc(100vh-10rem)] flex-col items-center justify-center py-16">
+        <div className="flex w-full max-w-md flex-col items-center text-center">
           <h1 className="display" style={{ lineHeight: 0.95 }}>
             <span className="block">Matthew</span>
             <span className="block">Wolstoncroft</span>
