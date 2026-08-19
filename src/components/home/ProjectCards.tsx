@@ -29,11 +29,11 @@ const CARDS: Card[] = [
     detail:
       "Architected the AI experience layer end-to-end: graduated-assistance tutor, behavior-based escalation, and a faculty Integrity view that turns oversight into a teaching tool. Shipped to a live university course in the first semester.",
     image: {
-      src: "/images/case-studies/labnotes/ai-insights-overview.png",
-      fallbackSrc: "/images/case-studies/labnotes/ai-insights-integrity.png",
-      alt: "LabNotes.ai: AI Insights Overview, class-level metrics across messages, hints, time, and score.",
+      src: "/images/case-studies/labnotes/marketing-site.png",
+      fallbackSrc: "/images/case-studies/labnotes/ai-insights-overview.png",
+      alt: "LabNotes.ai marketing site: hero reading “Learn it for real.” over a student working in a library.",
       width: 2800,
-      height: 1600,
+      height: 1575,
     },
   },
   {

@@ -27,12 +27,12 @@ export default function LabNotesPage() {
       }}
       hero={
         <FigureWithFallback
-          src="/images/case-studies/labnotes/course-dashboard.png"
-          fallbackSrc="/images/case-studies/labnotes/ai-insights-integrity.png"
-          alt="LabNotes.ai course dashboard: faculty view of a live chemistry course, with class-wide signal and per-student activity."
-          caption="LabNotes.ai: the faculty course dashboard."
+          src="/images/case-studies/labnotes/marketing-site.png"
+          fallbackSrc="/images/case-studies/labnotes/course-dashboard.png"
+          alt="LabNotes.ai marketing site: hero reading “Learn it for real.” over a student working in a library."
+          caption="LabNotes.ai: the product site, launched ahead of the Fall 2026 pilot."
           width={2800}
-          height={1600}
+          height={1575}
           wide
           priority
         />
