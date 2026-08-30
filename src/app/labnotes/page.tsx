@@ -435,7 +435,7 @@ export default function LabNotesPage() {
 
       <PrevNext
         prev={{ href: "/", label: "Home" }}
-        next={{ href: "/cengage", label: "Cengage Content Studio" }}
+        next={{ href: "/llm-judge", label: "Teaching a machine to grade fairly" }}
       />
     </CaseStudyShell>
   );
