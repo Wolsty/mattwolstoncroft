@@ -166,7 +166,7 @@ function Card(c: Card) {
           <span className="meta">Hero image</span>
         </div>
       )}
-      <h3 className="font-display" style={{ fontSize: "clamp(1.5rem, 2.6vw, 2rem)" }}>
+      <h3 className="font-heading" style={{ fontSize: "clamp(1.5rem, 2.6vw, 2rem)" }}>
         {c.title}
       </h3>
       <p className="meta mt-3">{c.meta}</p>

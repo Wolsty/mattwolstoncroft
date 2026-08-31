@@ -52,7 +52,7 @@ export default function LlmJudgePage() {
         </div>
       }
     >
-      <h2 className="font-display mt-0">The problem</h2>
+      <h2 className="font-heading mt-0">The problem</h2>
       <p>
         LabNotes grades students on demonstrated understanding, not final
         answers. A model reads a tutoring conversation and decides which steps
@@ -61,7 +61,7 @@ export default function LlmJudgePage() {
         and the tutor congratulates them on a misconception.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">
+      <h2 className="font-heading mt-[var(--block-gap)]">
         How the grade gets made
       </h2>
       <p>
@@ -143,7 +143,7 @@ export default function LlmJudgePage() {
         ]}
       />
 
-      <h2 className="font-display mt-[var(--block-gap)]">What went wrong</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">What went wrong</h2>
       <p>
         Grading looked too strict, then too lenient, then too strict again. I
         rewrote the judge&apos;s prompt four times across two days.
@@ -203,7 +203,7 @@ export default function LlmJudgePage() {
         why it read as the model drifting rather than as a broken string join.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">
+      <h2 className="font-heading mt-[var(--block-gap)]">
         What I should have done first
       </h2>
       <p>
@@ -212,7 +212,7 @@ export default function LlmJudgePage() {
         number I couldn&apos;t see the inputs to.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">
+      <h2 className="font-heading mt-[var(--block-gap)]">
         What I built instead of more prompt tuning
       </h2>
       <p>
@@ -231,7 +231,7 @@ export default function LlmJudgePage() {
         every time.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">
+      <h2 className="font-heading mt-[var(--block-gap)]">
         The finding that generalised
       </h2>
       <p>
@@ -247,7 +247,7 @@ export default function LlmJudgePage() {
         looking at.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Where it ended up</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Where it ended up</h2>
       <p>
         Fifteen cases passing, deterministic, in production with a chemistry
         cohort at Carroll College. The pattern is open-sourced at{" "}

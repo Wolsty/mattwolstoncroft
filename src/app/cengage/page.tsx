@@ -36,7 +36,7 @@ export default function CengagePage() {
         />
       }
     >
-      <h2 className="font-display mt-0">Context</h2>
+      <h2 className="font-heading mt-0">Context</h2>
       <p>
         Cengage is one of the three large higher-education publishers in the
         United States. Explore is the company&apos;s modern learning platform,
@@ -54,7 +54,7 @@ export default function CengagePage() {
         in Beta inside Explore today.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Tension</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Tension</h2>
       <p>
         Every edtech company is adding AI in 2026. The tension isn&apos;t{" "}
         <em>whether</em> to add it. It&apos;s the shape it takes:
@@ -92,10 +92,10 @@ export default function CengagePage() {
         a different accommodation profile, without losing it.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Approach</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Approach</h2>
       <p>Three bets that shaped the product:</p>
 
-      <h3 className="font-display">1. Treat adaptation as a first-class content state, not a feature.</h3>
+      <h3 className="font-heading">1. Treat adaptation as a first-class content state, not a feature.</h3>
       <p>
         A &ldquo;version&rdquo; of a lesson in Content Studio is not a copy.
         It&apos;s a live rendering of the same pedagogical source,
@@ -117,7 +117,7 @@ export default function CengagePage() {
         wide
       />
 
-      <h3 className="font-display">2. Write the responsible-AI principles before writing the requirements.</h3>
+      <h3 className="font-heading">2. Write the responsible-AI principles before writing the requirements.</h3>
       <p>
         Before the first functional spec, I wrote the UX principles for
         responsible AI in an educational context: what the AI is allowed to
@@ -132,7 +132,7 @@ export default function CengagePage() {
         that preserves lesson-level learning objectives.&rdquo;
       </p>
 
-      <h3 className="font-display">3. Use React Magma 3 as a constraint, not an afterthought.</h3>
+      <h3 className="font-heading">3. Use React Magma 3 as a constraint, not an afterthought.</h3>
       <p>
         Explore is built on React Magma 3, the internal design system that
         underpins the rest of Cengage. Rather than treat that as a brand
@@ -146,7 +146,7 @@ export default function CengagePage() {
         that spend years vetting new software.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Decisions</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Decisions</h2>
 
       <DecisionBlock heading="Decision 1: Generative AI is a set of primitives, not a features menu">
         <p>
@@ -231,7 +231,7 @@ export default function CengagePage() {
         </p>
       </DecisionBlock>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Shipped</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Shipped</h2>
       <p>Live in Content Studio Beta inside Explore today:</p>
       <Figure
         src="/images/case-studies/cengage/select-content-populated.png"
@@ -290,7 +290,7 @@ export default function CengagePage() {
         primitive rather than a feature release.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Reflection</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Reflection</h2>
       <p>
         The biggest thing I&apos;d change in retrospect is where I put the
         measurement surface. The Beta instruments which instructors adopt

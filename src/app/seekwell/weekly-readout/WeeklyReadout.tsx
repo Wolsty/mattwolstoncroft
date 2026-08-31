@@ -65,7 +65,7 @@ function ScoreCard({
     >
       <p className="meta">{label}</p>
       <p
-        className="font-display mt-2"
+        className="font-heading mt-2"
         style={{ fontSize: "1.75rem", lineHeight: 1.05, fontVariantNumeric: "tabular-nums" }}
       >
         {value}
@@ -134,7 +134,7 @@ export function WeeklyReadout() {
         <article>
           {/* Title block */}
           <header className="pt-28 md:pt-36">
-            <h1 className="font-display" style={{ fontSize: "var(--type-h1)", lineHeight: 1.05 }}>
+            <h1 className="font-heading" style={{ fontSize: "var(--type-h1)", lineHeight: 1.05 }}>
               Rx Eyewear Checkout — Weekly Readout
             </h1>
             <div className="mt-6">

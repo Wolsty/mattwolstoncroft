@@ -38,7 +38,7 @@ export default function LabNotesPage() {
         />
       }
     >
-      <h2 className="font-display mt-0">Context</h2>
+      <h2 className="font-heading mt-0">Context</h2>
       <p>
         LabNotes.ai is an AI-powered tutoring and homework platform for
         higher-ed STEM. I co-founded it with Dr. Rebecca Coates, an associate
@@ -68,7 +68,7 @@ export default function LabNotesPage() {
         versus trying to extract answers from it.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Tension</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Tension</h2>
       <p>The entire product lives inside one unresolvable-looking problem:</p>
       <blockquote
         className="pl-6 italic"
@@ -101,14 +101,14 @@ export default function LabNotesPage() {
         feature didn&apos;t move us along that axis, it got cut.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Approach</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Approach</h2>
       <p>
         I architected the AI experience layer as a system of{" "}
         <strong>trust boundaries</strong> rather than a single &ldquo;tutor&rdquo;
         persona. Three things compose together:
       </p>
 
-      <h3 className="font-display">1. Graduated assistance, not graduated difficulty.</h3>
+      <h3 className="font-heading">1. Graduated assistance, not graduated difficulty.</h3>
       <p>
         The tutor does not get harder as the student advances. It gets{" "}
         <em>less directive</em>. Early in a problem, the AI confirms the
@@ -119,7 +119,7 @@ export default function LabNotesPage() {
         not one that gives up on them.
       </p>
 
-      <h3 className="font-display">2. Escalation logic that reads behavior, not sentiment.</h3>
+      <h3 className="font-heading">2. Escalation logic that reads behavior, not sentiment.</h3>
       <p>
         Most &ldquo;adaptive AI&rdquo; tutors adjust tone based on frustration.
         That&apos;s the wrong signal: a frustrated student who is thinking
@@ -132,7 +132,7 @@ export default function LabNotesPage() {
         those signals, not on &ldquo;seems upset.&rdquo;
       </p>
 
-      <h3 className="font-display">3. A faculty layer that makes the tutor accountable to the course.</h3>
+      <h3 className="font-heading">3. A faculty layer that makes the tutor accountable to the course.</h3>
       <p>
         The tutor is not a black box between the student and the platform.
         Everything it does is visible to the instructor through a structured
@@ -154,7 +154,7 @@ export default function LabNotesPage() {
         wide
       />
 
-      <h2 className="font-display mt-[var(--block-gap)]">The student surface</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">The student surface</h2>
       <p>
         The three trust boundaries only become real inside the student UI.
         Graduated assistance, behavior-based escalation, and the transparent
@@ -221,7 +221,7 @@ export default function LabNotesPage() {
         wide
       />
 
-      <h2 className="font-display mt-[var(--block-gap)]">Decisions</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Decisions</h2>
       <p>
         Three hard calls that most &ldquo;AI tutor&rdquo; products don&apos;t
         make:
@@ -317,7 +317,7 @@ export default function LabNotesPage() {
         />
       </DecisionBlock>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Shipped</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Shipped</h2>
       <p>
         What&apos;s in production today, with student and faculty use on a
         live course:
@@ -400,7 +400,7 @@ export default function LabNotesPage() {
         of the company.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Reflection</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Reflection</h2>
       <p>
         If I were starting this tomorrow, I would push harder on two things
         earlier.

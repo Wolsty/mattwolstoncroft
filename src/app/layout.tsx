@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
-import { displayFont } from "@/lib/fonts";
+import { displayFont, headingFont } from "@/lib/fonts";
 import { ThemeProvider } from "@/lib/theme";
 import { CommandPalette } from "@/components/cmdk/CommandPalette";
 import { ContactModal } from "@/components/contact/ContactModal";
@@ -49,7 +49,7 @@ const themeInitScript = `
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={displayFont.variable}>
+    <html lang="en" className={`${displayFont.variable} ${headingFont.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>

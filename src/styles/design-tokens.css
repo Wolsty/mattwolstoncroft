@@ -4,7 +4,10 @@
 :root,
 [data-theme="light"] {
   /* Font family fallbacks.
-     --font-display is overridden by next/font/local (BL Arctic).
+     --font-display is overridden by next/font/local (BL Arctic) — display
+     sizes only: the name, case-study titles, fact numerals.
+     --font-heading is overridden by next/font/google (Newsreader) and carries
+     every heading below display size.
      --font-body stays on Times New Roman (system-available). */
   --font-body: "Times New Roman", Times, serif;
 

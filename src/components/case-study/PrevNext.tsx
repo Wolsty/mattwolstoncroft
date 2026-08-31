@@ -17,7 +17,7 @@ export function PrevNext({ prev, next }: PrevNextProps) {
         {prev ? (
           <Link href={prev.href} className="link-underline">
             <span className="meta block mb-1">Previous</span>
-            <span className="font-display text-[1.25rem]">{prev.label}</span>
+            <span className="font-heading text-[1.25rem]">{prev.label}</span>
           </Link>
         ) : null}
       </div>
@@ -25,7 +25,7 @@ export function PrevNext({ prev, next }: PrevNextProps) {
         {next ? (
           <Link href={next.href} className="link-underline">
             <span className="meta block mb-1">Next</span>
-            <span className="font-display text-[1.25rem]">{next.label}</span>
+            <span className="font-heading text-[1.25rem]">{next.label}</span>
           </Link>
         ) : null}
       </div>

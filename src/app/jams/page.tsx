@@ -36,7 +36,7 @@ export default function JamsPage() {
         />
       }
     >
-      <h2 className="font-display mt-0">Context</h2>
+      <h2 className="font-heading mt-0">Context</h2>
       <p>
         JAMS is the largest private alternative dispute resolution (ADR)
         provider in the world. Its neutrals — arbitrators and mediators —
@@ -55,7 +55,7 @@ export default function JamsPage() {
         <em>access.jamsadr.com</em>.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Tension</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Tension</h2>
       <p>
         A platform everyone on a case touches, but no two people use the same
         way:
@@ -91,10 +91,10 @@ export default function JamsPage() {
         at had either punted on or broken into five disconnected tools.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Approach</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Approach</h2>
       <p>I started with roles, not screens.</p>
 
-      <h3 className="font-display">1. Five personas. Five sheets of paper.</h3>
+      <h3 className="font-heading">1. Five personas. Five sheets of paper.</h3>
       <p>
         For each user type &mdash; Client, Sub-Client, Neutral, Case Manager,
         Admin &mdash; I put a persona board on the wall:{" "}
@@ -128,7 +128,7 @@ export default function JamsPage() {
         height={1235}
       />
 
-      <h3 className="font-display">2. Site map as a shared skeleton.</h3>
+      <h3 className="font-heading">2. Site map as a shared skeleton.</h3>
       <p>
         Once the roles were concrete, I mapped the full portal as one shared
         information architecture &mdash; Portal Home, Submit a Case, View
@@ -146,7 +146,7 @@ export default function JamsPage() {
         height={1236}
       />
 
-      <h3 className="font-display">3. Task flows that encoded the permissions, not just the actions.</h3>
+      <h3 className="font-heading">3. Task flows that encoded the permissions, not just the actions.</h3>
       <p>
         The most complex single touchpoint in the platform is the document
         layer. So I mapped it twice &mdash; once for a Neutral, once for a
@@ -174,7 +174,7 @@ export default function JamsPage() {
         height={1270}
       />
 
-      <h2 className="font-display mt-[var(--block-gap)]">Decisions</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Decisions</h2>
 
       <DecisionBlock heading="Decision 1: Mediation and arbitration have fundamentally different privacy models — and the UI has to encode that, not rely on training">
         <p>
@@ -273,7 +273,7 @@ export default function JamsPage() {
         </p>
       </DecisionBlock>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Shipped</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Shipped</h2>
       <p>
         JAMS Access is live at <em>access.jamsadr.com</em>. What&apos;s in
         production today:
@@ -323,7 +323,7 @@ export default function JamsPage() {
         </li>
       </ul>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Reflection</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Reflection</h2>
       <p>
         The lesson JAMS Access taught me, more than any other project
         I&apos;ve led: in a B2B product with multiple user types, the

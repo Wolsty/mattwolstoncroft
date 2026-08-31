@@ -55,7 +55,7 @@ export default function SeekwellIndexPage() {
               >
                 <div className="meta">{c.thumbnailLabel}</div>
                 <div>
-                  <p className="font-display text-[1.25rem] group-hover:text-[var(--accent)] transition-colors">
+                  <p className="font-heading text-[1.25rem] group-hover:text-[var(--accent)] transition-colors">
                     {c.title}
                   </p>
                   <p className="font-body mt-1" style={{ color: "var(--fg-muted)" }}>

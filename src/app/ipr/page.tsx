@@ -36,7 +36,7 @@ export default function IprPage() {
         />
       }
     >
-      <h2 className="font-display mt-0">Context</h2>
+      <h2 className="font-heading mt-0">Context</h2>
       <p>
         iPR Software is a PR and marketing SaaS: a web-based CMS for
         publishing, hosting, and distributing news and multimedia. Online
@@ -59,7 +59,7 @@ export default function IprPage() {
         depending on the thing to do their job every day.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Tension</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Tension</h2>
       <p>The two jobs pulled in opposite directions:</p>
       <blockquote
         className="pl-6 italic"
@@ -91,9 +91,9 @@ export default function IprPage() {
         stress-test of every product decision.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Approach</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Approach</h2>
 
-      <h3 className="font-display">1. Learn to design for real users by standing next to them.</h3>
+      <h3 className="font-heading">1. Learn to design for real users by standing next to them.</h3>
       <p>
         The most important thing iPR gave me was access. Every client
         integration was an excuse to sit with a real PR or comms team and
@@ -104,7 +104,7 @@ export default function IprPage() {
         repeat. That single reframing shaped the rest of my career.
       </p>
 
-      <h3 className="font-display">2. Treat the client newsroom as the canonical product surface.</h3>
+      <h3 className="font-heading">2. Treat the client newsroom as the canonical product surface.</h3>
       <p>
         I built each brand newsroom as a first-class artifact &mdash; not a
         templated skin, but a full editorial site designed against the
@@ -122,7 +122,7 @@ export default function IprPage() {
         height={1346}
       />
 
-      <h3 className="font-display">3. Build the product so a marketing manager can publish without a ticket.</h3>
+      <h3 className="font-heading">3. Build the product so a marketing manager can publish without a ticket.</h3>
       <p>
         Corporate comms teams are small, fast, and constantly interrupted.
         The platform had to support a single marketing manager pushing a
@@ -132,7 +132,7 @@ export default function IprPage() {
         down &mdash; it killed entire features outright.
       </p>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Decisions</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Decisions</h2>
 
       <DecisionBlock heading="Decision 1: The brand owns the front end; the platform owns the plumbing">
         <p>
@@ -190,7 +190,7 @@ export default function IprPage() {
         </p>
       </DecisionBlock>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Shipped</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Shipped</h2>
       <p>What went live over three years:</p>
       <ul className="list-disc pl-6 space-y-2">
         <li>
@@ -222,7 +222,7 @@ export default function IprPage() {
         </li>
       </ul>
 
-      <h2 className="font-display mt-[var(--block-gap)]">Reflection</h2>
+      <h2 className="font-heading mt-[var(--block-gap)]">Reflection</h2>
       <p>
         iPR is the project where I became a product designer. Before it, I
         was a designer who happened to be drawing interfaces. After it, I

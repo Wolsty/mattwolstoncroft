@@ -36,7 +36,7 @@ export function RoleLedger({ roles, caption }: RoleLedgerProps) {
             style={{ borderBottom: "1px solid var(--rule)" }}
           >
             <dt
-              className="font-display"
+              className="font-heading"
               style={{
                 fontSize: "var(--type-body)",
                 color: role.emphasis ? "var(--accent)" : "var(--fg)",

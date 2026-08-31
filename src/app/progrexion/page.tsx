@@ -39,7 +39,7 @@ export default function ProgrexionPage() {
           <p className="meta mb-2">{e.thumbnailLabel}</p>
           <h2
             id={`prog-${e.slug}`}
-            className="font-display"
+            className="font-heading"
             style={{ fontSize: "var(--type-h2)", lineHeight: "var(--lead-snug)" }}
           >
             {e.title}
