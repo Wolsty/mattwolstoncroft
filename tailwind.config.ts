@@ -17,7 +17,7 @@ const config: Config = {
       },
       fontFamily: {
         display: ["var(--font-display)", "serif"],
-        heading: ["var(--font-heading)", "Georgia", "serif"],
+        heading: ["var(--font-heading)", "Garamond", "Georgia", "serif"],
         body: ["var(--font-body)", "Times New Roman", "Times", "serif"],
       },
       maxWidth: {

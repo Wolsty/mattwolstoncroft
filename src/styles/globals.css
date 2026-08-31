@@ -22,10 +22,13 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: var(--font-heading), Georgia, serif;
+    font-family: var(--font-heading), Garamond, Georgia, serif;
     font-weight: 500;
     color: var(--fg);
-    letter-spacing: -0.01em;
+    /* Old-style faces are drawn on their own fit. The -0.01em that suited a
+       20th-century display serif pinches Garamond's counters, so headings sit
+       at their natural width and only the display class stays tightened. */
+    letter-spacing: 0;
   }
 
   h1 { font-size: var(--type-h1); line-height: var(--lead-tight); }
