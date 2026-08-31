@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CaseStudyShell } from "@/components/case-study/CaseStudyShell";
 import { CodeExhibit } from "@/components/case-study/CodeExhibit";
 import { EvalMatrix } from "@/components/case-study/EvalMatrix";
+import { RoleLedger } from "@/components/case-study/RoleLedger";
 import { FactStrip } from "@/components/case-study/FactStrip";
 import { PrevNext } from "@/components/case-study/PrevNext";
 
@@ -59,6 +60,88 @@ export default function LlmJudgePage() {
         students are refused credit for correct work. Get it wrong in the other
         and the tutor congratulates them on a misconception.
       </p>
+
+      <h2 className="font-display mt-[var(--block-gap)]">
+        How the grade gets made
+      </h2>
+      <p>
+        The obvious build is one model that tutors and scores in the same
+        breath. It is also the wrong one: a model that has just written an
+        encouraging reply has every reason to say the student earned it. So the
+        work is split along the lines where the requirements actually differ.
+      </p>
+
+      <RoleLedger
+        caption="Four responsibilities, three model calls. The row that isn't a model call is the one doing the most work."
+        roles={[
+          {
+            name: "Author",
+            body:
+              "Generates problems and their milestones, or parses a professor\u2019s existing set into the same structure.",
+            spec: "Sonnet",
+          },
+          {
+            name: "Tutor",
+            body:
+              "Talks to the student. Socratic, warm, never gives the answer away.",
+            spec: "Sonnet \u00b7 temperature 0.7",
+          },
+          {
+            name: "Judge",
+            body:
+              "Reads the student\u2019s latest message against the professor\u2019s answer key and reports, per milestone, what the student wrote and whether it matches.",
+            spec: "Haiku \u00b7 temperature 0",
+          },
+          {
+            name: "The score",
+            body:
+              "Arithmetic. Milestones reached \u00d7 points, computed in code. No model produces a number.",
+            spec: "",
+            emphasis: true,
+          },
+        ]}
+      />
+
+      <p>
+        Three things fall out of that split, and they are the design.
+      </p>
+      <p>
+        <strong>The judge runs before the tutor.</strong> Grading happens first,
+        on a short slice of the conversation, with no knowledge of what the
+        tutor is about to say. The tutor is then handed the verdict as final and
+        has to write a reply consistent with it. Reverse the order and the tutor
+        congratulates a wrong answer while the milestone stays dark — the
+        student reads praise and sees no credit, which is worse than either
+        outcome on its own.
+      </p>
+      <p>
+        <strong>Temperature 0 for the judge, 0.7 for the tutor.</strong> The same
+        work submitted on Tuesday and on Thursday has to score the same. A
+        teaching voice must not. Same product, opposite requirements, one line of
+        config each.
+      </p>
+      <p>
+        <strong>The judge never returns a count.</strong> Asking a model &ldquo;how
+        many milestones did they earn?&rdquo; invites it to reason about a total.
+        Asking it to fill in a form, one entry per milestone, and counting the
+        entries in code leaves it nothing to round off.
+      </p>
+
+      <CodeExhibit
+        caption="One entry of the judge’s reply. The first three fields are filled before it is allowed to answer the fourth — the order is enforced by the response shape, and it is the single change that fixed the most failures."
+        bands={[
+          {
+            label: "The form the judge fills in, per milestone",
+            lines: [
+              '"milestone":     "Convert the dimensions to centimetres"',
+              '"student_quote": "so 25.0 mm is 2.50 cm and 40.0 mm is 4.00 cm"',
+              '"key_value":     "2.50 cm \u00d7 4.00 cm \u00d7 1.50 cm"',
+              '"reached":       true',
+            ],
+            note: "The answer key is loaded server-side. It reaches the judge without ever passing through the student\u2019s browser.",
+          },
+        ]}
+      />
 
       <h2 className="font-display mt-[var(--block-gap)]">What went wrong</h2>
       <p>
