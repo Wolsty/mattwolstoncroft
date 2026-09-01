@@ -23,7 +23,7 @@ export function FeaturedNote() {
           LabNotes.ai · LLM-as-judge · Eval harness · Open-sourced
         </p>
         <h3
-          className="font-display mt-4"
+          className="font-heading mt-4"
           style={{ fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)", lineHeight: 1.05 }}
         >
           Teaching a machine to grade fairly
