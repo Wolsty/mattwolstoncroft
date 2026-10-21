@@ -94,6 +94,7 @@ export function CommandPalette() {
               </Item>
               <Item onSelect={copyEmail}>Copy email address</Item>
               <Item onSelect={() => go("/resume")}>Download resume</Item>
+              <Item onSelect={() => go("/atlas")}>Open the Atlas</Item>
             </Command.Group>
           </Command.List>
         </Command>

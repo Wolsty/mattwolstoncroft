@@ -1,0 +1,412 @@
+/* Atlas: a dark, full-bleed topo map. It stays dark in both site themes.
+   Display face for the page title, Garamond for place names, Times for prose,
+   so the overlay reads as part of the site rather than a map widget. */
+.page {
+  --a-bg: #0b0b0c;
+  --a-panel: rgba(18, 18, 20, 0.92);
+  --a-panel-solid: #121214;
+  --a-raise: #1d1d20;
+  --a-line: #2a2a2e;
+  --a-ink: #ececee;
+  --a-muted: #8e8e95;
+  --a-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.55);
+  --a-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  position: relative;
+  height: 100svh;
+  min-height: 560px;
+  background: var(--a-bg);
+  color: var(--a-ink);
+  overflow: hidden;
+  color-scheme: dark;
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+}
+
+.icon {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- top-left chrome ---- */
+.chrome {
+  position: absolute;
+  z-index: 2;
+  top: max(16px, env(safe-area-inset-top, 0px));
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.chrome > * {
+  pointer-events: auto;
+}
+.head {
+  width: min(400px, 100%);
+  padding: 18px 20px 16px;
+  background: var(--a-panel);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--a-line);
+  border-radius: 14px;
+  box-shadow: var(--a-shadow);
+}
+.home {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--a-muted);
+  text-decoration: none;
+}
+.home:hover {
+  color: var(--a-ink);
+}
+.title {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 6vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--a-ink);
+}
+.lede {
+  margin: 8px 0 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.0625rem;
+  color: var(--a-muted);
+}
+.stats {
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+.stats div {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+.stats dd {
+  margin: 0;
+  order: -1;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stats dt {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--a-muted);
+}
+.error {
+  margin: 10px 0 0;
+  color: #f2867e;
+  font-size: 0.875rem;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px 5px 5px;
+  border-radius: 999px;
+  border: 1px solid var(--a-line);
+  background: var(--a-panel);
+  color: var(--a-ink);
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+.chip i {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #3a3a3f;
+}
+.chip em {
+  font-style: normal;
+  color: var(--a-muted);
+  font-variant-numeric: tabular-nums;
+}
+.chip[aria-pressed="false"] {
+  color: var(--a-muted);
+  background: rgba(18, 18, 20, 0.6);
+}
+.chip:focus-visible,
+.baseToggle button:focus-visible,
+.close:focus-visible,
+.thumbs button:focus-visible {
+  outline: 2px solid var(--a-ink);
+  outline-offset: 2px;
+}
+
+/* ---- base map toggle ---- */
+.baseToggle {
+  position: absolute;
+  z-index: 2;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  top: max(16px, env(safe-area-inset-top, 0px));
+  display: flex;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--a-panel);
+  border: 1px solid var(--a-line);
+  box-shadow: var(--a-shadow);
+}
+.baseToggle button {
+  border: 0;
+  background: none;
+  color: var(--a-muted);
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  padding: 5px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.baseToggle button[aria-pressed="true"] {
+  background: var(--a-raise);
+  color: var(--a-ink);
+}
+
+/* ---- detail panel ---- */
+.panel {
+  position: absolute;
+  z-index: 3;
+  top: max(16px, env(safe-area-inset-top, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: 16px;
+  width: 384px;
+  display: flex;
+  flex-direction: column;
+  background: var(--a-panel-solid);
+  border: 1px solid var(--a-line);
+  border-radius: 14px;
+  box-shadow: var(--a-shadow);
+  overflow: hidden;
+}
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.close {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(30, 30, 33, 0.9);
+  cursor: pointer;
+}
+.close svg {
+  stroke: var(--a-ink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  fill: none;
+}
+.hero {
+  aspect-ratio: 4 / 3;
+  max-width: 100%;
+  background: var(--a-raise);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.thumbs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 20px 0;
+  overflow-x: auto;
+}
+.thumbs button {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: var(--a-raise);
+  cursor: pointer;
+}
+.thumbs button[aria-pressed="true"] {
+  border-color: var(--a-ink);
+}
+.thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.body {
+  padding: 18px 20px 24px;
+  display: grid;
+  gap: 12px;
+}
+.tag {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.body h2 {
+  margin: 0;
+  color: var(--a-ink);
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 1.75rem;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.meta {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+}
+.meta dt {
+  color: var(--a-muted);
+}
+.meta dd {
+  margin: 0;
+  min-width: 0;
+}
+.mono {
+  font-family: var(--a-mono);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+.notes {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.notice {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 120px 24px;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+.notice code {
+  font-family: var(--a-mono);
+  font-size: 0.875rem;
+}
+
+/* ---- Mapbox overrides ---- */
+.hover :global(.mapboxgl-popup-content) {
+  background: var(--a-ink);
+  color: #0b0b0c;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  box-shadow: none;
+}
+.hover :global(.mapboxgl-popup-tip) {
+  display: none;
+}
+.page :global(.mapboxgl-ctrl-group) {
+  background: var(--a-panel-solid);
+  border: 1px solid var(--a-line);
+  box-shadow: var(--a-shadow);
+}
+.page :global(.mapboxgl-ctrl-group button + button) {
+  border-top-color: var(--a-line);
+}
+.page :global(.mapboxgl-ctrl-icon) {
+  filter: invert(1);
+}
+.page :global(.mapboxgl-ctrl-scale) {
+  background: rgba(11, 11, 12, 0.7);
+  color: var(--a-muted);
+  border-color: var(--a-muted);
+  font-family: var(--a-mono);
+}
+.page :global(.mapboxgl-ctrl-attrib) {
+  background: rgba(11, 11, 12, 0.6);
+}
+.page :global(.mapboxgl-ctrl-attrib a) {
+  color: var(--a-muted);
+}
+
+@media (max-width: 760px) {
+  .head {
+    padding: 14px 16px 12px;
+  }
+  .lede {
+    display: none;
+  }
+  .title {
+    font-size: 2.25rem;
+  }
+  .stats dd {
+    font-size: 1.125rem;
+  }
+  .baseToggle {
+    top: auto;
+    bottom: max(64px, calc(env(safe-area-inset-bottom, 0px) + 48px));
+    right: auto;
+    left: max(16px, env(safe-area-inset-left, 0px));
+  }
+  .panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-height: 62%;
+    border-radius: 16px 16px 0 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .hero {
+    aspect-ratio: 16 / 9;
+  }
+}
