@@ -200,7 +200,9 @@ export function AtlasMap({ token }: { token?: string }) {
 
   useEffect(() => {
     const map = mapRef.current;
-    if (map?.isStyleLoaded()) syncHeat(map);
+    // Not gated on isStyleLoaded(): that stays false while tiles load (e.g. mid-flight),
+    // which silently skipped the update. The sync functions check each layer exists.
+    if (map) syncHeat(map);
     if (heat) setSelected(null);
   }, [heat, syncHeat]);
 
@@ -259,7 +261,7 @@ export function AtlasMap({ token }: { token?: string }) {
     const map = mapRef.current;
     const src = map?.getSource("atlas-routes") as mapboxgl.GeoJSONSource | undefined;
     src?.setData(routesGeoJSON(routes));
-    if (map?.isStyleLoaded()) syncRoutes(map);
+    if (map) syncRoutes(map);
   }, [routes, showRoutes, showStrava, selected, syncRoutes]);
 
   useEffect(() => {
