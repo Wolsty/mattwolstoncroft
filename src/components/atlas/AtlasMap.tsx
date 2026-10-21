@@ -517,23 +517,31 @@ export function AtlasMap({ token }: { token?: string }) {
                     if (window.innerWidth <= 760) setStravaOpen(false);
                   }}
                 >
-                  <time className={styles.actDate} dateTime={r.date}>
-                    <span>{new Date(r.date + "T12:00:00").toLocaleDateString("en-US", { month: "short" })}</span>
-                    {new Date(r.date + "T12:00:00").getDate()}
-                  </time>
+                  <span className={styles.actThumb} data-empty={r.photos?.[0] ? undefined : ""}>
+                    {r.photos?.[0] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={r.photos[0]} alt="" loading="lazy" />
+                    ) : (
+                      <svg viewBox="0 0 24 24" width={30} height={30} aria-hidden="true">
+                        <path d="M3 18c4 0 4-6 8-6s4-6 10-6" />
+                      </svg>
+                    )}
+                    {r.photos && r.photos.length > 1 && <em>{r.photos.length}</em>}
+                  </span>
                   <span className={styles.actText}>
+                    <time className={styles.actDate} dateTime={r.date}>
+                      {new Date(r.date + "T12:00:00").toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                        year: r.date.slice(0, 4) === stravaYear.year ? undefined : "numeric",
+                      })}
+                    </time>
                     <span className={styles.actName}>{r.name}</span>
                     <span className={styles.actMeta}>
                       {r.sport} · {r.miles} mi{r.gainFt ? ` · ${r.gainFt.toLocaleString()} ft` : ""}
                     </span>
                   </span>
-                  {r.photos?.[0] ? (
-                    <span className={styles.actThumb}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={r.photos[0]} alt="" loading="lazy" />
-                      {r.photos.length > 1 && <em>{r.photos.length}</em>}
-                    </span>
-                  ) : null}
                 </button>
               </li>
             ))}
