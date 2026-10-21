@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "./atlas.module.css";
+import { PlaceEditor } from "./PlaceEditor";
 import {
   ICON_PATHS,
   ROUTE_COLORS,
@@ -61,10 +62,23 @@ export function AtlasMap({ token }: { token?: string }) {
   const [selected, setSelected] = useState<Selection>(null);
   const [photo, setPhoto] = useState(0);
   const [loadError, setLoadError] = useState(false);
+  // Editing (only for Matthew, behind the edit password)
+  const [canEdit, setCanEdit] = useState(false);
+  const [storeReady, setStoreReady] = useState(false);
+  const [draft, setDraft] = useState<Place | null>(null);
+  const [draftIsNew, setDraftIsNew] = useState(false);
+  const [placing, setPlacing] = useState<"new" | "move" | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [editError, setEditError] = useState("");
+  const [editLoginOpen, setEditLoginOpen] = useState(false);
+  const [editPw, setEditPw] = useState("");
+  const [editPwError, setEditPwError] = useState("");
+  const [editRequested, setEditRequested] = useState(false);
+  const pickRef = useRef<(lat: number, lng: number) => void>(() => {});
 
   // Latest values for map event handlers, which are bound once.
-  const latest = useRef({ places, routes, hidden, showRoutes, showStrava, selected, base, heat });
-  latest.current = { places, routes, hidden, showRoutes, showStrava, selected, base, heat };
+  const latest = useRef({ places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing });
+  latest.current = { places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing };
 
   const visible = useMemo(() => places.filter((p) => !hidden.has(p.type)), [places, hidden]);
   const selectedPlace = selected?.kind === "place" ? places.find((p) => p.id === selected.id) ?? null : null;
@@ -73,7 +87,7 @@ export function AtlasMap({ token }: { token?: string }) {
   // ---- data ----
   useEffect(() => {
     Promise.all([
-      fetch("/atlas-data/places.json").then((r) => r.json() as Promise<Place[]>),
+      loadPlaces(),
       fetch("/atlas-data/routes.json").then((r) => r.json() as Promise<Route[]>),
     ])
       .then(([p, r]) => {
@@ -85,6 +99,22 @@ export function AtlasMap({ token }: { token?: string }) {
       })
       .catch(() => setLoadError(true));
   }, []);
+
+  // Places come from the API (shipped places + edits made on the site). If that fails, the
+  // shipped file alone still draws the map.
+  async function loadPlaces(): Promise<Place[]> {
+    setEditRequested(new URLSearchParams(window.location.search).has("edit"));
+    try {
+      const res = await fetch("/api/atlas/places", { cache: "no-store" });
+      if (!res.ok) throw new Error(String(res.status));
+      const json = (await res.json()) as { places: Place[]; canEdit: boolean; storeReady: boolean };
+      setCanEdit(json.canEdit);
+      setStoreReady(json.storeReady);
+      return json.places;
+    } catch {
+      return fetch("/atlas-data/places.json").then((r) => r.json() as Promise<Place[]>);
+    }
+  }
 
   // Strava activities arrive separately so the map never waits on them.
   function loadStrava(saved: Route[]) {
@@ -156,16 +186,22 @@ export function AtlasMap({ token }: { token?: string }) {
       const name = e.features?.[0]?.properties?.name;
       if (name) hover.setLngLat(e.lngLat).setText(name).addTo(map);
     });
+    map.on("click", (e) => {
+      if (latest.current.placing) pickRef.current(e.lngLat.lat, e.lngLat.lng);
+    });
     map.on("click", "atlas-pins", (e) => {
+      if (latest.current.placing) return;
       const id = e.features?.[0]?.properties?.id as string | undefined;
       if (id) setSelected({ kind: "place", id });
     });
     map.on("click", "atlas-routes-hit", (e) => {
+      if (latest.current.placing) return;
       if (map.queryRenderedFeatures(e.point, { layers: ["atlas-pins", "atlas-clusters"] }).length) return;
       const id = e.features?.[0]?.properties?.id as string | undefined;
       if (id) setSelected({ kind: "route", id });
     });
     map.on("click", "atlas-clusters", (e) => {
+      if (latest.current.placing) return;
       const f = e.features?.[0];
       if (!f) return;
       const src = map.getSource("atlas-places") as mapboxgl.GeoJSONSource;
@@ -267,7 +303,7 @@ export function AtlasMap({ token }: { token?: string }) {
   useEffect(() => {
     const map = mapRef.current;
     const src = map?.getSource("atlas-selected") as mapboxgl.GeoJSONSource | undefined;
-    src?.setData(placesGeoJSON(selectedPlace ? [selectedPlace] : []));
+    src?.setData(placesGeoJSON(draft ? [draft] : selectedPlace ? [selectedPlace] : []));
     setPhoto(0);
     if (!latest.current.places.length) return; // keep a deep-link hash until the data arrives
     try {
@@ -279,6 +315,124 @@ export function AtlasMap({ token }: { token?: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected?.kind, selected?.id]);
 
+  // ---- editing ----
+  useEffect(() => {
+    const map = mapRef.current;
+    const src = map?.getSource("atlas-selected") as mapboxgl.GeoJSONSource | undefined;
+    src?.setData(placesGeoJSON(draft ? [draft] : selectedPlace ? [selectedPlace] : []));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draft]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map) map.getCanvas().style.cursor = placing ? "crosshair" : "";
+  }, [placing]);
+
+  async function regionAt(lat: number, lng: number): Promise<string> {
+    try {
+      const res = await fetch(
+        `https://api.mapbox.com/search/geocode/v6/reverse?longitude=${lng}&latitude=${lat}&types=region&access_token=${TOKEN}`,
+      );
+      const json = (await res.json()) as { features?: { properties?: { name?: string } }[] };
+      return json.features?.[0]?.properties?.name ?? "";
+    } catch {
+      return "";
+    }
+  }
+
+  // Runs when the map is clicked while placing a new pin or moving one.
+  pickRef.current = (lat: number, lng: number) => {
+    const at = { lat: Math.round(lat * 1e6) / 1e6, lng: Math.round(lng * 1e6) / 1e6 };
+    if (placing === "new") {
+      setDraft({ id: "new", name: "", type: "kimbo", ...at, date: "", dateText: "", notes: "", region: "", approx: false, photos: [] });
+      setDraftIsNew(true);
+      setSelected(null);
+    } else if (placing === "move" && draft) {
+      setDraft({ ...draft, ...at, approx: false });
+    }
+    setPlacing(null);
+    regionAt(at.lat, at.lng).then((region) => region && setDraft((d) => (d ? { ...d, region } : d)));
+  };
+
+  function startEdit(p: Place) {
+    setDraft({ ...p, photos: [...p.photos] });
+    setDraftIsNew(false);
+    setEditError("");
+  }
+
+  function stopEdit() {
+    setDraft(null);
+    setPlacing(null);
+    setEditError("");
+  }
+
+  async function sendChange(payload: unknown): Promise<{ places: Place[]; id: string | null } | null> {
+    setSaving(true);
+    setEditError("");
+    try {
+      const res = await fetch("/api/atlas/places", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = (await res.json()) as { places?: Place[]; id?: string | null; error?: string };
+      if (!res.ok || !json.places) throw new Error(json.error || "Save failed. Try again.");
+      setPlaces(json.places);
+      return { places: json.places, id: json.id ?? null };
+    } catch (e) {
+      setEditError(e instanceof Error ? e.message : "Save failed. Try again.");
+      return null;
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function saveDraft() {
+    if (!draft) return;
+    const fields = {
+      name: draft.name.trim(),
+      type: draft.type,
+      lat: draft.lat,
+      lng: draft.lng,
+      date: draft.date,
+      dateText: draft.dateText.trim(),
+      notes: draft.notes,
+      region: draft.region,
+      photos: draft.photos,
+    };
+    const done = await sendChange(draftIsNew ? { action: "add", place: fields } : { action: "update", id: draft.id, edit: fields });
+    if (!done) return;
+    const id = draftIsNew ? done.id : draft.id;
+    setDraft(null);
+    if (id) setSelected({ kind: "place", id });
+  }
+
+  async function deleteDraft() {
+    if (!draft || draftIsNew) return;
+    const done = await sendChange({ action: "delete", id: draft.id });
+    if (!done) return;
+    setDraft(null);
+    setSelected(null);
+  }
+
+  async function editSignIn(e: React.FormEvent) {
+    e.preventDefault();
+    setEditPwError("");
+    const res = await fetch("/api/atlas/edit-auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: editPw }),
+    });
+    if (!res.ok) {
+      setEditPwError(res.status === 401 ? "Wrong password." : "Editing isn't set up yet.");
+      return;
+    }
+    setEditPw("");
+    setEditLoginOpen(false);
+    const places = await loadPlaces();
+    setPlaces(places);
+  }
+
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -289,6 +443,7 @@ export function AtlasMap({ token }: { token?: string }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       setMenuOpen(false);
+      if (latest.current.placing) return setPlacing(null);
       setSelected(null);
     };
     window.addEventListener("keydown", onKey);
@@ -380,6 +535,47 @@ export function AtlasMap({ token }: { token?: string }) {
           </div>
         </dl>
         <div className={styles.mapControls} ref={menuRef}>
+          {canEdit && storeReady && (
+            <button
+              type="button"
+              className={styles.moreBtn}
+              data-active={placing === "new" ? "" : undefined}
+              onClick={() => {
+                stopEdit();
+                setSelected(null);
+                setPlacing(placing === "new" ? null : "new");
+              }}
+              aria-label="Add a place"
+              title="Add a place"
+            >
+              <svg viewBox="0 0 24 24" width={18} height={18} aria-hidden="true">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <span>Add</span>
+            </button>
+          )}
+          {!canEdit && editRequested && (
+            <button type="button" className={styles.moreBtn} onClick={() => setEditLoginOpen((o) => !o)} aria-label="Sign in to edit">
+              <svg viewBox="0 0 24 24" width={17} height={17} aria-hidden="true">
+                <path d="M4 20h4L19 9l-4-4L4 16z" />
+              </svg>
+              <span>Edit</span>
+            </button>
+          )}
+          {editLoginOpen && (
+            <form className={styles.menu} onSubmit={editSignIn} style={{ padding: 14 }}>
+              <label className={styles.field}>
+                <span>Edit password</span>
+                <input id="atlas-edit-password" type="password" autoFocus value={editPw} onChange={(e) => setEditPw(e.target.value)} />
+              </label>
+              {editPwError && <p className={styles.formError}>{editPwError}</p>}
+              <div className={styles.actionsRow} style={{ marginTop: 10 }}>
+                <button type="submit" className={styles.primaryBtn} disabled={!editPw}>
+                  Sign in
+                </button>
+              </div>
+            </form>
+          )}
           <div className={styles.baseToggle} role="group" aria-label="Base map">
             {(["topo", "satellite"] as BaseStyle[]).map((b) => (
               <button key={b} type="button" aria-pressed={base === b} onClick={() => setBase(b)}>
@@ -570,7 +766,35 @@ export function AtlasMap({ token }: { token?: string }) {
         </aside>
       )}
 
-      {(selectedPlace || selectedRoute) && (
+      {placing && (
+        <div className={styles.placingBanner} role="status">
+          <span>{placing === "new" ? "Click the map where this place is." : "Click the map to move the pin."}</span>
+          <button type="button" onClick={() => setPlacing(null)}>
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {draft && (
+        <aside className={styles.panel} aria-label={draftIsNew ? "New place" : "Edit place"}>
+          <div className={styles.scroll}>
+            <PlaceEditor
+              draft={draft}
+              isNew={draftIsNew}
+              onChange={setDraft}
+              onSave={saveDraft}
+              onCancel={stopEdit}
+              onDelete={deleteDraft}
+              onMovePin={() => setPlacing(placing === "move" ? null : "move")}
+              moving={placing === "move"}
+              saving={saving}
+              error={editError}
+            />
+          </div>
+        </aside>
+      )}
+
+      {!draft && (selectedPlace || selectedRoute) && (
         <aside className={styles.panel} aria-live="polite">
           <button type="button" className={styles.close} onClick={() => setSelected(null)} aria-label="Close">
             <svg viewBox="0 0 24 24" width={16} height={16} aria-hidden="true">
@@ -622,6 +846,16 @@ export function AtlasMap({ token }: { token?: string }) {
                     <dd className={styles.mono}>{formatLatLng(selectedPlace.lat, selectedPlace.lng)}</dd>
                   </dl>
                   {selectedPlace.notes && <p className={styles.notes}>{selectedPlace.notes}</p>}
+                  {canEdit && storeReady && (
+                    <div className={styles.actionsRow}>
+                      <button type="button" className={styles.primaryBtn} onClick={() => startEdit(selectedPlace)}>
+                        <svg viewBox="0 0 24 24" width={15} height={15} aria-hidden="true">
+                          <path d="M4 20h4L19 9l-4-4L4 16z" />
+                        </svg>
+                        Edit
+                      </button>
+                    </div>
+                  )}
                 </div>
               </>
             )}

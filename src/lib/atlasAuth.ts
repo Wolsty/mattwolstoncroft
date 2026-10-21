@@ -16,6 +16,7 @@ export function isAtlasPath(pathname: string) {
     pathname.startsWith("/atlas-data/") ||
     pathname.startsWith("/atlas-photos/") ||
     pathname.startsWith("/api/strava/") ||
+    pathname.startsWith("/api/atlas/") ||
     pathname === "/api/atlas-auth"
   );
 }
