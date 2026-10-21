@@ -220,9 +220,9 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
 export function routesGeoJSON(routes: Route[]): GeoJSON.FeatureCollection {
   return {
     type: "FeatureCollection",
-    features: routes.map((r) => ({
+    features: routes.map((r, i) => ({
       type: "Feature",
-      id: Number(r.id.replace(/\D/g, "")),
+      id: i, // feature-state key; matches the route's index in the array
       properties: { id: r.id, kind: r.kind, name: r.name },
       geometry: { type: "LineString", coordinates: r.coords },
     })),
@@ -291,7 +291,14 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     source: "atlas-routes",
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
-      "line-color": ["match", ["get", "kind"], "ski", ROUTE_COLORS.ski, "bike", ROUTE_COLORS.bike, ROUTE_COLORS.hike],
+      "line-color": [
+        "match",
+        ["get", "kind"],
+        "ski", ROUTE_COLORS.ski,
+        "bike", ROUTE_COLORS.bike,
+        "paddle", ROUTE_COLORS.paddle,
+        ROUTE_COLORS.hike,
+      ],
       "line-width": [
         "case",
         ["boolean", ["feature-state", "selected"], false],

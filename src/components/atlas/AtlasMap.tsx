@@ -7,7 +7,9 @@ import styles from "./atlas.module.css";
 import {
   ICON_PATHS,
   ROUTE_COLORS,
+  ROUTE_KIND_LABEL,
   TYPES,
+  decodePolyline,
   TYPE_BY_ID,
   formatLatLng,
   placeTitle,
@@ -16,7 +18,16 @@ import {
   type PlaceType,
   type Route,
 } from "./types";
-import { BASE_LABELS, BASE_NOTES, BASE_STYLES, addDataLayers, addTopoLayers, placesGeoJSON, type BaseStyle } from "./mapLayers";
+import {
+  BASE_LABELS,
+  BASE_NOTES,
+  BASE_STYLES,
+  addDataLayers,
+  addTopoLayers,
+  placesGeoJSON,
+  routesGeoJSON,
+  type BaseStyle,
+} from "./mapLayers";
 
 const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "night"];
 const PIN_LAYERS = ["atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pin-selected"];
@@ -65,11 +76,30 @@ export function AtlasMap({ token }: { token?: string }) {
       .then(([p, r]) => {
         setPlaces(p);
         setRoutes(r);
+        loadStrava(r);
         const id = decodeURIComponent(window.location.hash.slice(1));
         if (id && p.some((x) => x.id === id)) setSelected({ kind: "place", id });
       })
       .catch(() => setLoadError(true));
   }, []);
+
+  // Strava activities arrive separately so the map never waits on them.
+  function loadStrava(saved: Route[]) {
+    fetch("/api/strava/routes")
+      .then((res) => (res.ok ? (res.json() as Promise<{ routes: Route[] }>) : { routes: [] }))
+      .then(({ routes: live }) => {
+        if (!live.length) return;
+        const decoded = live.map((x) => ({ ...x, coords: x.polyline ? decodePolyline(x.polyline) : x.coords }));
+        // A saved GPS track that is also on Strava (same day, starts nearby) is shown once, from Strava.
+        const near = (a: [number, number], b: [number, number]) =>
+          Math.abs(a[0] - b[0]) < 0.03 && Math.abs(a[1] - b[1]) < 0.02;
+        const keep = saved.filter(
+          (s) => !(s.date && decoded.some((d) => d.date === s.date && d.coords[0] && s.coords[0] && near(d.coords[0], s.coords[0]))),
+        );
+        setRoutes([...keep, ...decoded]);
+      })
+      .catch(() => {});
+  }
 
   // ---- map setup (once data is in) ----
   useEffect(() => {
@@ -187,9 +217,9 @@ export function AtlasMap({ token }: { token?: string }) {
       if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", show ? "visible" : "none");
     }
     if (!map.getSource("atlas-routes")) return;
-    rs.forEach((r) =>
+    rs.forEach((r, i) =>
       map.setFeatureState(
-        { source: "atlas-routes", id: Number(r.id.replace(/\D/g, "")) },
+        { source: "atlas-routes", id: i },
         { selected: sel?.kind === "route" && sel.id === r.id },
       ),
     );
@@ -197,8 +227,10 @@ export function AtlasMap({ token }: { token?: string }) {
 
   useEffect(() => {
     const map = mapRef.current;
+    const src = map?.getSource("atlas-routes") as mapboxgl.GeoJSONSource | undefined;
+    src?.setData(routesGeoJSON(routes));
     if (map?.isStyleLoaded()) syncRoutes(map);
-  }, [showRoutes, selected, syncRoutes]);
+  }, [routes, showRoutes, selected, syncRoutes]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -452,7 +484,7 @@ export function AtlasMap({ token }: { token?: string }) {
             {selectedRoute && (
               <div className={styles.body} style={{ paddingTop: 28 }}>
                 <span className={styles.tag} style={{ color: ROUTE_COLORS[selectedRoute.kind] }}>
-                  {{ hike: "Hike", ski: "Ski tour", bike: "Ride" }[selectedRoute.kind]}
+                  {ROUTE_KIND_LABEL[selectedRoute.kind]}
                 </span>
                 <h2>{selectedRoute.name}</h2>
                 <dl className={styles.meta}>
@@ -471,6 +503,11 @@ export function AtlasMap({ token }: { token?: string }) {
                     </>
                   ) : null}
                 </dl>
+                {selectedRoute.url && (
+                  <a className={styles.strava} href={selectedRoute.url} target="_blank" rel="noopener noreferrer">
+                    View on Strava
+                  </a>
+                )}
               </div>
             )}
           </div>

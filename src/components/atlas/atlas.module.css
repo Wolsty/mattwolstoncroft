@@ -471,6 +471,19 @@
   white-space: pre-wrap;
 }
 
+/* Strava asks for this exact link text and its orange when linking back to an activity. */
+.strava {
+  justify-self: start;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: #fc5200;
+  text-decoration: none;
+}
+.strava:hover {
+  text-decoration: underline;
+}
+
 .notice {
   max-width: 560px;
   margin: 0 auto;

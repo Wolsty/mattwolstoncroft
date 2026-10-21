@@ -23,7 +23,7 @@ export type Place = {
   photos: string[]; // image URLs
 };
 
-export type RouteKind = "hike" | "ski" | "bike";
+export type RouteKind = "hike" | "ski" | "bike" | "paddle";
 
 export type Route = {
   id: string;
@@ -33,6 +33,10 @@ export type Route = {
   miles: number;
   gainFt?: number | null;
   coords: [number, number][];
+  /** Encoded polyline, used for Strava routes until decoded on the client. */
+  polyline?: string;
+  source?: "strava";
+  url?: string;
 };
 
 /** Pin colors. Tuned to read on a near-black topo base. */
@@ -57,6 +61,7 @@ export const ROUTE_COLORS: Record<RouteKind, string> = {
   hike: "#8FA23A",
   ski: "#4A97D8",
   bike: "#CC5E98",
+  paddle: "#2AA5A5",
 };
 
 /** 24×24 stroke icons, path data only so they draw with Path2D. */
@@ -91,4 +96,36 @@ export function placeWhen(p: { date: string; dateText?: string }): string {
 
 export function formatLatLng(lat: number, lng: number): string {
   return `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? "N" : "S"}  ${Math.abs(lng).toFixed(4)}° ${lng >= 0 ? "E" : "W"}`;
+}
+
+export const ROUTE_KIND_LABEL: Record<RouteKind, string> = {
+  hike: "Hike",
+  ski: "Ski tour",
+  bike: "Ride",
+  paddle: "Paddle",
+};
+
+/** Google encoded polyline → [lng, lat][] */
+export function decodePolyline(str: string): [number, number][] {
+  const coords: [number, number][] = [];
+  let index = 0;
+  let lat = 0;
+  let lng = 0;
+  while (index < str.length) {
+    for (const which of [0, 1]) {
+      let result = 0;
+      let shift = 0;
+      let b: number;
+      do {
+        b = str.charCodeAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      const delta = result & 1 ? ~(result >> 1) : result >> 1;
+      if (which === 0) lat += delta;
+      else lng += delta;
+    }
+    coords.push([lng / 1e5, lat / 1e5]);
+  }
+  return coords;
 }
