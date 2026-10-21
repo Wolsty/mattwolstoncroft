@@ -37,6 +37,13 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
   });
 
   if (base === "topo") {
+    // Mapbox Dark is near-black; lift the ground so hillshade and contours have room to read.
+    const style = map.getStyle();
+    for (const l of style?.layers ?? []) {
+      if (l.id === "land" && l.type === "background") map.setPaintProperty(l.id, "background-color", "#1f1f23");
+      if (l.id.startsWith("landcover") && l.type === "fill") map.setPaintProperty(l.id, "fill-color", "#26262b");
+      if (l.id === "water" && l.type === "fill") map.setPaintProperty(l.id, "fill-color", "#0e0e11");
+    }
     map.addSource("dem-shade", {
       type: "raster-dem",
       url: "mapbox://mapbox.mapbox-terrain-dem-v1",
@@ -50,9 +57,9 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         source: "dem-shade",
         paint: {
           "hillshade-shadow-color": "#000000",
-          "hillshade-highlight-color": "#55555c",
-          "hillshade-accent-color": "#111113",
-          "hillshade-exaggeration": 0.6,
+          "hillshade-highlight-color": "#9a9aa3",
+          "hillshade-accent-color": "#2a2a2e",
+          "hillshade-exaggeration": 0.8,
           "hillshade-illumination-direction": 315,
         },
       } as AnyLayer,
@@ -68,7 +75,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         source: "atlas-streets",
         "source-layer": "landuse_overlay",
         filter: ["==", ["get", "class"], "national_park"],
-        paint: { "fill-color": "#2a2a2e", "fill-opacity": ["interpolate", ["linear"], ["zoom"], 4, 0.35, 10, 0.18] },
+        paint: { "fill-color": "#34343a", "fill-opacity": ["interpolate", ["linear"], ["zoom"], 4, 0.35, 10, 0.18] },
       } as AnyLayer,
       firstSymbol,
     );
@@ -80,7 +87,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         "source-layer": "landuse_overlay",
         minzoom: 6,
         filter: ["==", ["get", "class"], "national_park"],
-        paint: { "line-color": "#46464c", "line-width": 0.8, "line-dasharray": [3, 2] },
+        paint: { "line-color": "#5c5c64", "line-width": 0.9, "line-dasharray": [3, 2] },
       } as AnyLayer,
       firstSymbol,
     );
@@ -88,16 +95,16 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
 
   map.addSource("atlas-contours", { type: "vector", url: "mapbox://mapbox.mapbox-terrain-v2" });
   const major = ["in", ["get", "index"], ["literal", [5, 10]]];
-  const line = base === "topo" ? "#6a6a72" : "#e8e8ea";
+  const line = base === "topo" ? "#a4a4ad" : "#e8e8ea";
   map.addLayer(
     {
       id: "atlas-contour-minor",
       type: "line",
       source: "atlas-contours",
       "source-layer": "contour",
-      minzoom: 11,
+      minzoom: 10,
       filter: ["!", major],
-      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.28 : 0.22, "line-width": 0.6 },
+      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.45 : 0.3, "line-width": 0.7 },
     } as AnyLayer,
     firstSymbol,
   );
@@ -107,9 +114,9 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       type: "line",
       source: "atlas-contours",
       "source-layer": "contour",
-      minzoom: 9,
+      minzoom: 8,
       filter: major,
-      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.5 : 0.4, "line-width": 1.1 },
+      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.75 : 0.5, "line-width": 1.2 },
     } as AnyLayer,
     firstSymbol,
   );
@@ -118,7 +125,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
     type: "symbol",
     source: "atlas-contours",
     "source-layer": "contour",
-    minzoom: 12,
+    minzoom: 11,
     filter: major,
     layout: {
       "symbol-placement": "line",
@@ -127,7 +134,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       "text-size": 10,
       "text-max-angle": 25,
     },
-    paint: { "text-color": "#9a9aa1", "text-halo-color": "#0b0b0c", "text-halo-width": 1.4 },
+    paint: { "text-color": "#c4c4cb", "text-halo-color": "#0b0b0c", "text-halo-width": 1.4 },
   } as AnyLayer);
 
   if (base === "topo") {
@@ -142,12 +149,12 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         type: "line",
         source: "atlas-streets",
         "source-layer": "road",
-        minzoom: 10,
+        minzoom: 9,
         filter: trail,
         paint: {
-          "line-color": "#b4b4ba",
-          "line-opacity": 0.75,
-          "line-width": ["interpolate", ["linear"], ["zoom"], 10, 0.6, 15, 1.6],
+          "line-color": "#dcdce1",
+          "line-opacity": 0.9,
+          "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.7, 15, 1.8],
           "line-dasharray": [2.5, 1.6],
         },
       } as AnyLayer,
@@ -158,7 +165,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       type: "symbol",
       source: "atlas-streets",
       "source-layer": "road",
-      minzoom: 13,
+      minzoom: 12,
       filter: trail,
       layout: {
         "symbol-placement": "line",
