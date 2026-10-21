@@ -30,6 +30,28 @@ const SPORTS: Record<string, { kind: RouteKind; minMiles?: number }> = {
   Rowing: { kind: "paddle" },
 };
 
+/** How each sport reads in the Strava panel. */
+const SPORT_LABEL: Record<string, string> = {
+  BackcountrySki: "Backcountry ski",
+  AlpineSki: "Resort ski",
+  NordicSki: "Nordic ski",
+  Snowshoe: "Snowshoe",
+  Hike: "Hike",
+  TrailRun: "Trail run",
+  Walk: "Walk",
+  MountainBikeRide: "Mountain bike",
+  EMountainBikeRide: "E-mountain bike",
+  GravelRide: "Gravel ride",
+  Ride: "Road ride",
+  Canoeing: "Canoe",
+  Kayaking: "Kayak",
+  StandUpPaddling: "Paddleboard",
+  Rowing: "Row",
+};
+
+/** Photos are one extra request per activity, so only the most recent ones with photos get them. */
+const PHOTO_ACTIVITIES = 30;
+
 const TRIM_METERS = 805; // half a mile off each end
 const M_PER_MI = 1609.34;
 
@@ -40,6 +62,8 @@ type StravaActivity = {
   start_date_local: string;
   distance: number;
   total_elevation_gain: number;
+  moving_time?: number;
+  total_photo_count?: number;
   trainer?: boolean;
   manual?: boolean;
   map?: { summary_polyline?: string | null };
@@ -151,7 +175,30 @@ export async function fetchStravaRoutes(): Promise<Route[]> {
       polyline: encodePolyline(coords),
       source: "strava",
       url: `https://www.strava.com/activities/${a.id}`,
+      sport: SPORT_LABEL[a.sport_type] ?? a.sport_type,
+      startedAt: a.start_date_local,
+      movingSec: a.moving_time,
+      photoCount: a.total_photo_count ?? 0,
     });
   }
+
+  // Newest first, then attach photos to the most recent activities that have any.
+  routes.sort((x, y) => (y.startedAt ?? "").localeCompare(x.startedAt ?? ""));
+  const withPhotos = routes.filter((r) => (r.photoCount ?? 0) > 0).slice(0, PHOTO_ACTIVITIES);
+  await Promise.all(
+    withPhotos.map(async (r) => {
+      try {
+        const res = await fetch(`https://www.strava.com/api/v3/activities/${r.id.slice(1)}/photos?size=1600&photo_sources=true`, {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const list = (await res.json()) as { urls?: Record<string, string> }[];
+        r.photos = list.map((p) => (p.urls ? Object.values(p.urls)[0] : "")).filter(Boolean);
+      } catch {
+        // A missing photo set never blocks the routes.
+      }
+    }),
+  );
   return routes;
 }

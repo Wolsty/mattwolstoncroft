@@ -37,6 +37,12 @@ export type Route = {
   polyline?: string;
   source?: "strava";
   url?: string;
+  /** Strava only */
+  sport?: string;
+  startedAt?: string;
+  movingSec?: number;
+  photoCount?: number;
+  photos?: string[];
 };
 
 /** Pin colors. Tuned to read on a near-black topo base. */

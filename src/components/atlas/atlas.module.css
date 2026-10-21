@@ -337,6 +337,178 @@
   outline-offset: 2px;
 }
 
+/* ---- Strava drawer ---- */
+.moreBtn .stravaMark {
+  fill: none;
+  stroke: #fc5200;
+  stroke-width: 1.9;
+  stroke-linejoin: round;
+}
+.moreBtn[aria-pressed="true"] {
+  border-color: #fc5200;
+  background: rgba(252, 82, 0, 0.14);
+}
+.drawer {
+  position: absolute;
+  z-index: 3;
+  top: calc(max(18px, env(safe-area-inset-top, 0px)) + 62px);
+  left: max(16px, env(safe-area-inset-left, 0px));
+  bottom: 100px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  background: var(--a-panel-solid);
+  border: 1px solid var(--a-line);
+  border-radius: 14px;
+  box-shadow: var(--a-shadow);
+  overflow: hidden;
+}
+.drawerHead {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--a-line);
+}
+.drawerHead h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 1.375rem;
+  line-height: 1.1;
+  color: var(--a-ink);
+}
+.drawerHead p {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--a-muted);
+}
+.drawerHead .close {
+  position: static;
+  flex: none;
+}
+.activities {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.activity {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--a-ink);
+  text-align: left;
+  cursor: pointer;
+}
+.activity:hover {
+  background: var(--a-raise);
+}
+.activity[aria-current="true"] {
+  background: rgba(252, 82, 0, 0.12);
+  box-shadow: inset 2px 0 0 #fc5200;
+}
+.activity:focus-visible {
+  outline: 2px solid var(--a-ink);
+  outline-offset: -2px;
+}
+.actDate {
+  display: grid;
+  justify-items: center;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.actDate span {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--a-muted);
+  margin-bottom: 3px;
+}
+.actText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.actName {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.actMeta {
+  font-family: var(--a-mono);
+  font-size: 0.6875rem;
+  color: var(--a-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.actThumb {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: var(--a-raise);
+}
+.actThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.actThumb em {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.7);
+  font-style: normal;
+  font-family: var(--a-mono);
+  font-size: 0.625rem;
+  color: #fff;
+}
+.more {
+  margin: 0 12px 4px;
+  padding: 8px;
+  border: 1px solid var(--a-line);
+  border-radius: 9px;
+  background: none;
+  color: var(--a-ink);
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+.more:hover {
+  background: var(--a-raise);
+}
+.powered {
+  margin: 0;
+  padding: 8px 18px 12px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fc5200;
+}
+
 /* ---- detail panel ---- */
 .panel {
   position: absolute;
@@ -555,6 +727,17 @@
 }
 
 @media (max-width: 760px) {
+  .drawer {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-height: 62%;
+    z-index: 4;
+    border-radius: 16px 16px 0 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
   /* The layers menu holds every view on phones; the pill toggle would crowd the name. */
   .baseToggle {
     display: none;

@@ -55,6 +55,8 @@ export function AtlasMap({ token }: { token?: string }) {
   const [base, setBase] = useState<BaseStyle>("topo");
   const [heat, setHeat] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [stravaOpen, setStravaOpen] = useState(false);
+  const [stravaShown, setStravaShown] = useState(40);
   const menuRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Selection>(null);
   const [photo, setPhoto] = useState(0);
@@ -255,7 +257,7 @@ export function AtlasMap({ token }: { token?: string }) {
       window.history.replaceState(null, "", url);
     } catch {}
     if (map && selectedPlace) flyToPlace(map, selectedPlace);
-    if (map && selectedRoute) fitTo(map, selectedRoute.coords);
+    if (map && selectedRoute) fitTo(map, selectedRoute.coords, { left: stravaOpen ? 400 : 70, right: 440 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected?.kind, selected?.id]);
 
@@ -282,6 +284,19 @@ export function AtlasMap({ token }: { token?: string }) {
     const miles = routes.reduce((s, r) => s + (r.miles || 0), 0);
     return { kimbo: n("kimbo"), nights: n("tent") + n("hut"), regions: regions.size, miles: Math.round(miles) };
   }, [places, routes]);
+
+  const stravaList = useMemo(
+    () =>
+      routes
+        .filter((r) => r.source === "strava")
+        .sort((a, b) => (b.startedAt ?? b.date).localeCompare(a.startedAt ?? a.date)),
+    [routes],
+  );
+  const stravaYear = useMemo(() => {
+    const year = new Date().getFullYear().toString();
+    const these = stravaList.filter((r) => r.date.startsWith(year));
+    return { year, count: these.length, miles: Math.round(these.reduce((s, r) => s + r.miles, 0)) };
+  }, [stravaList]);
 
   const routeCounts = useMemo(() => {
     const strava = routes.filter((r) => r.source === "strava").length;
@@ -354,6 +369,24 @@ export function AtlasMap({ token }: { token?: string }) {
               </button>
             ))}
           </div>
+          {routeCounts.strava > 0 && (
+            <button
+              type="button"
+              className={styles.moreBtn}
+              aria-pressed={stravaOpen}
+              data-active={stravaOpen ? "" : undefined}
+              onClick={() => {
+                setStravaOpen((o) => !o);
+                setMenuOpen(false);
+              }}
+              aria-label="Recent Strava activities"
+              title="Recent Strava activities"
+            >
+              <svg viewBox="0 0 24 24" width={18} height={18} aria-hidden="true" className={styles.stravaMark}>
+                <path d="M10 3 4 15h4l2-4 2 4h4z M14 15l2 4 2-4" />
+              </svg>
+            </button>
+          )}
           <button
             type="button"
             className={styles.moreBtn}
@@ -454,6 +487,63 @@ export function AtlasMap({ token }: { token?: string }) {
         </div>
       </nav>
 
+      {stravaOpen && (
+        <aside className={styles.drawer} aria-label="Recent Strava activities">
+          <header className={styles.drawerHead}>
+            <div>
+              <h2>Strava</h2>
+              <p>
+                {stravaYear.count} activities · {stravaYear.miles.toLocaleString()} mi in {stravaYear.year}
+              </p>
+            </div>
+            <button type="button" className={styles.close} onClick={() => setStravaOpen(false)} aria-label="Close Strava">
+              <svg viewBox="0 0 24 24" width={16} height={16} aria-hidden="true">
+                <path d="M6 6l12 12M18 6 6 18" />
+              </svg>
+            </button>
+          </header>
+          <ol className={styles.activities}>
+            {stravaList.slice(0, stravaShown).map((r) => (
+              <li key={r.id}>
+                <button
+                  type="button"
+                  className={styles.activity}
+                  aria-current={selected?.kind === "route" && selected.id === r.id ? "true" : undefined}
+                  onClick={() => {
+                    setSelected({ kind: "route", id: r.id });
+                    if (window.innerWidth <= 760) setStravaOpen(false);
+                  }}
+                >
+                  <time className={styles.actDate} dateTime={r.date}>
+                    <span>{new Date(r.date + "T12:00:00").toLocaleDateString("en-US", { month: "short" })}</span>
+                    {new Date(r.date + "T12:00:00").getDate()}
+                  </time>
+                  <span className={styles.actText}>
+                    <span className={styles.actName}>{r.name}</span>
+                    <span className={styles.actMeta}>
+                      {r.sport} · {r.miles} mi{r.gainFt ? ` · ${r.gainFt.toLocaleString()} ft` : ""}
+                    </span>
+                  </span>
+                  {r.photos?.[0] ? (
+                    <span className={styles.actThumb}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={r.photos[0]} alt="" loading="lazy" />
+                      {r.photos.length > 1 && <em>{r.photos.length}</em>}
+                    </span>
+                  ) : null}
+                </button>
+              </li>
+            ))}
+          </ol>
+          {stravaShown < stravaList.length && (
+            <button type="button" className={styles.more} onClick={() => setStravaShown((n) => n + 40)}>
+              Show older activities
+            </button>
+          )}
+          <p className={styles.powered}>Powered by Strava</p>
+        </aside>
+      )}
+
       {(selectedPlace || selectedRoute) && (
         <aside className={styles.panel} aria-live="polite">
           <button type="button" className={styles.close} onClick={() => setSelected(null)} aria-label="Close">
@@ -509,10 +599,30 @@ export function AtlasMap({ token }: { token?: string }) {
                 </div>
               </>
             )}
+            {selectedRoute?.photos?.length ? (
+              <>
+                <div className={styles.hero}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={selectedRoute.photos[photo] ?? selectedRoute.photos[0]} alt={`${selectedRoute.name}, photo ${photo + 1}`} />
+                </div>
+                {selectedRoute.photos.length > 1 && (
+                  <div className={styles.thumbs}>
+                    {selectedRoute.photos.map((src, i) => (
+                      <button key={src} type="button" aria-pressed={i === photo} onClick={() => setPhoto(i)} aria-label={`Photo ${i + 1}`}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={src} alt="" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : null}
             {selectedRoute && (
-              <div className={styles.body} style={{ paddingTop: 28 }}>
-                <span className={styles.tag} style={{ color: ROUTE_COLORS[selectedRoute.kind] }}>
-                  {selectedRoute.source === "strava" ? `Strava · ${ROUTE_KIND_LABEL[selectedRoute.kind]}` : ROUTE_KIND_LABEL[selectedRoute.kind]}
+              <div className={styles.body} style={{ paddingTop: selectedRoute.photos?.length ? undefined : 28 }}>
+                <span className={styles.tag} style={{ color: selectedRoute.source === "strava" ? "#FC5200" : ROUTE_COLORS[selectedRoute.kind] }}>
+                  {selectedRoute.source === "strava"
+                    ? `Strava · ${selectedRoute.sport ?? ROUTE_KIND_LABEL[selectedRoute.kind]}`
+                    : ROUTE_KIND_LABEL[selectedRoute.kind]}
                 </span>
                 <h2>{selectedRoute.name}</h2>
                 <dl className={styles.meta}>
@@ -524,6 +634,12 @@ export function AtlasMap({ token }: { token?: string }) {
                   )}
                   <dt>Distance</dt>
                   <dd className={styles.mono}>{selectedRoute.miles} mi</dd>
+                  {selectedRoute.movingSec ? (
+                    <>
+                      <dt>Moving</dt>
+                      <dd className={styles.mono}>{formatDuration(selectedRoute.movingSec)}</dd>
+                    </>
+                  ) : null}
                   {selectedRoute.gainFt ? (
                     <>
                       <dt>Climb</dt>
@@ -545,13 +661,15 @@ export function AtlasMap({ token }: { token?: string }) {
   );
 }
 
-function fitTo(map: mapboxgl.Map, coords: [number, number][]) {
+function fitTo(map: mapboxgl.Map, coords: [number, number][], side: { left?: number; right?: number } = {}) {
   if (!coords.length) return;
   const b = new mapboxgl.LngLatBounds(coords[0], coords[0]);
   coords.forEach((c) => b.extend(c));
   const wide = window.innerWidth > 760;
   map.fitBounds(b, {
-    padding: wide ? { top: 120, bottom: 110, left: 70, right: 70 } : { top: 150, bottom: 110, left: 30, right: 30 },
+    padding: wide
+      ? { top: 120, bottom: 110, left: side.left ?? 70, right: side.right ?? 70 }
+      : { top: 150, bottom: window.innerHeight * 0.45, left: 30, right: 30 },
     maxZoom: 13,
     duration: 900,
   });
@@ -565,4 +683,10 @@ function flyToPlace(map: mapboxgl.Map, p: Place) {
     duration: 1600,
     padding: wide ? { top: 80, bottom: 80, left: 0, right: 420 } : { top: 90, bottom: window.innerHeight * 0.5, left: 0, right: 0 },
   });
+}
+
+function formatDuration(sec: number) {
+  const h = Math.floor(sec / 3600);
+  const m = Math.round((sec % 3600) / 60);
+  return h ? `${h}h ${m.toString().padStart(2, "0")}m` : `${m}m`;
 }
