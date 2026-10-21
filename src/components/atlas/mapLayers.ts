@@ -218,6 +218,8 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
 }
 
 export const STRAVA_ORANGE = "#FC5200";
+/** The one color reserved for the selected route. */
+export const SELECTED_COLOR = "#3DE0FF";
 
 export function routesGeoJSON(routes: Route[]): GeoJSON.FeatureCollection {
   return {
@@ -352,32 +354,43 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     },
   } as AnyLayer);
 
-  // Selected route: a light halo under it so it stands out from everything else.
+  // Selected route: its own color (cyan, used nowhere else on the map), on a dark casing with a
+  // soft glow, drawn above every other route. Other routes dim while one is selected (see AtlasMap).
+  const selFilter = ["==", ["get", "id"], ""];
   map.addLayer({
-    id: "atlas-route-selected-halo",
+    id: "atlas-route-selected-glow",
     type: "line",
     source: "atlas-routes",
-    filter: ["==", ["get", "id"], ""],
+    filter: selFilter,
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
-      "line-color": "#ffffff",
-      "line-opacity": 0.85,
-      "line-width": ["interpolate", ["linear"], ["zoom"], 4, 6, 14, 10],
+      "line-color": SELECTED_COLOR,
+      "line-opacity": 0.35,
+      "line-blur": 6,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 14, 18],
+    },
+  } as AnyLayer);
+  map.addLayer({
+    id: "atlas-route-selected-casing",
+    type: "line",
+    source: "atlas-routes",
+    filter: selFilter,
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": "#050506",
+      "line-opacity": 0.9,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 4, 6, 14, 9],
     },
   } as AnyLayer);
   map.addLayer({
     id: "atlas-route-selected",
     type: "line",
     source: "atlas-routes",
-    filter: ["==", ["get", "id"], ""],
+    filter: selFilter,
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
-      "line-color": [
-        "case",
-        ["==", ["get", "source"], "strava"], STRAVA_ORANGE,
-        ["match", ["get", "kind"], "ski", ROUTE_COLORS.ski, "bike", ROUTE_COLORS.bike, "paddle", ROUTE_COLORS.paddle, ROUTE_COLORS.hike],
-      ],
-      "line-width": ["interpolate", ["linear"], ["zoom"], 4, 3, 14, 5.5],
+      "line-color": SELECTED_COLOR,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 4, 3.5, 14, 5.5],
     },
   } as AnyLayer);
 

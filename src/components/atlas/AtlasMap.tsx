@@ -227,8 +227,21 @@ export function AtlasMap({ token }: { token?: string }) {
       "atlas-routes-hit": ["any", savedF, liveF],
     };
     const selId = sel?.kind === "route" ? sel.id : "";
-    filters["atlas-route-selected-halo"] = ["==", ["get", "id"], selId];
-    filters["atlas-route-selected"] = ["==", ["get", "id"], selId];
+    for (const id of ["atlas-route-selected-glow", "atlas-route-selected-casing", "atlas-route-selected"]) {
+      filters[id] = ["==", ["get", "id"], selId];
+    }
+    // While a route is selected, the rest step back so it reads at a glance.
+    const dim = Boolean(selId);
+    const opacity: Record<string, number> = {
+      "atlas-strava": dim ? 0.3 : 0.9,
+      "atlas-strava-glow": dim ? 0.04 : 0.13,
+      "atlas-strava-hot": dim ? 0.05 : 0.16,
+      "atlas-routes": dim ? 0.35 : 1,
+      "atlas-routes-casing": dim ? 0.3 : 0.7,
+    };
+    for (const [id, o] of Object.entries(opacity)) {
+      if (map.getLayer(id)) map.setPaintProperty(id, "line-opacity", o);
+    }
     for (const [id, f] of Object.entries(filters)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (map.getLayer(id)) map.setFilter(id, f as any);
