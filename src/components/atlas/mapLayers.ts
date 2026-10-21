@@ -217,6 +217,8 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
   }
 }
 
+export const STRAVA_ORANGE = "#FC5200";
+
 export function routesGeoJSON(routes: Route[]): GeoJSON.FeatureCollection {
   return {
     type: "FeatureCollection",
@@ -307,6 +309,52 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
       ],
     },
   } as AnyLayer);
+  // Strava activities: orange, semi-transparent, no dark casing. Overlapping rides stack up,
+  // so the routes you repeat glow brighter, like a personal heatmap.
+  const isSelected = ["boolean", ["feature-state", "selected"], false];
+  map.addLayer({
+    id: "atlas-strava-glow",
+    type: "line",
+    source: "atlas-routes",
+    filter: ["==", ["get", "source"], "strava"],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": STRAVA_ORANGE,
+      "line-opacity": 0.1,
+      "line-blur": ["interpolate", ["linear"], ["zoom"], 5, 3, 14, 6],
+      "line-width": ["interpolate", ["linear"], ["zoom"], 5, 5, 14, 12],
+    },
+  } as AnyLayer);
+  map.addLayer({
+    id: "atlas-strava",
+    type: "line",
+    source: "atlas-routes",
+    filter: ["==", ["get", "source"], "strava"],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": STRAVA_ORANGE,
+      "line-opacity": ["case", isSelected, 1, 0.4],
+      "line-width": [
+        "case",
+        isSelected,
+        ["interpolate", ["linear"], ["zoom"], 5, 3, 14, 5],
+        ["interpolate", ["linear"], ["zoom"], 5, 1, 14, 2.4],
+      ],
+    },
+  } as AnyLayer);
+  map.addLayer({
+    id: "atlas-strava-hot",
+    type: "line",
+    source: "atlas-routes",
+    filter: ["==", ["get", "source"], "strava"],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": "#ffe2b8",
+      "line-opacity": 0.09,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 5, 0.6, 14, 1.4],
+    },
+  } as AnyLayer);
+
   map.addLayer({
     id: "atlas-routes-hit",
     type: "line",

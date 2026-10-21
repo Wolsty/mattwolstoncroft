@@ -214,14 +214,19 @@ export function AtlasMap({ token }: { token?: string }) {
 
   const syncRoutes = useCallback((map: mapboxgl.Map) => {
     const { showRoutes: saved, showStrava: live, selected: sel, routes: rs } = latest.current;
-    const filter = [
-      "any",
-      ["all", ["literal", saved], ["!=", ["get", "source"], "strava"]],
-      ["all", ["literal", live], ["==", ["get", "source"], "strava"]],
-    ];
-    for (const id of ["atlas-routes-casing", "atlas-routes", "atlas-routes-hit"]) {
+    const savedF = ["all", ["literal", saved], ["!=", ["get", "source"], "strava"]];
+    const liveF = ["all", ["literal", live], ["==", ["get", "source"], "strava"]];
+    const filters: Record<string, unknown[]> = {
+      "atlas-routes-casing": savedF,
+      "atlas-routes": savedF,
+      "atlas-strava-glow": liveF,
+      "atlas-strava": liveF,
+      "atlas-strava-hot": liveF,
+      "atlas-routes-hit": ["any", savedF, liveF],
+    };
+    for (const [id, f] of Object.entries(filters)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (map.getLayer(id)) map.setFilter(id, filter as any);
+      if (map.getLayer(id)) map.setFilter(id, f as any);
     }
     if (!map.getSource("atlas-routes")) return;
     rs.forEach((r, i) =>
