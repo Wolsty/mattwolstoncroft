@@ -15,6 +15,8 @@ export async function GET() {
   } catch (e) {
     console.error("[strava]", e);
     // The map still works without Strava; it just shows the saved routes.
-    return NextResponse.json({ routes: [], configured: true, error: "unavailable" }, { status: 200 });
+    // The message names the failing step and Strava's status code; it never contains a key.
+    const detail = e instanceof Error ? e.message : "unknown";
+    return NextResponse.json({ routes: [], configured: true, error: "unavailable", detail }, { status: 200 });
   }
 }
