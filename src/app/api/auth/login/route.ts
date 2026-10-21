@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
+import { SITE_COOKIE, siteToken } from "@/lib/siteAuth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const COOKIE_NAME = "site-auth";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 export async function POST(req: Request) {
@@ -23,23 +23,18 @@ export async function POST(req: Request) {
     );
   }
 
-  // Constant-time-ish comparison: compare same-length buffers.
-  const ok =
-    password.length === expected.length &&
-    (() => {
-      let mismatch = 0;
-      for (let i = 0; i < expected.length; i++) {
-        mismatch |= password.charCodeAt(i) ^ expected.charCodeAt(i);
-      }
-      return mismatch === 0;
-    })();
+  // Compare hashes so the check takes the same time whatever was typed.
+  const [given, want] = await Promise.all([siteToken(password), siteToken(expected)]);
+  let mismatch = 0;
+  for (let i = 0; i < want.length; i++) mismatch |= given.charCodeAt(i) ^ want.charCodeAt(i);
+  const ok = mismatch === 0;
 
   if (!ok) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(COOKIE_NAME, "1", {
+  res.cookies.set(SITE_COOKIE, want, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
