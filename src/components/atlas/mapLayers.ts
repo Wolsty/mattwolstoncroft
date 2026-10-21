@@ -301,11 +301,13 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
         "paddle", ROUTE_COLORS.paddle,
         ROUTE_COLORS.hike,
       ],
+      // Mapbox only allows zoom as the outermost expression, so the selected check sits inside each stop.
       "line-width": [
-        "case",
-        ["boolean", ["feature-state", "selected"], false],
-        ["interpolate", ["linear"], ["zoom"], 4, 3, 14, 6],
-        ["interpolate", ["linear"], ["zoom"], 4, 1.4, 14, 3.5],
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        4, ["case", ["boolean", ["feature-state", "selected"], false], 3, 1.6],
+        14, ["case", ["boolean", ["feature-state", "selected"], false], 6, 3.5],
       ],
     },
   } as AnyLayer);
@@ -333,13 +335,8 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
       "line-color": STRAVA_ORANGE,
-      "line-opacity": ["case", isSelected, 1, 0.85],
-      "line-width": [
-        "case",
-        isSelected,
-        ["interpolate", ["linear"], ["zoom"], 5, 3, 14, 5],
-        ["interpolate", ["linear"], ["zoom"], 5, 1.2, 14, 2.6],
-      ],
+      "line-opacity": ["case", isSelected, 1, 0.9],
+      "line-width": ["interpolate", ["linear"], ["zoom"], 4, ["case", isSelected, 3, 1.6], 14, ["case", isSelected, 6, 3]],
     },
   } as AnyLayer);
   map.addLayer({
@@ -352,6 +349,35 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
       "line-color": "#fff0d9",
       "line-opacity": 0.16,
       "line-width": ["interpolate", ["linear"], ["zoom"], 5, 0.7, 14, 1.5],
+    },
+  } as AnyLayer);
+
+  // Selected route: a light halo under it so it stands out from everything else.
+  map.addLayer({
+    id: "atlas-route-selected-halo",
+    type: "line",
+    source: "atlas-routes",
+    filter: ["==", ["get", "id"], ""],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": "#ffffff",
+      "line-opacity": 0.85,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 4, 6, 14, 10],
+    },
+  } as AnyLayer);
+  map.addLayer({
+    id: "atlas-route-selected",
+    type: "line",
+    source: "atlas-routes",
+    filter: ["==", ["get", "id"], ""],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": [
+        "case",
+        ["==", ["get", "source"], "strava"], STRAVA_ORANGE,
+        ["match", ["get", "kind"], "ski", ROUTE_COLORS.ski, "bike", ROUTE_COLORS.bike, "paddle", ROUTE_COLORS.paddle, ROUTE_COLORS.hike],
+      ],
+      "line-width": ["interpolate", ["linear"], ["zoom"], 4, 3, 14, 5.5],
     },
   } as AnyLayer);
 

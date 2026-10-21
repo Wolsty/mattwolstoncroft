@@ -226,6 +226,9 @@ export function AtlasMap({ token }: { token?: string }) {
       "atlas-strava-hot": liveF,
       "atlas-routes-hit": ["any", savedF, liveF],
     };
+    const selId = sel?.kind === "route" ? sel.id : "";
+    filters["atlas-route-selected-halo"] = ["==", ["get", "id"], selId];
+    filters["atlas-route-selected"] = ["==", ["get", "id"], selId];
     for (const [id, f] of Object.entries(filters)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (map.getLayer(id)) map.setFilter(id, f as any);
