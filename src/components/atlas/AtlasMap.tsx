@@ -476,20 +476,6 @@ export function AtlasMap({ token }: { token?: string }) {
     return { strava, saved: routes.length - strava };
   }, [routes]);
 
-  const counts = useMemo(() => {
-    const c: Partial<Record<PlaceType, number>> = {};
-    places.forEach((p) => (c[p.type] = (c[p.type] || 0) + 1));
-    return c;
-  }, [places]);
-
-  const toggleType = (t: PlaceType) =>
-    setHidden((h) => {
-      const next = new Set(h);
-      if (next.has(t)) next.delete(t);
-      else next.add(t);
-      return next;
-    });
-
   if (!TOKEN) {
     return (
       <main className={styles.page}>
@@ -641,6 +627,34 @@ export function AtlasMap({ token }: { token?: string }) {
               <button
                 type="button"
                 role="menuitemcheckbox"
+                aria-checked={showRoutes}
+                className={styles.menuItem}
+                onClick={() => setShowRoutes((v) => !v)}
+              >
+                <span className={styles.check} aria-hidden="true" />
+                <span>
+                  Saved routes
+                  <small>GPS tracks from your old maps ({routeCounts.saved})</small>
+                </span>
+              </button>
+              {routeCounts.strava > 0 && (
+                <button
+                  type="button"
+                  role="menuitemcheckbox"
+                  aria-checked={showStrava}
+                  className={styles.menuItem}
+                  onClick={() => setShowStrava((v) => !v)}
+                >
+                  <span className={styles.check} aria-hidden="true" />
+                  <span>
+                    Strava activities
+                    <small>Rides, tours and hikes from Strava ({routeCounts.strava})</small>
+                  </span>
+                </button>
+              )}
+              <button
+                type="button"
+                role="menuitemcheckbox"
                 aria-checked={heat}
                 className={styles.menuItem}
                 onClick={() => setHeat((h) => !h)}
@@ -657,49 +671,6 @@ export function AtlasMap({ token }: { token?: string }) {
       </header>
       {loadError && <p className={styles.error}>The places could not load. Reload to try again.</p>}
 
-      {/* Legend dock: the filters, centered along the bottom edge. */}
-      <nav className={styles.legend} aria-label="Show place types">
-        <div className={styles.legendRow}>
-          {TYPES.filter((t) => counts[t.id]).map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              className={styles.key}
-              aria-pressed={!hidden.has(t.id)}
-              aria-label={`${t.plural}, ${counts[t.id]}`}
-              title={t.plural}
-              onClick={() => toggleType(t.id)}
-            >
-              <i style={{ background: hidden.has(t.id) ? undefined : t.color, borderColor: t.color }}>
-                <Icon type={t.id} size={11} />
-              </i>
-              <span>{t.short}</span>
-              <em>{counts[t.id]}</em>
-            </button>
-          ))}
-          <span className={styles.sep} aria-hidden="true" />
-          <button type="button" className={styles.key} aria-pressed={showRoutes} onClick={() => setShowRoutes((s) => !s)}>
-            <i style={{ background: showRoutes ? ROUTE_COLORS.bike : undefined, borderColor: ROUTE_COLORS.bike }}>
-              <svg viewBox="0 0 24 24" width={11} height={11} className={styles.icon} aria-hidden="true">
-                <path d="M3 18c4 0 4-6 8-6s4-6 10-6" />
-              </svg>
-            </i>
-            <span>Routes</span>
-            <em>{routeCounts.saved}</em>
-          </button>
-          {routeCounts.strava > 0 && (
-            <button type="button" className={styles.key} aria-pressed={showStrava} onClick={() => setShowStrava((s) => !s)}>
-              <i style={{ background: showStrava ? "#FC5200" : undefined, borderColor: "#FC5200" }}>
-                <svg viewBox="0 0 24 24" width={11} height={11} className={styles.icon} aria-hidden="true">
-                  <path d="M10 3 4 15h4l2-4 2 4h4z M14 15l2 4 2-4" />
-                </svg>
-              </i>
-              <span>Strava</span>
-              <em>{routeCounts.strava}</em>
-            </button>
-          )}
-        </div>
-      </nav>
 
       {stravaOpen && (
         <aside className={styles.drawer} aria-label="Recent Strava activities">

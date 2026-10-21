@@ -36,3 +36,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Atlas photo exports no longer referenced (safe to delete)
+.atlas-photos-unused/
