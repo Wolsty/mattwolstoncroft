@@ -14,6 +14,7 @@ import { decodePolyline, type Route, type RouteKind } from "@/components/atlas/t
 /** Which Strava sports show on the map, and how they're drawn. Edit freely. */
 const SPORTS: Record<string, { kind: RouteKind; minMiles?: number }> = {
   BackcountrySki: { kind: "ski" },
+  AlpineSki: { kind: "ski" }, // resort days, lift lines included
   NordicSki: { kind: "ski" },
   Snowshoe: { kind: "hike" },
   Hike: { kind: "hike" },

@@ -3,7 +3,7 @@ import { unstable_cache } from "next/cache";
 import { fetchStravaRoutes, stravaConfigured } from "@/lib/strava";
 
 // Strava is asked at most every 6 hours; everyone in between gets the cached copy.
-const getRoutes = unstable_cache(fetchStravaRoutes, ["strava-routes-v1"], { revalidate: 6 * 60 * 60 });
+const getRoutes = unstable_cache(fetchStravaRoutes, ["strava-routes-v2"], { revalidate: 6 * 60 * 60 });
 
 export const dynamic = "force-dynamic";
 
