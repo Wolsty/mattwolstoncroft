@@ -39,8 +39,12 @@ export type AtlasEdits = {
 const EDITS_PATH = "atlas/edits.json";
 const EMPTY: AtlasEdits = { version: 1, updatedAt: "", places: {}, added: [], deleted: [] };
 
+/**
+ * A Blob store connected in the Vercel dashboard provides BLOB_STORE_ID and signs in with
+ * Vercel's built-in OIDC token; older setups provide BLOB_READ_WRITE_TOKEN. Either works.
+ */
 export function storeConfigured() {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+  return Boolean(process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN);
 }
 
 /** Always-fresh read, used before writing so two saves never overwrite each other's changes. */

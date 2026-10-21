@@ -45,7 +45,7 @@ function cleanEdit(raw: Record<string, unknown>): PlaceEdit & { photos?: string[
 export async function POST(req: Request) {
   if (!(await canEdit(req))) return NextResponse.json({ error: "Editing needs the edit password." }, { status: 401 });
   if (!storeConfigured())
-    return NextResponse.json({ error: "Storage isn't connected yet (BLOB_READ_WRITE_TOKEN)." }, { status: 503 });
+    return NextResponse.json({ error: "Storage isn't connected yet. Connect a Blob store to this project in Vercel." }, { status: 503 });
 
   let body: Record<string, unknown>;
   try {

@@ -12,7 +12,7 @@ const MAX_BYTES = 4 * 1024 * 1024; // the browser resizes before upload; this is
 export async function POST(req: Request) {
   if (!(await canEdit(req))) return NextResponse.json({ error: "Editing needs the edit password." }, { status: 401 });
   if (!storeConfigured())
-    return NextResponse.json({ error: "Storage isn't connected yet (BLOB_READ_WRITE_TOKEN)." }, { status: 503 });
+    return NextResponse.json({ error: "Storage isn't connected yet. Connect a Blob store to this project in Vercel." }, { status: 503 });
   const form = await req.formData();
   const file = form.get("file");
   const placeId = String(form.get("placeId") ?? "new").replace(/[^a-zA-Z0-9-]/g, "").slice(0, 40) || "new";
