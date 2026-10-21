@@ -50,7 +50,8 @@ export function AtlasMap({ token }: { token?: string }) {
   const [places, setPlaces] = useState<Place[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [hidden, setHidden] = useState<Set<PlaceType>>(new Set());
-  const [showRoutes, setShowRoutes] = useState(true);
+  const [showRoutes, setShowRoutes] = useState(true); // saved GPS tracks
+  const [showStrava, setShowStrava] = useState(true); // live Strava activities
   const [base, setBase] = useState<BaseStyle>("topo");
   const [heat, setHeat] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,8 +61,8 @@ export function AtlasMap({ token }: { token?: string }) {
   const [loadError, setLoadError] = useState(false);
 
   // Latest values for map event handlers, which are bound once.
-  const latest = useRef({ places, routes, hidden, showRoutes, selected, base, heat });
-  latest.current = { places, routes, hidden, showRoutes, selected, base, heat };
+  const latest = useRef({ places, routes, hidden, showRoutes, showStrava, selected, base, heat });
+  latest.current = { places, routes, hidden, showRoutes, showStrava, selected, base, heat };
 
   const visible = useMemo(() => places.filter((p) => !hidden.has(p.type)), [places, hidden]);
   const selectedPlace = selected?.kind === "place" ? places.find((p) => p.id === selected.id) ?? null : null;
@@ -212,9 +213,15 @@ export function AtlasMap({ token }: { token?: string }) {
   }, [menuOpen]);
 
   const syncRoutes = useCallback((map: mapboxgl.Map) => {
-    const { showRoutes: show, selected: sel, routes: rs } = latest.current;
+    const { showRoutes: saved, showStrava: live, selected: sel, routes: rs } = latest.current;
+    const filter = [
+      "any",
+      ["all", ["literal", saved], ["!=", ["get", "source"], "strava"]],
+      ["all", ["literal", live], ["==", ["get", "source"], "strava"]],
+    ];
     for (const id of ["atlas-routes-casing", "atlas-routes", "atlas-routes-hit"]) {
-      if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", show ? "visible" : "none");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (map.getLayer(id)) map.setFilter(id, filter as any);
     }
     if (!map.getSource("atlas-routes")) return;
     rs.forEach((r, i) =>
@@ -230,7 +237,7 @@ export function AtlasMap({ token }: { token?: string }) {
     const src = map?.getSource("atlas-routes") as mapboxgl.GeoJSONSource | undefined;
     src?.setData(routesGeoJSON(routes));
     if (map?.isStyleLoaded()) syncRoutes(map);
-  }, [routes, showRoutes, selected, syncRoutes]);
+  }, [routes, showRoutes, showStrava, selected, syncRoutes]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -270,6 +277,11 @@ export function AtlasMap({ token }: { token?: string }) {
     const miles = routes.reduce((s, r) => s + (r.miles || 0), 0);
     return { kimbo: n("kimbo"), nights: n("tent") + n("hut"), regions: regions.size, miles: Math.round(miles) };
   }, [places, routes]);
+
+  const routeCounts = useMemo(() => {
+    const strava = routes.filter((r) => r.source === "strava").length;
+    return { strava, saved: routes.length - strava };
+  }, [routes]);
 
   const counts = useMemo(() => {
     const c: Partial<Record<PlaceType, number>> = {};
@@ -421,8 +433,19 @@ export function AtlasMap({ token }: { token?: string }) {
               </svg>
             </i>
             <span>Routes</span>
-            <em>{routes.length}</em>
+            <em>{routeCounts.saved}</em>
           </button>
+          {routeCounts.strava > 0 && (
+            <button type="button" className={styles.key} aria-pressed={showStrava} onClick={() => setShowStrava((s) => !s)}>
+              <i style={{ background: showStrava ? "#FC5200" : undefined, borderColor: "#FC5200" }}>
+                <svg viewBox="0 0 24 24" width={11} height={11} className={styles.icon} aria-hidden="true">
+                  <path d="M10 3 4 15h4l2-4 2 4h4z M14 15l2 4 2-4" />
+                </svg>
+              </i>
+              <span>Strava</span>
+              <em>{routeCounts.strava}</em>
+            </button>
+          )}
         </div>
       </nav>
 
@@ -484,7 +507,7 @@ export function AtlasMap({ token }: { token?: string }) {
             {selectedRoute && (
               <div className={styles.body} style={{ paddingTop: 28 }}>
                 <span className={styles.tag} style={{ color: ROUTE_COLORS[selectedRoute.kind] }}>
-                  {ROUTE_KIND_LABEL[selectedRoute.kind]}
+                  {selectedRoute.source === "strava" ? `Strava · ${ROUTE_KIND_LABEL[selectedRoute.kind]}` : ROUTE_KIND_LABEL[selectedRoute.kind]}
                 </span>
                 <h2>{selectedRoute.name}</h2>
                 <dl className={styles.meta}>

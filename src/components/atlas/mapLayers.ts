@@ -223,7 +223,7 @@ export function routesGeoJSON(routes: Route[]): GeoJSON.FeatureCollection {
     features: routes.map((r, i) => ({
       type: "Feature",
       id: i, // feature-state key; matches the route's index in the array
-      properties: { id: r.id, kind: r.kind, name: r.name },
+      properties: { id: r.id, kind: r.kind, name: r.name, source: r.source ?? "saved" },
       geometry: { type: "LineString", coordinates: r.coords },
     })),
   };
