@@ -428,10 +428,10 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
 
   map.addSource("atlas-places", {
     type: "geojson",
-    data: placesGeoJSON(places),
+    data: placesGeoJSON(places.filter((p) => p.type !== "kimbo")),
     cluster: true,
     clusterRadius: 10,
-    clusterMaxZoom: 5,
+    clusterMaxZoom: 4,
   });
   map.addLayer({
     id: "atlas-clusters",
@@ -470,6 +470,19 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
       "symbol-sort-key": ["match", ["get", "type"], "kimbo", 2, "tent", 1, 3],
     },
   } as AnyLayer);
+  // Kimbo camps are never grouped: every night in the camper shows, at every zoom.
+  map.addSource("atlas-kimbo", { type: "geojson", data: placesGeoJSON(places.filter((p) => p.type === "kimbo")) });
+  map.addLayer({
+    id: "atlas-pins-kimbo",
+    type: "symbol",
+    source: "atlas-kimbo",
+    layout: {
+      "icon-image": ["concat", "pin-", ["get", "type"]],
+      "icon-allow-overlap": true,
+      "icon-ignore-placement": true,
+    },
+  } as AnyLayer);
+
   // The selected pin lives in its own unclustered source so it stays visible inside a cluster.
   map.addSource("atlas-selected", { type: "geojson", data: placesGeoJSON(selected ? [selected] : []) });
   map.addLayer({

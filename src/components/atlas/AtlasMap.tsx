@@ -31,7 +31,7 @@ import {
 } from "./mapLayers";
 
 const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "night"];
-const PIN_LAYERS = ["atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pin-selected"];
+const PIN_LAYERS = ["atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pins-kimbo", "atlas-pin-selected"];
 
 
 type Selection = { kind: "place" | "route"; id: string } | null;
@@ -169,14 +169,14 @@ export function AtlasMap({ token }: { token?: string }) {
     const pointer = () => (map.getCanvas().style.cursor = "pointer");
     const unpointer = () => (map.getCanvas().style.cursor = "");
     const hover = new mapboxgl.Popup({ closeButton: false, closeOnClick: false, offset: 16, className: styles.hover });
-    for (const layer of ["atlas-pins", "atlas-clusters", "atlas-routes-hit"]) {
+    for (const layer of ["atlas-pins", "atlas-pins-kimbo", "atlas-clusters", "atlas-routes-hit"]) {
       map.on("mouseenter", layer, pointer);
       map.on("mouseleave", layer, () => {
         unpointer();
         hover.remove();
       });
     }
-    map.on("mousemove", "atlas-pins", (e) => {
+    map.on("mousemove", ["atlas-pins", "atlas-pins-kimbo"], (e) => {
       const f = e.features?.[0];
       if (!f) return;
       const p = latest.current.places.find((x) => x.id === f.properties?.id);
@@ -189,14 +189,14 @@ export function AtlasMap({ token }: { token?: string }) {
     map.on("click", (e) => {
       if (latest.current.placing) pickRef.current(e.lngLat.lat, e.lngLat.lng);
     });
-    map.on("click", "atlas-pins", (e) => {
+    map.on("click", ["atlas-pins", "atlas-pins-kimbo"], (e) => {
       if (latest.current.placing) return;
       const id = e.features?.[0]?.properties?.id as string | undefined;
       if (id) setSelected({ kind: "place", id });
     });
     map.on("click", "atlas-routes-hit", (e) => {
       if (latest.current.placing) return;
-      if (map.queryRenderedFeatures(e.point, { layers: ["atlas-pins", "atlas-clusters"] }).length) return;
+      if (map.queryRenderedFeatures(e.point, { layers: ["atlas-pins", "atlas-pins-kimbo", "atlas-clusters"] }).length) return;
       const id = e.features?.[0]?.properties?.id as string | undefined;
       if (id) setSelected({ kind: "route", id });
     });
@@ -221,10 +221,10 @@ export function AtlasMap({ token }: { token?: string }) {
   // ---- keep map in sync with React state ----
   useEffect(() => {
     const map = mapRef.current;
-    for (const id of ["atlas-places", "atlas-heat"]) {
-      const src = map?.getSource(id) as mapboxgl.GeoJSONSource | undefined;
-      src?.setData(placesGeoJSON(visible));
-    }
+    const src = (id: string) => map?.getSource(id) as mapboxgl.GeoJSONSource | undefined;
+    src("atlas-heat")?.setData(placesGeoJSON(visible));
+    src("atlas-places")?.setData(placesGeoJSON(visible.filter((p) => p.type !== "kimbo")));
+    src("atlas-kimbo")?.setData(placesGeoJSON(visible.filter((p) => p.type === "kimbo")));
   }, [visible]);
 
   // Heatmap replaces the pins while it's on.
