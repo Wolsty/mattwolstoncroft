@@ -430,8 +430,8 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     type: "geojson",
     data: placesGeoJSON(places),
     cluster: true,
-    clusterRadius: 40,
-    clusterMaxZoom: 12,
+    clusterRadius: 22,
+    clusterMaxZoom: 8,
   });
   map.addLayer({
     id: "atlas-clusters",
