@@ -47,14 +47,14 @@ export type Route = {
 
 /** Pin colors. Tuned to read on a near-black topo base. */
 export const TYPES: { id: PlaceType; plural: string; short: string; one: string; color: string }[] = [
-  { id: "kimbo", plural: "Kimbo camps", short: "Kimbo", one: "Kimbo camp", color: "#E0952B" },
+  { id: "kimbo", plural: "Kimbo camps", short: "Kimbo", one: "Kimbo camp", color: "#8B6BD6" },
   { id: "tent", plural: "Tent nights", short: "Tent", one: "Tent camp", color: "#3E9A63" },
   { id: "hut", plural: "Huts & yurts", short: "Huts", one: "Hut or yurt", color: "#A9744F" },
   { id: "ski", plural: "Ski", short: "Ski", one: "Ski", color: "#4A97D8" },
   { id: "climb", plural: "Climbing", short: "Climb", one: "Climbing", color: "#D9603F" },
   { id: "hike", plural: "Hikes", short: "Hike", one: "Hike", color: "#8FA23A" },
   { id: "water", plural: "Water", short: "Water", one: "On the water", color: "#2AA5A5" },
-  { id: "memory", plural: "Memories", short: "Memory", one: "Memory", color: "#A867B8" },
+  { id: "memory", plural: "Memories", short: "Memory", one: "Memory", color: "#D8B04A" },
   { id: "someday", plural: "Someday", short: "Someday", one: "Someday", color: "#8A8A90" },
 ];
 
@@ -72,8 +72,9 @@ export const ROUTE_COLORS: Record<RouteKind, string> = {
 
 /** 24×24 stroke icons, path data only so they draw with Path2D. */
 export const ICON_PATHS: Record<PlaceType, string> = {
+  // Pickup with a camper on the bed: camper shell, cab, body, two wheels.
   kimbo:
-    "M2 17V10h11V6h4.5L22 11v6z M13 10h5 M8.1 18a1.6 1.6 0 1 1-3.2 0a1.6 1.6 0 1 1 3.2 0 M19.1 18a1.6 1.6 0 1 1-3.2 0a1.6 1.6 0 1 1 3.2 0",
+    "M3 13V7.5C3 6.7 3.7 6 4.5 6H13v7 M13 9h3.4l3.1 4 M2 13h20v3.5H2z M6 8.8h3.5 M8.6 17.6a1.9 1.9 0 1 1-3.8 0a1.9 1.9 0 1 1 3.8 0 M19.1 17.6a1.9 1.9 0 1 1-3.8 0a1.9 1.9 0 1 1 3.8 0",
   tent: "M12 4 2.5 20h19z M12 4v4 M9 20l3-6 3 6",
   hut: "M3 12c3-4 6-6 9-6s6 2 9 6 M5 11v9h14v-9 M10 20v-5h4v5",
   ski: "M5 20 19 4 M5 4l14 16 M3.5 18.5l3 3 M17.5 18.5l-3 3",
