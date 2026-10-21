@@ -309,8 +309,8 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
       ],
     },
   } as AnyLayer);
-  // Strava activities: orange, semi-transparent, no dark casing. Overlapping rides stack up,
-  // so the routes you repeat glow brighter, like a personal heatmap.
+  // Strava activities: a solid orange line so a ride done once reads clearly, plus a faint
+  // warm-white core and glow that stack where rides overlap, so repeated routes run hot.
   const isSelected = ["boolean", ["feature-state", "selected"], false];
   map.addLayer({
     id: "atlas-strava-glow",
@@ -320,7 +320,7 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
       "line-color": STRAVA_ORANGE,
-      "line-opacity": 0.1,
+      "line-opacity": 0.13,
       "line-blur": ["interpolate", ["linear"], ["zoom"], 5, 3, 14, 6],
       "line-width": ["interpolate", ["linear"], ["zoom"], 5, 5, 14, 12],
     },
@@ -333,12 +333,12 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
       "line-color": STRAVA_ORANGE,
-      "line-opacity": ["case", isSelected, 1, 0.4],
+      "line-opacity": ["case", isSelected, 1, 0.85],
       "line-width": [
         "case",
         isSelected,
         ["interpolate", ["linear"], ["zoom"], 5, 3, 14, 5],
-        ["interpolate", ["linear"], ["zoom"], 5, 1, 14, 2.4],
+        ["interpolate", ["linear"], ["zoom"], 5, 1.2, 14, 2.6],
       ],
     },
   } as AnyLayer);
@@ -349,9 +349,9 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     filter: ["==", ["get", "source"], "strava"],
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
-      "line-color": "#ffe2b8",
-      "line-opacity": 0.09,
-      "line-width": ["interpolate", ["linear"], ["zoom"], 5, 0.6, 14, 1.4],
+      "line-color": "#fff0d9",
+      "line-opacity": 0.16,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 5, 0.7, 14, 1.5],
     },
   } as AnyLayer);
 
