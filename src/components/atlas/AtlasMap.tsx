@@ -236,66 +236,74 @@ export function AtlasMap({ token }: { token?: string }) {
     <main className={styles.page}>
       <div ref={container} className={styles.map} aria-label="Map of places" />
 
-      <div className={styles.chrome}>
-        <header className={styles.head}>
+      {/* Top bar: identity left, the numbers in the middle, base map right. */}
+      <header className={styles.topbar}>
+        <div className={styles.brand}>
+          <h1 className={styles.title}>Atlas</h1>
           <a href="/" className={styles.home}>
             Matthew Wolstoncroft
           </a>
-          <h1 className={styles.title}>Atlas</h1>
-          <p className={styles.lede}>Places I&rsquo;ve slept, skied, climbed and wandered.</p>
-          <dl className={styles.stats}>
-            <div>
-              <dd>{stats.kimbo}</dd>
-              <dt>Kimbo camps</dt>
-            </div>
-            <div>
-              <dd>{stats.nights}</dd>
-              <dt>backcountry nights</dt>
-            </div>
-            <div>
-              <dd>{stats.regions}</dd>
-              <dt>states &amp; provinces</dt>
-            </div>
-            <div>
-              <dd>{stats.miles.toLocaleString()}</dd>
-              <dt>route miles</dt>
-            </div>
-          </dl>
-          {loadError && <p className={styles.error}>The places could not load. Reload to try again.</p>}
-        </header>
-        <div className={styles.chips} role="group" aria-label="Show place types">
+        </div>
+        <dl className={styles.stats}>
+          <div>
+            <dd>{stats.kimbo}</dd>
+            <dt>Kimbo camps</dt>
+          </div>
+          <div>
+            <dd>{stats.nights}</dd>
+            <dt>Backcountry nights</dt>
+          </div>
+          <div>
+            <dd>{stats.regions}</dd>
+            <dt>States &amp; provinces</dt>
+          </div>
+          <div>
+            <dd>{stats.miles.toLocaleString()}</dd>
+            <dt>Route miles</dt>
+          </div>
+        </dl>
+        <div className={styles.baseToggle} role="group" aria-label="Base map">
+          {(["topo", "satellite"] as BaseStyle[]).map((b) => (
+            <button key={b} type="button" aria-pressed={base === b} onClick={() => setBase(b)}>
+              {b === "topo" ? "Topo" : "Satellite"}
+            </button>
+          ))}
+        </div>
+      </header>
+      {loadError && <p className={styles.error}>The places could not load. Reload to try again.</p>}
+
+      {/* Legend dock: the filters, centered along the bottom edge. */}
+      <nav className={styles.legend} aria-label="Show place types">
+        <div className={styles.legendRow}>
           {TYPES.filter((t) => counts[t.id]).map((t) => (
             <button
               key={t.id}
               type="button"
-              className={styles.chip}
+              className={styles.key}
               aria-pressed={!hidden.has(t.id)}
+              aria-label={`${t.plural}, ${counts[t.id]}`}
+              title={t.plural}
               onClick={() => toggleType(t.id)}
             >
-              <i style={{ background: hidden.has(t.id) ? undefined : t.color }}>
-                <Icon type={t.id} />
+              <i style={{ background: hidden.has(t.id) ? undefined : t.color, borderColor: t.color }}>
+                <Icon type={t.id} size={11} />
               </i>
-              {t.plural} <em>{counts[t.id]}</em>
+              <span>{t.short}</span>
+              <em>{counts[t.id]}</em>
             </button>
           ))}
-          <button type="button" className={styles.chip} aria-pressed={showRoutes} onClick={() => setShowRoutes((s) => !s)}>
-            <i style={{ background: showRoutes ? ROUTE_COLORS.bike : undefined }}>
-              <svg viewBox="0 0 24 24" width={12} height={12} className={styles.icon} aria-hidden="true">
+          <span className={styles.sep} aria-hidden="true" />
+          <button type="button" className={styles.key} aria-pressed={showRoutes} onClick={() => setShowRoutes((s) => !s)}>
+            <i style={{ background: showRoutes ? ROUTE_COLORS.bike : undefined, borderColor: ROUTE_COLORS.bike }}>
+              <svg viewBox="0 0 24 24" width={11} height={11} className={styles.icon} aria-hidden="true">
                 <path d="M3 18c4 0 4-6 8-6s4-6 10-6" />
               </svg>
             </i>
-            Routes <em>{routes.length}</em>
+            <span>Routes</span>
+            <em>{routes.length}</em>
           </button>
         </div>
-      </div>
-
-      <div className={styles.baseToggle} role="group" aria-label="Base map">
-        {(["topo", "satellite"] as BaseStyle[]).map((b) => (
-          <button key={b} type="button" aria-pressed={base === b} onClick={() => setBase(b)}>
-            {b === "topo" ? "Topo" : "Satellite"}
-          </button>
-        ))}
-      </div>
+      </nav>
 
       {(selectedPlace || selectedRoute) && (
         <aside className={styles.panel} aria-live="polite">
@@ -389,7 +397,7 @@ function fitTo(map: mapboxgl.Map, coords: [number, number][]) {
   coords.forEach((c) => b.extend(c));
   const wide = window.innerWidth > 760;
   map.fitBounds(b, {
-    padding: wide ? { top: 80, bottom: 60, left: 480, right: 80 } : { top: 260, bottom: 60, left: 30, right: 30 },
+    padding: wide ? { top: 120, bottom: 110, left: 70, right: 70 } : { top: 150, bottom: 110, left: 30, right: 30 },
     maxZoom: 13,
     duration: 900,
   });
@@ -400,8 +408,7 @@ function flyToPlace(map: mapboxgl.Map, p: Place) {
   map.flyTo({
     center: [p.lng, p.lat],
     zoom: Math.max(map.getZoom(), 12.5),
-    pitch: 55,
     duration: 1600,
-    padding: wide ? { top: 0, bottom: 0, left: 0, right: 420 } : { top: 0, bottom: window.innerHeight * 0.5, left: 0, right: 0 },
+    padding: wide ? { top: 80, bottom: 80, left: 0, right: 420 } : { top: 90, bottom: window.innerHeight * 0.5, left: 0, right: 0 },
   });
 }

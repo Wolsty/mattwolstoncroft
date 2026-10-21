@@ -36,16 +36,16 @@ export type Route = {
 };
 
 /** Pin colors. Tuned to read on a near-black topo base. */
-export const TYPES: { id: PlaceType; plural: string; one: string; color: string }[] = [
-  { id: "kimbo", plural: "Kimbo camps", one: "Kimbo camp", color: "#E0952B" },
-  { id: "tent", plural: "Tent nights", one: "Tent camp", color: "#3E9A63" },
-  { id: "hut", plural: "Huts & yurts", one: "Hut or yurt", color: "#A9744F" },
-  { id: "ski", plural: "Ski", one: "Ski", color: "#4A97D8" },
-  { id: "climb", plural: "Climbing", one: "Climbing", color: "#D9603F" },
-  { id: "hike", plural: "Hikes", one: "Hike", color: "#8FA23A" },
-  { id: "water", plural: "Water", one: "On the water", color: "#2AA5A5" },
-  { id: "memory", plural: "Memories", one: "Memory", color: "#A867B8" },
-  { id: "someday", plural: "Someday", one: "Someday", color: "#8A8A90" },
+export const TYPES: { id: PlaceType; plural: string; short: string; one: string; color: string }[] = [
+  { id: "kimbo", plural: "Kimbo camps", short: "Kimbo", one: "Kimbo camp", color: "#E0952B" },
+  { id: "tent", plural: "Tent nights", short: "Tent", one: "Tent camp", color: "#3E9A63" },
+  { id: "hut", plural: "Huts & yurts", short: "Huts", one: "Hut or yurt", color: "#A9744F" },
+  { id: "ski", plural: "Ski", short: "Ski", one: "Ski", color: "#4A97D8" },
+  { id: "climb", plural: "Climbing", short: "Climb", one: "Climbing", color: "#D9603F" },
+  { id: "hike", plural: "Hikes", short: "Hike", one: "Hike", color: "#8FA23A" },
+  { id: "water", plural: "Water", short: "Water", one: "On the water", color: "#2AA5A5" },
+  { id: "memory", plural: "Memories", short: "Memory", one: "Memory", color: "#A867B8" },
+  { id: "someday", plural: "Someday", short: "Someday", one: "Someday", color: "#8A8A90" },
 ];
 
 export const TYPE_BY_ID = Object.fromEntries(TYPES.map((t) => [t.id, t])) as Record<
