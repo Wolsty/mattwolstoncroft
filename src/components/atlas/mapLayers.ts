@@ -4,8 +4,26 @@ import { ICON_PATHS, ROUTE_COLORS, TYPES, type Place, type Route } from "./types
 export const BASE_STYLES = {
   topo: "mapbox://styles/mapbox/dark-v11",
   satellite: "mapbox://styles/mapbox/satellite-streets-v12",
+  hybrid: "mapbox://styles/mapbox/satellite-v9",
+  outdoors: "mapbox://styles/mapbox/outdoors-v12",
+  night: "mapbox://styles/mapbox/standard",
 } as const;
 export type BaseStyle = keyof typeof BASE_STYLES;
+
+export const BASE_LABELS: Record<BaseStyle, string> = {
+  topo: "Topo",
+  satellite: "Satellite",
+  hybrid: "Hybrid",
+  outdoors: "Outdoors",
+  night: "3D Night",
+};
+export const BASE_NOTES: Record<BaseStyle, string> = {
+  topo: "Dark topo with contours and trails",
+  satellite: "Imagery with roads and places",
+  hybrid: "Imagery with contours and trails",
+  outdoors: "Mapbox's daytime topo, most labels",
+  night: "3D terrain and buildings, lit at night",
+};
 
 const M_TO_FT = 3.28084;
 const LABEL_FONT = ["DIN Pro Regular", "Arial Unicode MS Regular"];
@@ -14,8 +32,13 @@ const LABEL_FONT = ["DIN Pro Regular", "Arial Unicode MS Regular"];
 type AnyLayer = any;
 
 /**
- * Dark topo on top of Mapbox Dark: 3D terrain, hillshade, contours (feet),
- * trails and public land. Satellite gets terrain and contours only.
+ * Per base map: 3D terrain everywhere; our own hillshade, contours (feet), trails and
+ * public land where the base style doesn't already carry them.
+ *   topo      Mapbox Dark + everything, recolored for a dark ground
+ *   hybrid    plain imagery + contours, trails, public land edges in white
+ *   satellite imagery with Mapbox's roads/labels + contours
+ *   outdoors  Mapbox Outdoors already has contours and hillshade: terrain only
+ *   night     Mapbox Standard with the night light preset: terrain only
  */
 export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
   const firstSymbol = map.getStyle()?.layers?.find((l) => l.type === "symbol")?.id;
@@ -28,13 +51,21 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
   });
   map.setTerrain({ source: "dem-terrain", exaggeration: 1.3 });
 
-  map.setFog({
-    color: "#0b0b0c",
-    "high-color": "#161618",
-    "horizon-blend": 0.08,
-    "space-color": "#050506",
-    "star-intensity": 0.12,
-  });
+  if (base === "night") {
+    try {
+      map.setConfigProperty("basemap", "lightPreset", "night");
+    } catch {}
+    return;
+  }
+
+  map.setFog(
+    base === "outdoors"
+      ? { color: "#dfe5e1", "high-color": "#9fb7d1", "horizon-blend": 0.06, "space-color": "#0b0b0c", "star-intensity": 0.1 }
+      : { color: "#0b0b0c", "high-color": "#161618", "horizon-blend": 0.08, "space-color": "#050506", "star-intensity": 0.12 },
+  );
+  if (base === "outdoors") return;
+
+  const overlay = base === "topo" || base === "hybrid";
 
   if (base === "topo") {
     // Mapbox Dark is near-black; lift the ground so hillshade and contours have room to read.
@@ -66,9 +97,12 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       firstSymbol,
     );
 
+  }
+
+  if (overlay) {
     map.addSource("atlas-streets", { type: "vector", url: "mapbox://mapbox.mapbox-streets-v8" });
     // Public land: national parks and forests, wilderness
-    map.addLayer(
+    if (base === "topo") map.addLayer(
       {
         id: "atlas-public-land",
         type: "fill",
@@ -87,7 +121,12 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         "source-layer": "landuse_overlay",
         minzoom: 6,
         filter: ["==", ["get", "class"], "national_park"],
-        paint: { "line-color": "#5c5c64", "line-width": 0.9, "line-dasharray": [3, 2] },
+        paint: {
+          "line-color": base === "topo" ? "#5c5c64" : "#f2f2f4",
+          "line-opacity": base === "topo" ? 1 : 0.7,
+          "line-width": 0.9,
+          "line-dasharray": [3, 2],
+        },
       } as AnyLayer,
       firstSymbol,
     );
@@ -104,7 +143,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       "source-layer": "contour",
       minzoom: 10,
       filter: ["!", major],
-      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.45 : 0.3, "line-width": 0.7 },
+      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.45 : 0.35, "line-width": 0.7 },
     } as AnyLayer,
     firstSymbol,
   );
@@ -116,7 +155,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       "source-layer": "contour",
       minzoom: 8,
       filter: major,
-      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.75 : 0.5, "line-width": 1.2 },
+      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.75 : 0.6, "line-width": 1.2 },
     } as AnyLayer,
     firstSymbol,
   );
@@ -137,7 +176,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
     paint: { "text-color": "#c4c4cb", "text-halo-color": "#0b0b0c", "text-halo-width": 1.4 },
   } as AnyLayer);
 
-  if (base === "topo") {
+  if (overlay) {
     const trail = [
       "all",
       ["==", ["get", "class"], "path"],
@@ -152,7 +191,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         minzoom: 9,
         filter: trail,
         paint: {
-          "line-color": "#dcdce1",
+          "line-color": base === "topo" ? "#dcdce1" : "#ffffff",
           "line-opacity": 0.9,
           "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.7, 15, 1.8],
           "line-dasharray": [2.5, 1.6],
@@ -173,7 +212,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         "text-font": LABEL_FONT,
         "text-size": 11,
       },
-      paint: { "text-color": "#c8c8cd", "text-halo-color": "#0b0b0c", "text-halo-width": 1.4 },
+      paint: { "text-color": base === "topo" ? "#c8c8cd" : "#ffffff", "text-halo-color": "#0b0b0c", "text-halo-width": 1.4 },
     } as AnyLayer);
   }
 }
@@ -266,6 +305,31 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
     type: "line",
     source: "atlas-routes",
     paint: { "line-color": "#000", "line-opacity": 0, "line-width": 16 },
+  } as AnyLayer);
+
+  // Heatmap view: same places, unclustered; shown instead of pins when the viewer asks.
+  map.addSource("atlas-heat", { type: "geojson", data: placesGeoJSON(places) });
+  map.addLayer({
+    id: "atlas-heatmap",
+    type: "heatmap",
+    source: "atlas-heat",
+    layout: { visibility: "none" },
+    paint: {
+      "heatmap-weight": 1,
+      "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 3, 0.6, 12, 2.2],
+      "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 3, 14, 8, 30, 13, 50],
+      "heatmap-opacity": 0.85,
+      "heatmap-color": [
+        "interpolate",
+        ["linear"],
+        ["heatmap-density"],
+        0, "rgba(0,0,0,0)",
+        0.15, "rgba(120,72,20,0.55)",
+        0.4, "#b8701c",
+        0.7, "#e0952b",
+        1, "#fff1d6",
+      ],
+    },
   } as AnyLayer);
 
   map.addSource("atlas-places", {

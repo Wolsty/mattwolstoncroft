@@ -16,7 +16,10 @@ import {
   type PlaceType,
   type Route,
 } from "./types";
-import { BASE_STYLES, addDataLayers, addTopoLayers, placesGeoJSON, type BaseStyle } from "./mapLayers";
+import { BASE_LABELS, BASE_NOTES, BASE_STYLES, addDataLayers, addTopoLayers, placesGeoJSON, type BaseStyle } from "./mapLayers";
+
+const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "night"];
+const PIN_LAYERS = ["atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pin-selected"];
 
 
 type Selection = { kind: "place" | "route"; id: string } | null;
@@ -38,13 +41,16 @@ export function AtlasMap({ token }: { token?: string }) {
   const [hidden, setHidden] = useState<Set<PlaceType>>(new Set());
   const [showRoutes, setShowRoutes] = useState(true);
   const [base, setBase] = useState<BaseStyle>("topo");
+  const [heat, setHeat] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Selection>(null);
   const [photo, setPhoto] = useState(0);
   const [loadError, setLoadError] = useState(false);
 
   // Latest values for map event handlers, which are bound once.
-  const latest = useRef({ places, routes, hidden, showRoutes, selected });
-  latest.current = { places, routes, hidden, showRoutes, selected };
+  const latest = useRef({ places, routes, hidden, showRoutes, selected, base, heat });
+  latest.current = { places, routes, hidden, showRoutes, selected, base, heat };
 
   const visible = useMemo(() => places.filter((p) => !hidden.has(p.type)), [places, hidden]);
   const selectedPlace = selected?.kind === "place" ? places.find((p) => p.id === selected.id) ?? null : null;
@@ -84,12 +90,12 @@ export function AtlasMap({ token }: { token?: string }) {
 
     let firstLoad = true;
     map.on("style.load", () => {
-      const { places: ps, routes: rs, hidden: hd, selected: sel } = latest.current;
-      const styleName: BaseStyle = map.getStyle()?.name?.toLowerCase().includes("satellite") ? "satellite" : "topo";
-      addTopoLayers(map, styleName);
+      const { places: ps, routes: rs, hidden: hd, selected: sel, base: bs } = latest.current;
+      addTopoLayers(map, bs);
       const selPlace = sel?.kind === "place" ? ps.find((p) => p.id === sel.id) ?? null : null;
       addDataLayers(map, ps.filter((p) => !hd.has(p.type)), rs, selPlace);
       syncRoutes(map);
+      syncHeat(map);
       if (firstLoad) {
         firstLoad = false;
         if (selPlace) flyToPlace(map, selPlace);
@@ -146,9 +152,34 @@ export function AtlasMap({ token }: { token?: string }) {
   // ---- keep map in sync with React state ----
   useEffect(() => {
     const map = mapRef.current;
-    const src = map?.getSource("atlas-places") as mapboxgl.GeoJSONSource | undefined;
-    src?.setData(placesGeoJSON(visible));
+    for (const id of ["atlas-places", "atlas-heat"]) {
+      const src = map?.getSource(id) as mapboxgl.GeoJSONSource | undefined;
+      src?.setData(placesGeoJSON(visible));
+    }
   }, [visible]);
+
+  // Heatmap replaces the pins while it's on.
+  const syncHeat = useCallback((map: mapboxgl.Map) => {
+    const on = latest.current.heat;
+    if (map.getLayer("atlas-heatmap")) map.setLayoutProperty("atlas-heatmap", "visibility", on ? "visible" : "none");
+    for (const id of PIN_LAYERS) if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "none" : "visible");
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map?.isStyleLoaded()) syncHeat(map);
+    if (heat) setSelected(null);
+  }, [heat, syncHeat]);
+
+  // Close the map menu on outside click.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = (e: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    };
+    window.addEventListener("pointerdown", onDown);
+    return () => window.removeEventListener("pointerdown", onDown);
+  }, [menuOpen]);
 
   const syncRoutes = useCallback((map: mapboxgl.Map) => {
     const { showRoutes: show, selected: sel, routes: rs } = latest.current;
@@ -191,7 +222,11 @@ export function AtlasMap({ token }: { token?: string }) {
   }, [base]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMenuOpen(false);
+      setSelected(null);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
@@ -262,12 +297,66 @@ export function AtlasMap({ token }: { token?: string }) {
             <dt>Route miles</dt>
           </div>
         </dl>
-        <div className={styles.baseToggle} role="group" aria-label="Base map">
-          {(["topo", "satellite"] as BaseStyle[]).map((b) => (
-            <button key={b} type="button" aria-pressed={base === b} onClick={() => setBase(b)}>
-              {b === "topo" ? "Topo" : "Satellite"}
-            </button>
-          ))}
+        <div className={styles.mapControls} ref={menuRef}>
+          <div className={styles.baseToggle} role="group" aria-label="Base map">
+            {(["topo", "satellite"] as BaseStyle[]).map((b) => (
+              <button key={b} type="button" aria-pressed={base === b} onClick={() => setBase(b)}>
+                {BASE_LABELS[b]}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            className={styles.moreBtn}
+            aria-expanded={menuOpen}
+            aria-haspopup="true"
+            data-active={MORE_BASES.includes(base) || heat ? "" : undefined}
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="More map views"
+          >
+            {MORE_BASES.includes(base) && <span>{BASE_LABELS[base]}</span>}
+            <svg viewBox="0 0 24 24" width={18} height={18} aria-hidden="true">
+              <path d="M12 3 2 8l10 5 10-5z M2 13l10 5 10-5 M2 18l10 5 10-5" />
+            </svg>
+          </button>
+          {menuOpen && (
+            <div className={styles.menu} role="menu">
+              <p className={styles.menuHead}>Map</p>
+              {(Object.keys(BASE_LABELS) as BaseStyle[]).map((b) => (
+                <button
+                  key={b}
+                  type="button"
+                  role="menuitemradio"
+                  aria-checked={base === b}
+                  className={styles.menuItem}
+                  onClick={() => {
+                    setBase(b);
+                    setMenuOpen(false);
+                  }}
+                >
+                  <span className={styles.radio} aria-hidden="true" />
+                  <span>
+                    {BASE_LABELS[b]}
+                    <small>{BASE_NOTES[b]}</small>
+                  </span>
+                </button>
+              ))}
+              <p className={styles.menuHead}>Show</p>
+              <button
+                type="button"
+                role="menuitemcheckbox"
+                aria-checked={heat}
+                className={styles.menuItem}
+                onClick={() => setHeat((h) => !h)}
+              >
+                <span className={styles.check} aria-hidden="true" />
+                <span>
+                  Heatmap
+                  <small>Where the most nights and days add up</small>
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       </header>
       {loadError && <p className={styles.error}>The places could not load. Reload to try again.</p>}

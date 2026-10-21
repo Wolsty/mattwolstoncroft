@@ -125,8 +125,112 @@
   font-family: var(--font-body);
 }
 
-.baseToggle {
+.mapControls {
+  position: relative;
   justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.moreBtn {
+  height: 36px;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--a-line);
+  background: rgba(20, 20, 22, 0.85);
+  color: var(--a-ink);
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+.moreBtn svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.moreBtn[data-active] {
+  border-color: var(--a-ink);
+}
+.moreBtn:focus-visible,
+.menuItem:focus-visible {
+  outline: 2px solid var(--a-ink);
+  outline-offset: 2px;
+}
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 5;
+  width: 290px;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--a-panel-solid);
+  border: 1px solid var(--a-line);
+  box-shadow: var(--a-shadow);
+}
+.menuHead {
+  margin: 0;
+  padding: 10px 10px 4px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--a-muted);
+}
+.menuItem {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--a-ink);
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.menuItem:hover {
+  background: var(--a-raise);
+}
+.menuItem small {
+  display: block;
+  margin-top: 1px;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--a-muted);
+}
+.radio,
+.check {
+  flex: none;
+  margin-top: 4px;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--a-muted);
+  border-radius: 50%;
+}
+.check {
+  border-radius: 4px;
+}
+.menuItem[aria-checked="true"] .radio {
+  border-color: var(--a-ink);
+  background: radial-gradient(circle, var(--a-ink) 0 3.5px, transparent 4px);
+}
+.menuItem[aria-checked="true"] .check {
+  border-color: var(--a-ink);
+  background: var(--a-ink);
+  box-shadow: inset 0 0 0 2.5px var(--a-panel-solid);
+}
+
+.baseToggle {
   display: flex;
   padding: 3px;
   border-radius: 999px;
@@ -438,6 +542,10 @@
 }
 
 @media (max-width: 760px) {
+  /* The layers menu holds every view on phones; the pill toggle would crowd the name. */
+  .baseToggle {
+    display: none;
+  }
   .topbar {
     grid-template-columns: 1fr auto;
     row-gap: 12px;
