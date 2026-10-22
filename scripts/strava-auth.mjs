@@ -35,7 +35,7 @@ const authUrl =
     redirect_uri: REDIRECT,
     response_type: "code",
     approval_prompt: "force",
-    scope: "read,activity:read",
+    scope: "read,activity:read_all",
   });
 
 const server = http.createServer(async (req, res) => {

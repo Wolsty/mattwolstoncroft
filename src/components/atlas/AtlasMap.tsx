@@ -648,7 +648,7 @@ export function AtlasMap({ token }: { token?: string }) {
                   <span className={styles.check} aria-hidden="true" />
                   <span>
                     Strava activities
-                    <small>Rides, tours and hikes from Strava ({routeCounts.strava})</small>
+                    <small>Every activity from Strava ({routeCounts.strava})</small>
                   </span>
                 </button>
               )}
