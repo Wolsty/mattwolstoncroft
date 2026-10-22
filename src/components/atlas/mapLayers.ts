@@ -101,6 +101,22 @@ const DARK = {
   halo: (c: HSLA) => ({ h: 240, s: 0.05, l: 0.06, a: c.a }),
 };
 
+/** Scales the output values of a width expression, leaving zoom stops and conditions alone. */
+function scaleWidth(v: unknown, k: number): unknown {
+  if (typeof v === "number") return v * k;
+  if (!Array.isArray(v)) return v;
+  const [op] = v;
+  if (op === "interpolate") return v.map((x, i) => (i >= 3 && i % 2 === 0 ? scaleWidth(x, k) : x));
+  if (op === "step") return v.map((x, i) => (i >= 2 && i % 2 === 0 ? scaleWidth(x, k) : x));
+  if (op === "match") return v.map((x, i) => (i >= 2 && (i % 2 === 1 || i === v.length - 1) ? scaleWidth(x, k) : x));
+  if (op === "case") return v.map((x, i) => (i >= 1 && (i % 2 === 0 || i === v.length - 1) ? scaleWidth(x, k) : x));
+  return v;
+}
+
+/** Highways and major roads: thinner and dimmer, so they don't outweigh trails and routes. */
+const MAJOR_ROAD = /motorway|trunk|primary/;
+const MAJOR_ROAD_WIDTH = 0.4;
+
 export function darkenOutdoors(map: mapboxgl.Map) {
   for (const layer of map.getStyle()?.layers ?? []) {
     const id = layer.id;
@@ -133,6 +149,11 @@ export function darkenOutdoors(map: mapboxgl.Map) {
         break;
       case "line":
         set("line-color", water ? DARK.water : /path|trail|piste|aerialway|ferry/.test(id) ? DARK.trail : DARK.line);
+        if (MAJOR_ROAD.test(id) && !/label|shield/.test(id)) {
+          const w = map.getPaintProperty(id, "line-width");
+          if (w !== undefined && w !== null) map.setPaintProperty(id, "line-width", scaleWidth(w, MAJOR_ROAD_WIDTH) as number);
+          set("line-color", (c) => ({ ...DARK.line(c), l: Math.min(DARK.line(c).l, 0.36) }));
+        }
         break;
       case "circle":
         set("circle-color", DARK.ground);
