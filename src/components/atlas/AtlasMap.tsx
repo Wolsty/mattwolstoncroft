@@ -73,6 +73,7 @@ export function AtlasMap({ token }: { token?: string }) {
   const menuRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Selection>(null);
   const [photo, setPhoto] = useState(0);
+  const [viewer, setViewer] = useState<{ photos: string[]; title: string } | null>(null);
   const [loadError, setLoadError] = useState(false);
   // Editing (only for Matthew, behind the edit password)
   const [canEdit, setCanEdit] = useState(false);
@@ -268,6 +269,20 @@ export function AtlasMap({ token }: { token?: string }) {
     if (map) syncHeat(map);
     if (heat) setSelected(null);
   }, [heat, syncHeat]);
+
+  // Full-size photo viewer: arrows step through, Escape closes.
+  useEffect(() => {
+    if (!viewer) return;
+    const n = viewer.photos.length;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setViewer(null);
+      else if (e.key === "ArrowRight") setPhoto((i) => (i + 1) % n);
+      else if (e.key === "ArrowLeft") setPhoto((i) => (i - 1 + n) % n);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [viewer]);
+  useEffect(() => setViewer(null), [selected?.kind, selected?.id]);
 
   // Close the map menu on outside click.
   useEffect(() => {
@@ -899,8 +914,26 @@ export function AtlasMap({ token }: { token?: string }) {
               <>
                 <div className={styles.hero}>
                   {selectedPlace.photos.length ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={selectedPlace.photos[photo]} alt={`${placeTitle(selectedPlace)}, photo ${photo + 1}`} />
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={selectedPlace.photos[photo]}
+                        alt={`${placeTitle(selectedPlace)}, photo ${photo + 1}`}
+                        className={styles.zoomable}
+                        onClick={() => setViewer({ photos: selectedPlace.photos, title: placeTitle(selectedPlace) })}
+                      />
+                  <button
+                    type="button"
+                    className={styles.expand}
+                    onClick={() => setViewer({ photos: selectedPlace.photos, title: placeTitle(selectedPlace) })}
+                    aria-label="View photos full size"
+                    title="View full size"
+                  >
+                    <svg viewBox="0 0 24 24" width={16} height={16} aria-hidden="true">
+                      <path d="M14 4h6v6 M20 4l-7 7 M10 20H4v-6 M4 20l7-7" />
+                    </svg>
+                  </button>
+                    </>
                   ) : (
                     <span className={styles.badge} style={{ background: TYPE_BY_ID[selectedPlace.type].color }}>
                       <Icon type={selectedPlace.type} size={26} />
@@ -956,7 +989,23 @@ export function AtlasMap({ token }: { token?: string }) {
               <>
                 <div className={styles.hero}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={selectedRoute.photos[photo] ?? selectedRoute.photos[0]} alt={`${selectedRoute.name}, photo ${photo + 1}`} />
+                  <img
+                    src={selectedRoute.photos[photo] ?? selectedRoute.photos[0]}
+                    alt={`${selectedRoute.name}, photo ${photo + 1}`}
+                    className={styles.zoomable}
+                    onClick={() => setViewer({ photos: selectedRoute.photos!, title: selectedRoute.name })}
+                  />
+                  <button
+                    type="button"
+                    className={styles.expand}
+                    onClick={() => setViewer({ photos: selectedRoute.photos!, title: selectedRoute.name })}
+                    aria-label="View photos full size"
+                    title="View full size"
+                  >
+                    <svg viewBox="0 0 24 24" width={16} height={16} aria-hidden="true">
+                      <path d="M14 4h6v6 M20 4l-7 7 M10 20H4v-6 M4 20l7-7" />
+                    </svg>
+                  </button>
                 </div>
                 {selectedRoute.photos.length > 1 && (
                   <div className={styles.thumbs}>
@@ -1061,6 +1110,15 @@ export function AtlasMap({ token }: { token?: string }) {
           </button>
         </div>
       )}
+      {viewer && (
+        <PhotoViewer
+          photos={viewer.photos}
+          title={viewer.title}
+          index={Math.min(photo, viewer.photos.length - 1)}
+          onIndex={setPhoto}
+          onClose={() => setViewer(null)}
+        />
+      )}
     </main>
   );
 }
@@ -1093,4 +1151,71 @@ function formatDuration(sec: number) {
   const h = Math.floor(sec / 3600);
   const m = Math.round((sec % 3600) / 60);
   return h ? `${h}h ${m.toString().padStart(2, "0")}m` : `${m}m`;
+}
+
+/** Full-screen photo viewer. Arrows or swipe to step through; Escape, ✕ or a click outside closes. */
+function PhotoViewer({
+  photos,
+  title,
+  index,
+  onIndex,
+  onClose,
+}: {
+  photos: string[];
+  title: string;
+  index: number;
+  onIndex: (i: number) => void;
+  onClose: () => void;
+}) {
+  const n = photos.length;
+  const step = (d: number) => onIndex((index + d + n) % n);
+  const startX = useRef<number | null>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => closeRef.current?.focus(), []);
+  return (
+    <div
+      className={styles.viewer}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${title}, photo ${index + 1} of ${n}`}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onPointerDown={(e) => (startX.current = e.clientX)}
+      onPointerUp={(e) => {
+        if (startX.current === null) return;
+        const dx = e.clientX - startX.current;
+        startX.current = null;
+        if (n > 1 && Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img key={photos[index]} src={photos[index]} alt={`${title}, photo ${index + 1}`} draggable={false} />
+      <div className={styles.viewerBar}>
+        <span>{title}</span>
+        {n > 1 && (
+          <span className={styles.mono}>
+            {index + 1} / {n}
+          </span>
+        )}
+      </div>
+      <button ref={closeRef} type="button" className={styles.viewerClose} onClick={onClose} aria-label="Close">
+        <svg viewBox="0 0 24 24" width={18} height={18} aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+      {n > 1 && (
+        <>
+          <button type="button" className={styles.viewerPrev} onClick={() => step(-1)} aria-label="Previous photo">
+            <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden="true">
+              <path d="M15 5l-7 7 7 7" />
+            </svg>
+          </button>
+          <button type="button" className={styles.viewerNext} onClick={() => step(1)} aria-label="Next photo">
+            <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden="true">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
+    </div>
+  );
 }
