@@ -1,0 +1,23 @@
+#!/bin/sh
+# Before every push: upload any new Atlas photos to Vercel Blob, so they show
+# up on the site. Photos are not committed (see README). No new photos = no
+# calls to Blob, so this costs nothing on ordinary pushes.
+# Enabled per clone with:  git config core.hooksPath .githooks
+cd "$(git rev-parse --show-toplevel)" || exit 0
+[ -d public/atlas-photos ] || exit 0
+
+# Git clients started from the Dock don't always have the shell's PATH.
+NODE="$(command -v node || true)"
+for c in /opt/homebrew/bin/node /usr/local/bin/node "$HOME/.volta/bin/node"; do
+  [ -z "$NODE" ] && [ -x "$c" ] && NODE="$c"
+done
+if [ -z "$NODE" ]; then
+  echo "pre-push: couldn't find node, so new Atlas photos weren't uploaded. Push stopped."
+  exit 1
+fi
+
+if ! "$NODE" scripts/atlas-photos-to-blob.mjs; then
+  echo "pre-push: Atlas photo upload failed, so the push was stopped (the site would show broken photos)."
+  echo "          Fix the error above and push again, or skip the check with: git push --no-verify"
+  exit 1
+fi

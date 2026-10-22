@@ -1,27 +1,25 @@
 #!/usr/bin/env node
 /**
  * Upload Atlas photos from public/atlas-photos/ to Vercel Blob, at the SAME
- * paths (atlas-photos/<place>/<file>.jpg), and record the store's base URL in
- * atlas-photos.config.json so next.config.mjs can send /atlas-photos/* there.
+ * paths (atlas-photos/<place>/<file>.jpg). next.config.mjs serves
+ * /atlas-photos/* from Blob, so places.json, edits saved on the site and the
+ * Atlas password are unaffected.
  *
  * Why: every Vercel deploy stored its own copy of ~375 MB of photos, and a day
  * of map work (20 deploys) filled the Hobby plan's 10 GB of deployment storage.
- * In Blob they are stored once. Because the paths do not change, places.json,
- * edits saved on the site (covers, removed photos) and the Atlas password all
- * keep working untouched.
  *
- * Safe to re-run: photos already in Blob are skipped, so after a new photo
- * import, run it again and it uploads only the new ones.
+ * Runs automatically before every `git push` (.githooks/pre-push), so new
+ * photos are uploaded without anyone remembering to. It is cheap to run often:
+ * a local list of what has already been uploaded (.atlas-photos-uploaded.json,
+ * not committed) means a push with no new photos makes no calls to Blob at all.
+ * Only new photos count against Blob's 2,000 included operations a month.
  *
- *   node scripts/atlas-photos-to-blob.mjs            upload
- *   node scripts/atlas-photos-to-blob.mjs --dry-run  count only, upload nothing
+ *   node scripts/atlas-photos-to-blob.mjs            upload anything new
+ *   node scripts/atlas-photos-to-blob.mjs --dry-run  report only
+ *   node scripts/atlas-photos-to-blob.mjs --resync   re-check Blob (2 operations)
  *
- * Credentials, either of these in .env.local:
- *   BLOB_READ_WRITE_TOKEN   (Vercel > Storage > your Blob store > .env.local tab)
- *   or what `npx vercel env pull .env.local` writes (BLOB_STORE_ID + VERCEL_OIDC_TOKEN)
- *
- * Each upload is one Blob "advanced operation"; Hobby includes 2,000 a month.
- * The script refuses to start a run of more than LIMIT uploads without --yes.
+ * Credentials: BLOB_READ_WRITE_TOKEN in .env.production.local (git-ignored),
+ * copied from Vercel > Storage > mattwolstoncroft-blob > .env.local tab.
  */
 import { readFileSync, readdirSync, statSync, writeFileSync, existsSync } from "node:fs";
 import { join, relative, sep } from "node:path";
@@ -30,6 +28,7 @@ import { list, put } from "@vercel/blob";
 const ROOT = process.cwd();
 const SRC = join(ROOT, "public", "atlas-photos");
 const CONFIG = join(ROOT, "atlas-photos.config.json");
+const MANIFEST = join(ROOT, ".atlas-photos-uploaded.json");
 const PREFIX = "atlas-photos/";
 const CONCURRENCY = 6; // well under Hobby's 900 advanced operations per minute
 const LIMIT = 1500;
@@ -37,8 +36,10 @@ const LIMIT = 1500;
 const args = new Set(process.argv.slice(2));
 const dryRun = args.has("--dry-run");
 
-// Minimal .env.local loader, so this needs no extra packages.
-for (const f of [".env.local", ".env"]) {
+// Load env files without overriding anything already set. The read-write token
+// is passed to Blob explicitly: with BLOB_STORE_ID present the library would
+// otherwise try Vercel's OIDC sign-in, which this store only allows from deploys.
+for (const f of [".env.production.local", ".env.local"]) {
   const p = join(ROOT, f);
   if (!existsSync(p)) continue;
   for (const line of readFileSync(p, "utf8").split("\n")) {
@@ -46,20 +47,11 @@ for (const f of [".env.local", ".env"]) {
     if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
   }
 }
+const token = process.env.BLOB_READ_WRITE_TOKEN || undefined;
 
 if (!existsSync(SRC)) {
-  console.error(`No photos folder at ${SRC}. Run this from the mattwolstoncroft repo folder.`);
-  process.exit(1);
-}
-const hasCreds =
-  process.env.BLOB_READ_WRITE_TOKEN || (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN);
-if (!hasCreds && !dryRun) {
-  console.error(
-    "No Blob credentials found in .env.local.\n" +
-      "  Run:  npx vercel env pull .env.local\n" +
-      "  or copy BLOB_READ_WRITE_TOKEN from Vercel > Storage > your Blob store > .env.local tab.",
-  );
-  process.exit(1);
+  console.log("Atlas photos: no local photos folder, nothing to upload.");
+  process.exit(0);
 }
 
 function walk(dir) {
@@ -68,45 +60,57 @@ function walk(dir) {
     return statSync(p).isDirectory() ? walk(p) : [p];
   });
 }
-
 const contentTypeOf = (f) =>
   f.endsWith(".png") ? "image/png" : f.endsWith(".webp") ? "image/webp" : "image/jpeg";
 
 const files = walk(SRC)
   .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
-  .map((f) => ({ file: f, pathname: PREFIX + relative(SRC, f).split(sep).join("/") }));
+  .map((f) => ({ file: f, size: statSync(f).size, pathname: PREFIX + relative(SRC, f).split(sep).join("/") }));
 
-// What is already in Blob, so a re-run only uploads new photos.
-const existing = new Map();
-let base = null;
-if (hasCreds) {
-  let cursor;
-  do {
-    const page = await list({ prefix: PREFIX, cursor, limit: 1000 });
-    for (const b of page.blobs) {
-      existing.set(b.pathname, b.size);
-      if (!base) base = new URL(b.url).origin;
-    }
-    cursor = page.hasMore ? page.cursor : undefined;
-  } while (cursor);
+let manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : null;
+const saveManifest = () => writeFileSync(MANIFEST, JSON.stringify(manifest) + "\n");
+
+function needCreds() {
+  if (token && !/^\*+$/.test(token)) return;
+  console.error(
+    token
+      ? "Atlas photos: BLOB_READ_WRITE_TOKEN is the masked placeholder (****). Copy it again with 'Show secret'."
+      : "Atlas photos: no BLOB_READ_WRITE_TOKEN in .env.production.local.\n" +
+          "  Copy it from Vercel > Storage > mattwolstoncroft-blob > .env.local tab.",
+  );
+  process.exit(1);
 }
 
-const todo = files.filter((f) => existing.get(f.pathname) !== statSync(f.file).size);
-const mb = (n) => (n / 1024 / 1024).toFixed(1);
-const todoBytes = todo.reduce((s, f) => s + statSync(f.file).size, 0);
-console.log(
-  `${files.length} photos on disk, ${files.length - todo.length} already in Blob, ` +
-    `${todo.length} to upload (${mb(todoBytes)} MB).`,
-);
+// First run on this machine (or --resync): learn what is already in Blob.
+if (!manifest || args.has("--resync")) {
+  needCreds();
+  manifest = {};
+  let cursor;
+  do {
+    const page = await list({ prefix: PREFIX, cursor, limit: 1000, token });
+    for (const b of page.blobs) manifest[b.pathname] = b.size;
+    cursor = page.hasMore ? page.cursor : undefined;
+  } while (cursor);
+  if (!dryRun) saveManifest();
+}
 
+const todo = files.filter((f) => manifest[f.pathname] !== f.size);
+if (todo.length === 0) {
+  console.log(`Atlas photos: all ${files.length} already in Blob.`);
+  process.exit(0);
+}
+const mb = (n) => (n / 1024 / 1024).toFixed(1);
+console.log(`Atlas photos: ${todo.length} new (${mb(todo.reduce((s, f) => s + f.size, 0))} MB) to upload.`);
 if (dryRun) process.exit(0);
 if (todo.length > LIMIT && !args.has("--yes")) {
   console.error(`That's more than ${LIMIT} uploads. Re-run with --yes if you're sure.`);
   process.exit(1);
 }
+needCreds();
 
+let base = existsSync(CONFIG) ? JSON.parse(readFileSync(CONFIG, "utf8")).base : null;
 let done = 0;
-let failed = [];
+const failed = [];
 const queue = [...todo];
 async function worker() {
   while (queue.length) {
@@ -118,9 +122,11 @@ async function worker() {
           addRandomSuffix: false, // keep the path identical to the site's
           allowOverwrite: true,   // a re-run replaces a half-finished upload
           contentType: contentTypeOf(f.file),
-          cacheControlMaxAge: 60 * 60 * 24 * 365, // photo files never change in place
+          cacheControlMaxAge: 60 * 60 * 24 * 365,
+          token,
         });
         if (!base) base = new URL(blob.url).origin;
+        manifest[f.pathname] = f.size;
         break;
       } catch (e) {
         if (attempt === 3) failed.push(`${f.pathname}: ${e.message}`);
@@ -128,27 +134,21 @@ async function worker() {
       }
     }
     done++;
-    if (done % 50 === 0 || done === todo.length) console.log(`  ${done}/${todo.length}`);
+    if (done % 50 === 0 || done === todo.length) {
+      saveManifest();
+      console.log(`  ${done}/${todo.length}`);
+    }
   }
 }
 await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+saveManifest();
 
 if (failed.length) {
-  console.error(`\n${failed.length} failed (re-run to retry just these):\n  ` + failed.slice(0, 10).join("\n  "));
+  console.error(`\n${failed.length} failed (run again to retry just these):\n  ` + failed.slice(0, 10).join("\n  "));
   process.exit(1);
 }
-if (!base) {
-  console.error("Could not work out the Blob store's URL. Nothing to configure.");
-  process.exit(1);
+if (!existsSync(CONFIG) && base) {
+  writeFileSync(CONFIG, JSON.stringify({ base, prefix: PREFIX }, null, 2) + "\n");
+  console.log(`Wrote ${relative(ROOT, CONFIG)}.`);
 }
-
-// Spot-check one photo through its public URL before anything points at Blob.
-const sample = files[0];
-const res = await fetch(`${base}/${sample.pathname}`, { method: "HEAD" });
-if (!res.ok) {
-  console.error(`Uploaded, but ${base}/${sample.pathname} returned ${res.status}. Not writing config.`);
-  process.exit(1);
-}
-
-writeFileSync(CONFIG, JSON.stringify({ base, prefix: PREFIX }, null, 2) + "\n");
-console.log(`\nAll ${files.length} photos are in Blob. Wrote ${relative(ROOT, CONFIG)} (base ${base}).`);
+console.log(`Atlas photos: uploaded ${todo.length}. All ${files.length} are in Blob.`);

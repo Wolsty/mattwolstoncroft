@@ -44,3 +44,6 @@ next-env.d.ts
 # deployed. Keep the originals here locally; don't commit them.
 /public/atlas-photos/
 .env*
+
+# Local record of which Atlas photos are already in Blob (scripts/atlas-photos-to-blob.mjs)
+/.atlas-photos-uploaded.json
