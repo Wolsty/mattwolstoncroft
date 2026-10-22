@@ -92,11 +92,12 @@ function mapColors(v: unknown, f: (c: HSLA) => HSLA): unknown {
 }
 
 const DARK = {
-  ground: (c: HSLA) => ({ ...c, s: c.s * 0.4, l: 0.07 + 0.24 * (1 - c.l) }), // light land → dark land, keeps wood/park tints
-  water: (c: HSLA) => ({ h: 212, s: 0.3, l: 0.15 + 0.06 * (1 - c.l), a: c.a }),
-  line: (c: HSLA) => ({ ...c, s: c.s * 0.45, l: 0.2 + 0.3 * c.l }), // roads and borders: mid grays, order kept
-  trail: (c: HSLA) => ({ ...c, s: Math.min(1, c.s * 1.1), l: Math.max(c.l, 0.6) }), // trails stay bright
-  text: (c: HSLA) => ({ ...c, s: c.s * 0.55, l: 0.93 - 0.5 * c.l }), // dark labels → light labels
+  // Neutral grays only: color comes from the pins and routes, not the ground.
+  ground: (c: HSLA) => ({ h: 240, s: 0.04, l: 0.07 + 0.2 * (1 - c.l), a: c.a }), // light land → dark land; woods/parks stay a shade apart
+  water: (c: HSLA) => ({ h: 220, s: 0.1, l: 0.13 + 0.05 * (1 - c.l), a: c.a }),
+  line: (c: HSLA) => ({ h: 240, s: 0.03, l: 0.2 + 0.3 * c.l, a: c.a }), // roads and borders: mid grays, order kept
+  trail: (c: HSLA) => ({ h: 40, s: 0.12, l: Math.max(c.l, 0.72), a: c.a }), // trails stay bright, near white
+  text: (c: HSLA) => ({ h: c.h, s: c.s * 0.15, l: 0.93 - 0.45 * c.l, a: c.a }), // dark labels → light labels
   halo: (c: HSLA) => ({ h: 240, s: 0.05, l: 0.06, a: c.a }),
 };
 
@@ -115,7 +116,7 @@ export function darkenOutdoors(map: mapboxgl.Map) {
       continue;
     }
     if (/contour/.test(id) && layer.type === "line") {
-      map.setPaintProperty(id, "line-color", "hsl(38, 18%, 58%)");
+      map.setPaintProperty(id, "line-color", "hsl(240, 4%, 60%)");
       continue;
     }
     const water = /water/.test(id);
