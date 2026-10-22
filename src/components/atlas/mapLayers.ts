@@ -233,6 +233,9 @@ export function routesGeoJSON(routes: Route[]): GeoJSON.FeatureCollection {
   };
 }
 
+/** Pin types that always show on their own, never folded into a numbered group. */
+export const UNGROUPED = new Set<string>(["kimbo", "resort"]);
+
 export function placesGeoJSON(places: Place[]): GeoJSON.FeatureCollection {
   return {
     type: "FeatureCollection",
@@ -457,7 +460,7 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
 
   map.addSource("atlas-places", {
     type: "geojson",
-    data: placesGeoJSON(places.filter((p) => p.type !== "kimbo")),
+    data: placesGeoJSON(places.filter((p) => !UNGROUPED.has(p.type))),
     cluster: true,
     clusterRadius: 10,
     clusterMaxZoom: 4,
@@ -499,8 +502,8 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
       "symbol-sort-key": ["match", ["get", "type"], "kimbo", 2, "tent", 1, 3],
     },
   } as AnyLayer);
-  // Kimbo camps are never grouped: every night in the camper shows, at every zoom.
-  map.addSource("atlas-kimbo", { type: "geojson", data: placesGeoJSON(places.filter((p) => p.type === "kimbo")) });
+  // Kimbo camps and ski areas are never grouped: each one shows at every zoom.
+  map.addSource("atlas-kimbo", { type: "geojson", data: placesGeoJSON(places.filter((p) => UNGROUPED.has(p.type))) });
   map.addLayer({
     id: "atlas-pins-kimbo",
     type: "symbol",

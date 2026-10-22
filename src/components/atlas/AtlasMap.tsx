@@ -25,6 +25,7 @@ import {
   BASE_STYLES,
   addDataLayers,
   addTopoLayers,
+  UNGROUPED,
   placesGeoJSON,
   routesGeoJSON,
   type BaseStyle,
@@ -249,8 +250,8 @@ export function AtlasMap({ token }: { token?: string }) {
     const map = mapRef.current;
     const src = (id: string) => map?.getSource(id) as mapboxgl.GeoJSONSource | undefined;
     src("atlas-heat")?.setData(placesGeoJSON(visible));
-    src("atlas-places")?.setData(placesGeoJSON(visible.filter((p) => p.type !== "kimbo")));
-    src("atlas-kimbo")?.setData(placesGeoJSON(visible.filter((p) => p.type === "kimbo")));
+    src("atlas-places")?.setData(placesGeoJSON(visible.filter((p) => !UNGROUPED.has(p.type))));
+    src("atlas-kimbo")?.setData(placesGeoJSON(visible.filter((p) => UNGROUPED.has(p.type))));
   }, [visible]);
 
   // Heatmap replaces the pins while it's on.
