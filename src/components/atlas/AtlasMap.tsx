@@ -31,7 +31,7 @@ import {
   type BaseStyle,
 } from "./mapLayers";
 
-const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "night"];
+const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "dark", "night"];
 const PIN_LAYERS = ["atlas-fresh-ring", "atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pins-kimbo", "atlas-pin-selected"];
 
 // ---- timeline helpers: dates as whole days since 1970 ----

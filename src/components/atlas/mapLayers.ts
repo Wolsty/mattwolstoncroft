@@ -2,7 +2,8 @@ import type mapboxgl from "mapbox-gl";
 import { ICON_PATHS, ROUTE_COLORS, TYPES, type Place, type Route } from "./types";
 
 export const BASE_STYLES = {
-  topo: "mapbox://styles/mapbox/dark-v11",
+  topo: "mapbox://styles/mapbox/outdoors-v12", // recolored dark at load, see darkenOutdoors
+  dark: "mapbox://styles/mapbox/dark-v11",
   satellite: "mapbox://styles/mapbox/satellite-streets-v12",
   hybrid: "mapbox://styles/mapbox/satellite-v9",
   outdoors: "mapbox://styles/mapbox/outdoors-v12",
@@ -12,13 +13,15 @@ export type BaseStyle = keyof typeof BASE_STYLES;
 
 export const BASE_LABELS: Record<BaseStyle, string> = {
   topo: "Topo",
+  dark: "Dark",
   satellite: "Satellite",
   hybrid: "Hybrid",
   outdoors: "Outdoors",
   night: "3D Night",
 };
 export const BASE_NOTES: Record<BaseStyle, string> = {
-  topo: "Dark topo with contours and trails",
+  topo: "Outdoors detail, dark: trails, peaks, contours",
+  dark: "The original minimal dark topo",
   satellite: "Imagery with roads and places",
   hybrid: "Imagery with contours and trails",
   outdoors: "Mapbox's daytime topo, most labels",
@@ -34,12 +37,114 @@ type AnyLayer = any;
 /**
  * Per base map: 3D terrain everywhere; our own hillshade, contours (feet), trails and
  * public land where the base style doesn't already carry them.
- *   topo      Mapbox Dark + everything, recolored for a dark ground
+ *   topo      Mapbox Outdoors recolored dark (darkenOutdoors) + hillshade
+ *   dark      Mapbox Dark + everything, recolored for a dark ground
  *   hybrid    plain imagery + contours, trails, public land edges in white
  *   satellite imagery with Mapbox's roads/labels + contours
  *   outdoors  Mapbox Outdoors already has contours and hillshade: terrain only
  *   night     Mapbox Standard with the night light preset: terrain only
  */
+// ---- Dark Outdoors: Mapbox Outdoors with every color pushed onto a dark ground ----
+type HSLA = { h: number; s: number; l: number; a: number };
+
+function parseColor(input: string): HSLA | null {
+  const c = input.trim().toLowerCase();
+  let m = c.match(/^hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)$/);
+  if (m) return { h: +m[1], s: +m[2] / 100, l: +m[3] / 100, a: m[4] === undefined ? 1 : +m[4] };
+  let r: number, g: number, b: number;
+  let a = 1;
+  if ((m = c.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/))) {
+    [r, g, b] = [+m[1], +m[2], +m[3]];
+    if (m[4] !== undefined) a = +m[4];
+  } else if ((m = c.match(/^#([0-9a-f]{3,8})$/))) {
+    let hex = m[1];
+    if (hex.length <= 4) hex = [...hex].map((x) => x + x).join("");
+    [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+    if (hex.length === 8) a = parseInt(hex.slice(6, 8), 16) / 255;
+  } else return null;
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  let h = 0;
+  let s = 0;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    h = (max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4) * 60;
+  }
+  return { h, s, l, a };
+}
+
+const clamp = (x: number) => Math.max(0, Math.min(1, x));
+const hsla = ({ h, s, l, a }: HSLA) =>
+  `hsla(${Math.round(h)}, ${Math.round(clamp(s) * 100)}%, ${Math.round(clamp(l) * 100)}%, ${+clamp(a).toFixed(3)})`;
+
+/** Rewrites every color inside a paint value, including colors nested in expressions. */
+function mapColors(v: unknown, f: (c: HSLA) => HSLA): unknown {
+  if (typeof v === "string") {
+    const c = parseColor(v);
+    return c ? hsla(f(c)) : v;
+  }
+  return Array.isArray(v) ? v.map((x) => mapColors(x, f)) : v;
+}
+
+const DARK = {
+  ground: (c: HSLA) => ({ ...c, s: c.s * 0.4, l: 0.07 + 0.24 * (1 - c.l) }), // light land → dark land, keeps wood/park tints
+  water: (c: HSLA) => ({ h: 212, s: 0.3, l: 0.15 + 0.06 * (1 - c.l), a: c.a }),
+  line: (c: HSLA) => ({ ...c, s: c.s * 0.45, l: 0.2 + 0.3 * c.l }), // roads and borders: mid grays, order kept
+  trail: (c: HSLA) => ({ ...c, s: Math.min(1, c.s * 1.1), l: Math.max(c.l, 0.6) }), // trails stay bright
+  text: (c: HSLA) => ({ ...c, s: c.s * 0.55, l: 0.93 - 0.5 * c.l }), // dark labels → light labels
+  halo: (c: HSLA) => ({ h: 240, s: 0.05, l: 0.06, a: c.a }),
+};
+
+export function darkenOutdoors(map: mapboxgl.Map) {
+  for (const layer of map.getStyle()?.layers ?? []) {
+    const id = layer.id;
+    const set = (prop: string, f: (c: HSLA) => HSLA) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const v = map.getPaintProperty(id, prop as any);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (v !== undefined && v !== null) map.setPaintProperty(id, prop as any, mapColors(v, f));
+    };
+    // Outdoors' own shading is tuned for a light map; ours replaces it.
+    if (/hillshade/.test(id)) {
+      map.setLayoutProperty(id, "visibility", "none");
+      continue;
+    }
+    if (/contour/.test(id) && layer.type === "line") {
+      map.setPaintProperty(id, "line-color", "hsl(38, 18%, 58%)");
+      continue;
+    }
+    const water = /water/.test(id);
+    switch (layer.type) {
+      case "background":
+        set("background-color", DARK.ground);
+        break;
+      case "fill":
+        set("fill-color", water ? DARK.water : DARK.ground);
+        set("fill-outline-color", water ? DARK.water : DARK.ground);
+        break;
+      case "fill-extrusion":
+        set("fill-extrusion-color", DARK.ground);
+        break;
+      case "line":
+        set("line-color", water ? DARK.water : /path|trail|piste|aerialway|ferry/.test(id) ? DARK.trail : DARK.line);
+        break;
+      case "circle":
+        set("circle-color", DARK.ground);
+        break;
+      case "symbol":
+        set("text-color", DARK.text);
+        set("text-halo-color", DARK.halo);
+        set("icon-color", DARK.text);
+        break;
+    }
+  }
+}
+
 export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
   const firstSymbol = map.getStyle()?.layers?.find((l) => l.type === "symbol")?.id;
 
@@ -58,6 +163,35 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
     return;
   }
 
+  if (base === "topo") {
+    darkenOutdoors(map);
+    // Contour labels in feet, rounded to 10.
+    if (map.getLayer("contour-label"))
+      map.setLayoutProperty("contour-label", "text-field", [
+        "concat",
+        ["to-string", ["*", 10, ["round", ["/", ["*", ["get", "ele"], M_TO_FT], 10]]]],
+        " ft",
+      ]);
+    map.addSource("dem-shade", { type: "raster-dem", url: "mapbox://mapbox.mapbox-terrain-dem-v1", tileSize: 512, maxzoom: 14 });
+    map.addLayer(
+      {
+        id: "atlas-hillshade",
+        type: "hillshade",
+        source: "dem-shade",
+        paint: {
+          "hillshade-shadow-color": "#000000",
+          "hillshade-highlight-color": "#b4b4bb",
+          "hillshade-accent-color": "#202024",
+          "hillshade-exaggeration": 0.7,
+          "hillshade-illumination-direction": 315,
+        },
+      } as AnyLayer,
+      map.getLayer("contour-line") ? "contour-line" : firstSymbol,
+    );
+    map.setFog({ color: "#0b0b0c", "high-color": "#161618", "horizon-blend": 0.08, "space-color": "#050506", "star-intensity": 0.12 });
+    return;
+  }
+
   map.setFog(
     base === "outdoors"
       ? { color: "#dfe5e1", "high-color": "#9fb7d1", "horizon-blend": 0.06, "space-color": "#0b0b0c", "star-intensity": 0.1 }
@@ -65,9 +199,9 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
   );
   if (base === "outdoors") return;
 
-  const overlay = base === "topo" || base === "hybrid";
+  const overlay = base === "dark" || base === "hybrid";
 
-  if (base === "topo") {
+  if (base === "dark") {
     // Mapbox Dark is near-black; lift the ground so hillshade and contours have room to read.
     const style = map.getStyle();
     for (const l of style?.layers ?? []) {
@@ -102,7 +236,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
   if (overlay) {
     map.addSource("atlas-streets", { type: "vector", url: "mapbox://mapbox.mapbox-streets-v8" });
     // Public land: national parks and forests, wilderness
-    if (base === "topo") map.addLayer(
+    if (base === "dark") map.addLayer(
       {
         id: "atlas-public-land",
         type: "fill",
@@ -122,8 +256,8 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         minzoom: 6,
         filter: ["==", ["get", "class"], "national_park"],
         paint: {
-          "line-color": base === "topo" ? "#5c5c64" : "#f2f2f4",
-          "line-opacity": base === "topo" ? 1 : 0.7,
+          "line-color": base === "dark" ? "#5c5c64" : "#f2f2f4",
+          "line-opacity": base === "dark" ? 1 : 0.7,
           "line-width": 0.9,
           "line-dasharray": [3, 2],
         },
@@ -134,7 +268,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
 
   map.addSource("atlas-contours", { type: "vector", url: "mapbox://mapbox.mapbox-terrain-v2" });
   const major = ["in", ["get", "index"], ["literal", [5, 10]]];
-  const line = base === "topo" ? "#a4a4ad" : "#e8e8ea";
+  const line = base === "dark" ? "#a4a4ad" : "#e8e8ea";
   map.addLayer(
     {
       id: "atlas-contour-minor",
@@ -143,7 +277,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       "source-layer": "contour",
       minzoom: 10,
       filter: ["!", major],
-      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.45 : 0.35, "line-width": 0.7 },
+      paint: { "line-color": line, "line-opacity": base === "dark" ? 0.45 : 0.35, "line-width": 0.7 },
     } as AnyLayer,
     firstSymbol,
   );
@@ -155,7 +289,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
       "source-layer": "contour",
       minzoom: 8,
       filter: major,
-      paint: { "line-color": line, "line-opacity": base === "topo" ? 0.75 : 0.6, "line-width": 1.2 },
+      paint: { "line-color": line, "line-opacity": base === "dark" ? 0.75 : 0.6, "line-width": 1.2 },
     } as AnyLayer,
     firstSymbol,
   );
@@ -191,7 +325,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         minzoom: 9,
         filter: trail,
         paint: {
-          "line-color": base === "topo" ? "#dcdce1" : "#ffffff",
+          "line-color": base === "dark" ? "#dcdce1" : "#ffffff",
           "line-opacity": 0.9,
           "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.7, 15, 1.8],
           "line-dasharray": [2.5, 1.6],
@@ -212,7 +346,7 @@ export function addTopoLayers(map: mapboxgl.Map, base: BaseStyle) {
         "text-font": LABEL_FONT,
         "text-size": 11,
       },
-      paint: { "text-color": base === "topo" ? "#c8c8cd" : "#ffffff", "text-halo-color": "#0b0b0c", "text-halo-width": 1.4 },
+      paint: { "text-color": base === "dark" ? "#c8c8cd" : "#ffffff", "text-halo-color": "#0b0b0c", "text-halo-width": 1.4 },
     } as AnyLayer);
   }
 }
