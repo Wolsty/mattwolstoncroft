@@ -39,3 +39,8 @@ next-env.d.ts
 
 # Atlas photo exports no longer referenced (safe to delete)
 .atlas-photos-unused/
+
+# Atlas photos are stored in Vercel Blob (scripts/atlas-photos-to-blob.mjs), not
+# deployed. Keep the originals here locally; don't commit them.
+/public/atlas-photos/
+.env*
