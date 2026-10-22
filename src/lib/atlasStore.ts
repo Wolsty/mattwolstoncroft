@@ -1,4 +1,4 @@
-import { BlobNotFoundError, head, put } from "@vercel/blob";
+import { BlobNotFoundError, del, head, list, put } from "@vercel/blob";
 import { revalidateTag, unstable_cache } from "next/cache";
 import type { Place, PlaceType } from "@/components/atlas/types";
 import basePlaces from "../../public/atlas-data/places.json";
@@ -47,33 +47,56 @@ export function storeConfigured() {
   return Boolean(process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN);
 }
 
+/**
+ * Every save is written as a new, never-changing file (atlas/edits/<time>.json) and the
+ * newest one wins. Overwriting a single file didn't work: Blob's CDN kept serving the old
+ * copy for a minute, so a reload, or the next save, could bring back what was just removed.
+ */
+const EDITS_DIR = "atlas/edits/";
+const KEEP_VERSIONS = 20;
+
+async function versions() {
+  const { blobs } = await list({ prefix: EDITS_DIR, limit: 1000 });
+  return blobs.sort((a, b) => b.pathname.localeCompare(a.pathname)); // newest first
+}
+
 /** Always-fresh read, used before writing so two saves never overwrite each other's changes. */
 export async function readEditsFresh(): Promise<AtlasEdits> {
   if (!storeConfigured()) return structuredClone(EMPTY);
-  try {
-    const meta = await head(EDITS_PATH);
-    const res = await fetch(`${meta.url}?v=${Date.now()}`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`edits fetch ${res.status}`);
-    return { ...structuredClone(EMPTY), ...((await res.json()) as AtlasEdits) };
-  } catch (e) {
-    if (e instanceof BlobNotFoundError) return structuredClone(EMPTY);
-    throw e;
+  const [latest] = await versions();
+  let url = latest?.url;
+  if (!url) {
+    // Before versioned saves: the single file from earlier.
+    try {
+      url = (await head(EDITS_PATH)).url;
+    } catch (e) {
+      if (e instanceof BlobNotFoundError) return structuredClone(EMPTY);
+      throw e;
+    }
   }
+  const res = await fetch(`${url}?v=${Date.now()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`edits fetch ${res.status}`);
+  return { ...structuredClone(EMPTY), ...((await res.json()) as AtlasEdits) };
 }
 
 /** Cached read for page loads; a save clears it. */
-const readEditsCached = unstable_cache(readEditsFresh, ["atlas-edits-v1"], { tags: ["atlas-edits"], revalidate: 3600 });
+const readEditsCached = unstable_cache(readEditsFresh, ["atlas-edits-v2"], { tags: ["atlas-edits"], revalidate: 3600 });
 
 export async function writeEdits(edits: AtlasEdits) {
   edits.updatedAt = new Date().toISOString();
-  await put(EDITS_PATH, JSON.stringify(edits), {
+  await put(`${EDITS_DIR}${String(Date.now()).padStart(15, "0")}.json`, JSON.stringify(edits), {
     access: "public",
     addRandomSuffix: false,
-    allowOverwrite: true,
     contentType: "application/json",
-    cacheControlMaxAge: 60,
   });
   revalidateTag("atlas-edits");
+  // Tidy up: keep the last few versions as a safety net.
+  try {
+    const old = (await versions()).slice(KEEP_VERSIONS).map((b) => b.url);
+    if (old.length) await del(old);
+  } catch (e) {
+    console.error("[atlas] tidy edits", e);
+  }
 }
 
 export function applyEdits(base: Place[], edits: AtlasEdits): Place[] {
