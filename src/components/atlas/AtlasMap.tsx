@@ -31,7 +31,18 @@ import {
 } from "./mapLayers";
 
 const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "night"];
-const PIN_LAYERS = ["atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pins-kimbo", "atlas-pin-selected"];
+const PIN_LAYERS = ["atlas-fresh-ring", "atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pins-kimbo", "atlas-pin-selected"];
+
+// ---- timeline helpers: dates as whole days since 1970 ----
+const DAY = 86_400_000;
+const dayOf = (iso: string) => Math.floor(Date.parse(iso.slice(0, 10)) / DAY);
+const isoOf = (d: number) => new Date(d * DAY).toISOString().slice(0, 10);
+const monthLabel = (d: number) =>
+  new Date(d * DAY).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+const PLAY_SECONDS = 30; // the whole history plays in about this long
+const TICK_MS = 80;
+const FRESH_DAYS = 120; // how long a newly reached place keeps its ring
+const FRESH_ROUTE_DAYS = 30;
 
 
 type Selection = { kind: "place" | "route"; id: string } | null;
@@ -75,12 +86,27 @@ export function AtlasMap({ token }: { token?: string }) {
   const [editPwError, setEditPwError] = useState("");
   const [editRequested, setEditRequested] = useState(false);
   const pickRef = useRef<(lat: number, lng: number) => void>(() => {});
+  // Timeline: the map as it was on `cutoff` (a day number)
+  const [timeline, setTimeline] = useState(false);
+  const [cutoff, setCutoff] = useState(0);
+  const [playing, setPlaying] = useState(false);
 
   // Latest values for map event handlers, which are bound once.
-  const latest = useRef({ places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing });
-  latest.current = { places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing };
+  const latest = useRef({ places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing, timeline, cutoff });
+  latest.current = { places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing, timeline, cutoff };
 
-  const visible = useMemo(() => places.filter((p) => !hidden.has(p.type)), [places, hidden]);
+  // First and last day the timeline covers: the earliest dated place or route, through today.
+  const span = useMemo(() => {
+    const days = [...places.map((p) => p.date), ...routes.map((r) => r.date)].filter(Boolean).map((d) => dayOf(d!));
+    const end = Math.floor(Date.now() / DAY);
+    return { start: days.length ? Math.min(...days) - 15 : end - 365, end };
+  }, [places, routes]);
+  const cutIso = isoOf(cutoff);
+  const reached = useCallback((date?: string) => Boolean(date) && date!.slice(0, 10) <= cutIso, [cutIso]);
+  const timedPlaces = useMemo(() => (timeline ? places.filter((p) => reached(p.date)) : places), [timeline, places, reached]);
+  const timedRoutes = useMemo(() => (timeline ? routes.filter((r) => reached(r.date)) : routes), [timeline, routes, reached]);
+
+  const visible = useMemo(() => timedPlaces.filter((p) => !hidden.has(p.type)), [timedPlaces, hidden]);
   const selectedPlace = selected?.kind === "place" ? places.find((p) => p.id === selected.id) ?? null : null;
   const selectedRoute = selected?.kind === "route" ? routes.find((r) => r.id === selected.id) ?? null : null;
 
@@ -253,9 +279,12 @@ export function AtlasMap({ token }: { token?: string }) {
   }, [menuOpen]);
 
   const syncRoutes = useCallback((map: mapboxgl.Map) => {
-    const { showRoutes: saved, showStrava: live, selected: sel, routes: rs } = latest.current;
-    const savedF = ["all", ["literal", saved], ["!=", ["get", "source"], "strava"]];
-    const liveF = ["all", ["literal", live], ["==", ["get", "source"], "strava"]];
+    const { showRoutes: saved, showStrava: live, selected: sel, routes: rs, timeline: tl, cutoff: cut } = latest.current;
+    // In the timeline, only routes on or before the playhead.
+    const cutIso = isoOf(cut);
+    const inTime = tl ? ["all", ["!=", ["get", "date"], ""], ["<=", ["get", "date"], cutIso]] : ["literal", true];
+    const savedF = ["all", ["literal", saved], ["!=", ["get", "source"], "strava"], inTime];
+    const liveF = ["all", ["literal", live], ["==", ["get", "source"], "strava"], inTime];
     const filters: Record<string, unknown[]> = {
       "atlas-routes-casing": savedF,
       "atlas-routes": savedF,
@@ -263,6 +292,9 @@ export function AtlasMap({ token }: { token?: string }) {
       "atlas-strava": liveF,
       "atlas-strava-hot": liveF,
       "atlas-routes-hit": ["any", savedF, liveF],
+      "atlas-route-fresh": tl
+        ? ["all", ["any", savedF, liveF], [">", ["get", "date"], isoOf(cut - FRESH_ROUTE_DAYS)]]
+        : ["literal", false],
     };
     const selId = sel?.kind === "route" ? sel.id : "";
     for (const id of ["atlas-route-selected-glow", "atlas-route-selected-casing", "atlas-route-selected"]) {
@@ -299,6 +331,82 @@ export function AtlasMap({ token }: { token?: string }) {
     src?.setData(routesGeoJSON(routes));
     if (map) syncRoutes(map);
   }, [routes, showRoutes, showStrava, selected, syncRoutes]);
+
+  // ---- timeline ----
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    syncRoutes(map);
+    // Rings spread and fade around places reached in the last few months.
+    const fresh = timeline
+      ? visible
+          .map((p) => ({ p, age: cutoff - dayOf(p.date!) }))
+          .filter(({ age }) => age >= 0 && age < FRESH_DAYS)
+          .map(({ p, age }) => ({
+            type: "Feature" as const,
+            properties: { r: 15 + (age / FRESH_DAYS) * 22, o: 0.9 * (1 - age / FRESH_DAYS), color: TYPE_BY_ID[p.type]?.color ?? "#fff" },
+            geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
+          }))
+      : [];
+    (map.getSource("atlas-fresh") as mapboxgl.GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features: fresh });
+  }, [timeline, cutoff, visible, syncRoutes]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const step = Math.max(1, (span.end - span.start) / ((PLAY_SECONDS * 1000) / TICK_MS));
+    const t = window.setInterval(() => {
+      setCutoff((c) => {
+        const next = Math.min(span.end, c + step);
+        if (next >= span.end) setPlaying(false);
+        return next;
+      });
+    }, TICK_MS);
+    return () => window.clearInterval(t);
+  }, [playing, span]);
+
+  function openTimeline() {
+    setSelected(null);
+    setStravaOpen(false);
+    setMenuOpen(false);
+    setHeat(false);
+    setCutoff(span.start);
+    setTimeline(true);
+    setPlaying(true);
+    const map = mapRef.current;
+    if (map) fitTo(map, places.map((p) => [p.lng, p.lat]));
+  }
+
+  function closeTimeline() {
+    setPlaying(false);
+    setTimeline(false);
+  }
+
+  function togglePlay() {
+    if (!playing && cutoff >= span.end) setCutoff(span.start);
+    setPlaying((p) => !p);
+  }
+
+  // Activity per month, for the strip above the slider.
+  const density = useMemo(() => {
+    if (!timeline) return [] as { d: number; n: number }[];
+    const months = new Map<string, number>();
+    for (const x of [...places, ...routes]) if (x.date) months.set(x.date.slice(0, 7), (months.get(x.date.slice(0, 7)) ?? 0) + 1);
+    const out: { d: number; n: number }[] = [];
+    const s = new Date(span.start * DAY);
+    for (let y = s.getUTCFullYear(), m = s.getUTCMonth(); ; m++) {
+      if (m === 12) (m = 0), y++;
+      const d = Date.UTC(y, m, 1) / DAY;
+      if (d > span.end) break;
+      out.push({ d, n: months.get(`${y}-${String(m + 1).padStart(2, "0")}`) ?? 0 });
+    }
+    return out;
+  }, [timeline, places, routes, span]);
+  const densityMax = Math.max(1, ...density.map((x) => Math.sqrt(x.n)));
+  const years = useMemo(() => {
+    const out: number[] = [];
+    for (let y = new Date(span.start * DAY).getUTCFullYear() + 1; Date.UTC(y, 0, 1) / DAY <= span.end; y++) out.push(y);
+    return out;
+  }, [span]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -452,11 +560,11 @@ export function AtlasMap({ token }: { token?: string }) {
 
   // ---- stats ----
   const stats = useMemo(() => {
-    const n = (t: PlaceType) => places.filter((p) => p.type === t).length;
-    const regions = new Set(places.filter((p) => p.type !== "someday").map((p) => p.region).filter(Boolean));
-    const miles = routes.reduce((s, r) => s + (r.miles || 0), 0);
+    const n = (t: PlaceType) => timedPlaces.filter((p) => p.type === t).length;
+    const regions = new Set(timedPlaces.filter((p) => p.type !== "someday").map((p) => p.region).filter(Boolean));
+    const miles = timedRoutes.reduce((s, r) => s + (r.miles || 0), 0);
     return { kimbo: n("kimbo"), nights: n("tent") + n("hut"), regions: regions.size, miles: Math.round(miles) };
-  }, [places, routes]);
+  }, [timedPlaces, timedRoutes]);
 
   const stravaList = useMemo(
     () =>
@@ -569,6 +677,19 @@ export function AtlasMap({ token }: { token?: string }) {
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            className={styles.moreBtn}
+            aria-pressed={timeline}
+            data-active={timeline ? "" : undefined}
+            onClick={() => (timeline ? closeTimeline() : openTimeline())}
+            aria-label="Timeline"
+            title="Play the map through time"
+          >
+            <svg viewBox="0 0 24 24" width={18} height={18} aria-hidden="true">
+              <path d="M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18z M12 7v5l3.5 2" />
+            </svg>
+          </button>
           {routeCounts.strava > 0 && (
             <button
               type="button"
@@ -887,6 +1008,57 @@ export function AtlasMap({ token }: { token?: string }) {
             )}
           </div>
         </aside>
+      )}
+      {timeline && (
+        <div className={styles.timeline} role="region" aria-label="Timeline">
+          <button type="button" className={styles.tlPlay} onClick={togglePlay} aria-label={playing ? "Pause" : "Play"}>
+            <svg viewBox="0 0 24 24" width={16} height={16} aria-hidden="true">
+              {playing ? <path d="M7 5h3v14H7z M14 5h3v14h-3z" /> : <path d="M8 5v14l11-7z" />}
+            </svg>
+          </button>
+          <div className={styles.tlNow} aria-live="off">
+            <strong>{monthLabel(cutoff)}</strong>
+            <small>
+              {timedPlaces.length} places · {stats.miles.toLocaleString()} mi
+            </small>
+          </div>
+          <div className={styles.tlTrack}>
+            <div className={styles.tlDensity} aria-hidden="true">
+              {density.map((x) => (
+                <i
+                  key={x.d}
+                  style={{ height: `${x.n ? 12 + (Math.sqrt(x.n) / densityMax) * 88 : 0}%` }}
+                  data-on={x.d <= cutoff ? "" : undefined}
+                />
+              ))}
+            </div>
+            <input
+              type="range"
+              min={span.start}
+              max={span.end}
+              step={1}
+              value={Math.round(cutoff)}
+              onChange={(e) => {
+                setPlaying(false);
+                setCutoff(Number(e.target.value));
+              }}
+              aria-label="Date"
+              aria-valuetext={monthLabel(cutoff)}
+            />
+            <div className={styles.tlYears} aria-hidden="true">
+              {years.map((y) => (
+                <span key={y} style={{ left: `${((Date.UTC(y, 0, 1) / DAY - span.start) / (span.end - span.start)) * 100}%` }}>
+                  {String(y).slice(2)}
+                </span>
+              ))}
+            </div>
+          </div>
+          <button type="button" className={`${styles.close} ${styles.tlClose}`} onClick={closeTimeline} aria-label="Close timeline">
+            <svg viewBox="0 0 24 24" width={14} height={14} aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" />
+            </svg>
+          </button>
+        </div>
       )}
     </main>
   );

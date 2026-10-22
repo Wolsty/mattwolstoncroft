@@ -227,7 +227,7 @@ export function routesGeoJSON(routes: Route[]): GeoJSON.FeatureCollection {
     features: routes.map((r, i) => ({
       type: "Feature",
       id: i, // feature-state key; matches the route's index in the array
-      properties: { id: r.id, kind: r.kind, name: r.name, source: r.source ?? "saved" },
+      properties: { id: r.id, kind: r.kind, name: r.name, source: r.source ?? "saved", date: r.date ?? "" },
       geometry: { type: "LineString", coordinates: r.coords },
     })),
   };
@@ -357,6 +357,20 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
   // Selected route: its own color (cyan, used nowhere else on the map), on a dark casing with a
   // soft glow, drawn above every other route. Other routes dim while one is selected (see AtlasMap).
   const selFilter = ["==", ["get", "id"], ""];
+  // Timeline: routes from the last few weeks before the playhead, drawn hot so new ones pop.
+  map.addLayer({
+    id: "atlas-route-fresh",
+    type: "line",
+    source: "atlas-routes",
+    filter: ["literal", false],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": "#FFC08A",
+      "line-width": ["interpolate", ["linear"], ["zoom"], 3, 2.2, 10, 4],
+      "line-opacity": 0.95,
+    },
+  } as AnyLayer);
+
   map.addLayer({
     id: "atlas-route-selected-glow",
     type: "line",
@@ -423,6 +437,21 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
         0.7, "#e0952b",
         1, "#fff1d6",
       ],
+    },
+  } as AnyLayer);
+
+  // Timeline: a ring that spreads and fades around each newly reached place.
+  map.addSource("atlas-fresh", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+  map.addLayer({
+    id: "atlas-fresh-ring",
+    type: "circle",
+    source: "atlas-fresh",
+    paint: {
+      "circle-radius": ["get", "r"],
+      "circle-color": "rgba(0,0,0,0)",
+      "circle-stroke-color": ["get", "color"],
+      "circle-stroke-width": 2,
+      "circle-stroke-opacity": ["get", "o"],
     },
   } as AnyLayer);
 

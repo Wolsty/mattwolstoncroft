@@ -1108,3 +1108,125 @@
     aspect-ratio: 16 / 9;
   }
 }
+
+/* ---- Timeline ---- */
+.timeline {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  width: min(760px, calc(100% - 32px));
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px 10px 10px;
+  border-radius: 18px;
+  background: var(--a-panel);
+  border: 1px solid var(--a-line);
+  box-shadow: var(--a-shadow);
+  backdrop-filter: blur(8px);
+  color: var(--a-ink);
+}
+.tlPlay {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: var(--a-ink);
+  color: var(--a-bg);
+  cursor: pointer;
+}
+.tlPlay svg {
+  fill: currentColor;
+}
+.tlPlay:focus-visible,
+.tlTrack input:focus-visible {
+  outline: 2px solid var(--a-ink);
+  outline-offset: 2px;
+}
+.tlNow {
+  display: grid;
+  min-width: 96px;
+}
+.tlNow strong {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.tlNow small {
+  color: var(--a-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tlTrack {
+  position: relative;
+  height: 52px;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+}
+.tlDensity {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 100%;
+  padding: 0 7px;
+}
+.tlDensity i {
+  flex: 1;
+  min-width: 0;
+  border-radius: 1px;
+  background: #3a3a3f;
+}
+.tlDensity i[data-on] {
+  background: #fc5200;
+}
+.tlTrack input {
+  width: 100%;
+  margin: 0;
+  height: 14px;
+  accent-color: var(--a-ink);
+  cursor: pointer;
+}
+.tlYears {
+  position: relative;
+  height: 12px;
+  margin: 0 7px;
+}
+.tlYears span {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--a-mono);
+  font-size: 0.625rem;
+  color: var(--a-muted);
+}
+.tlYears span::before {
+  content: "’";
+}
+.tlClose {
+  position: static;
+}
+@media (max-width: 760px) {
+  .timeline {
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+  }
+  .tlNow {
+    grid-column: 2;
+  }
+  .tlTrack {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .tlClose {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
