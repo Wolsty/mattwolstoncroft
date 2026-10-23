@@ -1357,3 +1357,45 @@
     height: 44px;
   }
 }
+
+/* ---- Strava: sync now (owner only) ---- */
+.syncBtn {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--a-line);
+  background: var(--a-raise);
+  color: var(--a-ink);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.syncBtn svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.syncBtn[data-busy] svg {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: syncSpin 0.9s linear infinite;
+}
+.syncBtn:disabled {
+  cursor: default;
+  color: var(--a-muted);
+}
+.syncBtn:focus-visible {
+  outline: 2px solid var(--a-ink);
+  outline-offset: 2px;
+}
+@keyframes syncSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

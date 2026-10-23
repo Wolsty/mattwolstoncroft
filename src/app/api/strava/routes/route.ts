@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import { photosPending, routesFrom, stravaConfigured, syncStrava, type StravaStore } from "@/lib/strava";
 import { storeConfigured } from "@/lib/atlasStore";
 import { readStrava, writeStrava } from "@/lib/stravaStore";
+import { canEdit } from "@/lib/editAuth";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -57,5 +58,23 @@ export async function GET() {
     // The message names the failing step and Strava's status code; it never contains a key.
     const detail = e instanceof Error ? e.message : "unknown";
     return NextResponse.json({ routes: [], configured: true, error: "unavailable", detail }, { status: 200 });
+  }
+}
+
+/** "Sync now" from the Strava panel (owner only): pulls new activities and the next batch of photos right away. */
+export async function POST(req: Request) {
+  if (!(await canEdit(req))) return NextResponse.json({ error: "Syncing needs the edit password." }, { status: 401 });
+  if (!stravaConfigured() || !storeConfigured()) return NextResponse.json({ error: "Strava isn't connected." }, { status: 503 });
+  try {
+    const stored = await readStrava();
+    // A second tap within a minute just returns what the first one fetched.
+    if (stored && Date.now() - Date.parse(stored.syncedAt || "0") < 60_000) {
+      return NextResponse.json({ routes: routesFrom(stored), syncedAt: stored.syncedAt });
+    }
+    const next = await sync(stored, true);
+    return NextResponse.json({ routes: routesFrom(next), syncedAt: next.syncedAt });
+  } catch (e) {
+    console.error("[strava] sync now", e);
+    return NextResponse.json({ error: e instanceof Error ? e.message : "Sync failed." }, { status: 502 });
   }
 }

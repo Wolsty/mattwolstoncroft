@@ -70,6 +70,7 @@ export function AtlasMap({ token }: { token?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [stravaOpen, setStravaOpen] = useState(false);
   const [stravaShown, setStravaShown] = useState(40);
+  const [stravaSync, setStravaSync] = useState<"idle" | "busy" | "done" | "error">("idle");
   const menuRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Selection>(null);
   const [photo, setPhoto] = useState(0);
@@ -146,21 +147,40 @@ export function AtlasMap({ token }: { token?: string }) {
 
   // Strava activities arrive separately so the map never waits on them.
   function loadStrava(saved: Route[]) {
+    savedRoutes.current = saved;
     fetch("/api/strava/routes")
       .then((res) => (res.ok ? (res.json() as Promise<{ routes: Route[] }>) : { routes: [] }))
-      .then(({ routes: live }) => {
-        if (!live.length) return;
-        const decoded = live.map((x) => ({ ...x, coords: x.polyline ? decodePolyline(x.polyline) : x.coords }));
-        // A saved GPS track that is also on Strava (same day, starts nearby) is shown once, from Strava.
-        const near = (a: [number, number], b: [number, number]) =>
-          Math.abs(a[0] - b[0]) < 0.03 && Math.abs(a[1] - b[1]) < 0.02;
-        const keep = saved.filter(
-          (s) => !(s.date && decoded.some((d) => d.date === s.date && d.coords[0] && s.coords[0] && near(d.coords[0], s.coords[0]))),
-        );
-        setRoutes([...keep, ...decoded]);
-      })
+      .then(({ routes: live }) => showStravaRoutes(live, saved))
       .catch(() => {});
   }
+
+  // Saved GPS tracks, kept so a sync can re-merge fresh Strava activities with them.
+  const savedRoutes = useRef<Route[]>([]);
+
+  async function syncStrava() {
+    setStravaSync("busy");
+    try {
+      const res = await fetch("/api/strava/routes", { method: "POST" });
+      const json = (await res.json()) as { routes?: Route[]; error?: string };
+      if (!res.ok || !json.routes) throw new Error(json.error);
+      showStravaRoutes(json.routes, savedRoutes.current);
+      setStravaSync("done");
+    } catch {
+      setStravaSync("error");
+    }
+  }
+
+  function showStravaRoutes(live: Route[], saved: Route[]) {
+    if (!live.length) return;
+    const decoded = live.map((x) => ({ ...x, coords: x.polyline ? decodePolyline(x.polyline) : x.coords }));
+    // A saved GPS track that is also on Strava (same day, starts nearby) is shown once, from Strava.
+    const near = (a: [number, number], b: [number, number]) => Math.abs(a[0] - b[0]) < 0.03 && Math.abs(a[1] - b[1]) < 0.02;
+    const keep = saved.filter(
+      (s) => !(s.date && decoded.some((d) => d.date === s.date && d.coords[0] && s.coords[0] && near(d.coords[0], s.coords[0]))),
+    );
+    setRoutes([...keep, ...decoded]);
+  }
+
 
   // ---- map setup (once data is in) ----
   useEffect(() => {
@@ -817,6 +837,26 @@ export function AtlasMap({ token }: { token?: string }) {
               <p>
                 {stravaYear.count} activities · {stravaYear.miles.toLocaleString()} mi in {stravaYear.year}
               </p>
+              {canEdit && (
+                <button
+                  type="button"
+                  className={styles.syncBtn}
+                  onClick={syncStrava}
+                  disabled={stravaSync === "busy"}
+                  data-busy={stravaSync === "busy" ? "" : undefined}
+                >
+                  <svg viewBox="0 0 24 24" width={14} height={14} aria-hidden="true">
+                    <path d="M20 12a8 8 0 1 1-2.34-5.66 M20 4v4h-4" />
+                  </svg>
+                  {stravaSync === "busy"
+                    ? "Syncing…"
+                    : stravaSync === "done"
+                      ? "Synced just now"
+                      : stravaSync === "error"
+                        ? "Sync failed, try again"
+                        : "Sync now"}
+                </button>
+              )}
             </div>
             <button type="button" className={styles.close} onClick={() => setStravaOpen(false)} aria-label="Close Strava">
               <svg viewBox="0 0 24 24" width={16} height={16} aria-hidden="true">
