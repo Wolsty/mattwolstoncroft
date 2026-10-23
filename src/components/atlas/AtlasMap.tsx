@@ -5,6 +5,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "./atlas.module.css";
 import { PlaceEditor } from "./PlaceEditor";
+import { SearchBox, type SearchHit } from "./SearchBox";
 import {
   ICON_PATHS,
   ROUTE_COLORS,
@@ -498,6 +499,64 @@ export function AtlasMap({ token }: { token?: string }) {
     regionAt(at.lat, at.lng).then((region) => region && setDraft((d) => (d ? { ...d, region } : d)));
   };
 
+  // ---- search ----
+  const searchMarker = useRef<mapboxgl.Marker | null>(null);
+
+  function clearSearchMarker() {
+    searchMarker.current?.remove();
+    searchMarker.current = null;
+  }
+
+  function onSearchPick(hit: SearchHit) {
+    const map = mapRef.current;
+    clearSearchMarker();
+    if (hit.placeId) {
+      setSelected({ kind: "place", id: hit.placeId });
+      return;
+    }
+    if (!map) return;
+    setSelected(null);
+    const wide = window.innerWidth > 760;
+    const padding = wide ? 80 : { top: 150, bottom: 60, left: 30, right: 30 };
+    if (hit.bbox) map.fitBounds([[hit.bbox[0], hit.bbox[1]], [hit.bbox[2], hit.bbox[3]]], { padding, maxZoom: 14, duration: 1400 });
+    else map.flyTo({ center: [hit.lng, hit.lat], zoom: hit.zoom, duration: 1400 });
+
+    // A pin for the result, with its name and (for you) a shortcut to add a place there.
+    const pin = document.createElement("div");
+    pin.className = styles.searchPin;
+    const box = document.createElement("div");
+    box.className = styles.searchPop;
+    const title = document.createElement("strong");
+    title.textContent = hit.name;
+    box.append(title);
+    if (hit.detail) {
+      const sub = document.createElement("small");
+      sub.textContent = hit.detail;
+      box.append(sub);
+    }
+    if (canEdit && storeReady) {
+      const add = document.createElement("button");
+      add.type = "button";
+      add.className = styles.primaryBtn;
+      add.textContent = "+ Add a place here";
+      add.onclick = () => addPlaceAt(hit);
+      box.append(add);
+    }
+    const popup = new mapboxgl.Popup({ offset: 14, closeButton: true, closeOnClick: false, className: styles.searchPopup }).setDOMContent(box);
+    searchMarker.current = new mapboxgl.Marker({ element: pin }).setLngLat([hit.lng, hit.lat]).setPopup(popup).addTo(map);
+    searchMarker.current.togglePopup();
+  }
+
+  function addPlaceAt(hit: SearchHit) {
+    clearSearchMarker();
+    stopEdit();
+    const at = { lat: Math.round(hit.lat * 1e6) / 1e6, lng: Math.round(hit.lng * 1e6) / 1e6 };
+    setDraft({ id: "new", name: hit.name, type: "kimbo", ...at, date: "", dateText: "", notes: "", region: "", approx: false, photos: [] });
+    setDraftIsNew(true);
+    setSelected(null);
+    regionAt(at.lat, at.lng).then((region) => region && setDraft((d) => (d ? { ...d, region } : d)));
+  }
+
   function startEdit(p: Place) {
     setDraft({ ...p, photos: [...p.photos] });
     setDraftIsNew(false);
@@ -665,6 +724,15 @@ export function AtlasMap({ token }: { token?: string }) {
           </div>
         </dl>
         <div className={styles.mapControls} ref={menuRef}>
+          <SearchBox
+            token={TOKEN}
+            places={places}
+            near={() => {
+              const c = mapRef.current?.getCenter();
+              return c ? [c.lng, c.lat] : null;
+            }}
+            onPick={onSearchPick}
+          />
           {canEdit && storeReady && (
             <button
               type="button"
