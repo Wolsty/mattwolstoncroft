@@ -191,8 +191,9 @@ export function AtlasMap({ token }: { token?: string }) {
       container: container.current,
       style: BASE_STYLES.night,
       config: { basemap: { lightPreset: "night" } }, // no flash of daylight on load
-      center: [-111, 43],
-      zoom: 3.6,
+      // Open on the whole globe, then fly in to the places (see the first style.load below).
+      center: [-100, 30],
+      zoom: 1.2,
       projection: "globe",
       attributionControl: true,
       cooperativeGestures: false,
@@ -211,8 +212,7 @@ export function AtlasMap({ token }: { token?: string }) {
       syncHeat(map);
       if (firstLoad) {
         firstLoad = false;
-        if (selPlace) flyToPlace(map, selPlace);
-        else fitTo(map, ps.map((p) => [p.lng, p.lat]));
+        introFlight(map, ps, selPlace);
       }
     });
 
@@ -1244,6 +1244,36 @@ function fitTo(map: mapboxgl.Map, coords: [number, number][], side: { left?: num
     maxZoom: 13,
     duration: 900,
   });
+}
+
+/**
+ * The opening move: a beat on the globe, then a long flight in to the places (or to the
+ * deep-linked place). Skipped for people who ask their system for less motion.
+ */
+function introFlight(map: mapboxgl.Map, places: Place[], sel: Place | null) {
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const wide = window.innerWidth > 760;
+  let target: mapboxgl.CameraOptions | undefined;
+  if (sel) {
+    target = {
+      center: [sel.lng, sel.lat],
+      zoom: 12.5,
+      padding: wide ? { top: 80, bottom: 80, left: 0, right: 420 } : { top: 90, bottom: window.innerHeight * 0.5, left: 0, right: 0 },
+    };
+  } else if (places.length) {
+    const b = new mapboxgl.LngLatBounds([places[0].lng, places[0].lat], [places[0].lng, places[0].lat]);
+    places.forEach((p) => b.extend([p.lng, p.lat]));
+    target = map.cameraForBounds(b, {
+      padding: wide ? { top: 120, bottom: 110, left: 70, right: 70 } : { top: 150, bottom: 60, left: 30, right: 30 },
+      maxZoom: 13,
+    }) ?? undefined;
+  }
+  if (!target) return;
+  if (still) {
+    map.jumpTo(target);
+    return;
+  }
+  window.setTimeout(() => map.flyTo({ ...target, duration: sel ? 4200 : 3400, curve: 1.6, essential: false }), 500);
 }
 
 function flyToPlace(map: mapboxgl.Map, p: Place) {
