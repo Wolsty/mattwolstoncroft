@@ -32,7 +32,7 @@ import {
   type BaseStyle,
 } from "./mapLayers";
 
-const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "dark", "night"];
+const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "dark"];
 const PIN_LAYERS = ["atlas-fresh-ring", "atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pins-kimbo", "atlas-pin-selected"];
 
 // ---- timeline helpers: dates as whole days since 1970 ----
@@ -66,7 +66,7 @@ export function AtlasMap({ token }: { token?: string }) {
   const [hidden, setHidden] = useState<Set<PlaceType>>(new Set());
   const [showRoutes, setShowRoutes] = useState(true); // saved GPS tracks
   const [showStrava, setShowStrava] = useState(true); // live Strava activities
-  const [base, setBase] = useState<BaseStyle>("topo");
+  const [base, setBase] = useState<BaseStyle>("night");
   const [heat, setHeat] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [stravaOpen, setStravaOpen] = useState(false);
@@ -189,7 +189,8 @@ export function AtlasMap({ token }: { token?: string }) {
     mapboxgl.accessToken = TOKEN;
     const map = new mapboxgl.Map({
       container: container.current,
-      style: BASE_STYLES.topo,
+      style: BASE_STYLES.night,
+      config: { basemap: { lightPreset: "night" } }, // no flash of daylight on load
       center: [-111, 43],
       zoom: 3.6,
       projection: "globe",
@@ -775,7 +776,7 @@ export function AtlasMap({ token }: { token?: string }) {
             </form>
           )}
           <div className={styles.baseToggle} role="group" aria-label="Base map">
-            {(["topo", "satellite"] as BaseStyle[]).map((b) => (
+            {(["night", "topo", "satellite"] as BaseStyle[]).map((b) => (
               <button key={b} type="button" aria-pressed={base === b} onClick={() => setBase(b)}>
                 {BASE_LABELS[b]}
               </button>

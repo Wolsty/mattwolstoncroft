@@ -684,4 +684,29 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
       "icon-ignore-placement": true,
     },
   } as AnyLayer);
+
+  keepOurColors(map);
+}
+
+/**
+ * Mapbox Standard (the 3D Night view) lights every layer with its sun or moon, which turns
+ * our routes and pins nearly black at night. Emissive strength 1 makes them glow at their
+ * true colors: Strava orange, the cyan selection, the pin colors. Other bases ignore it.
+ */
+const EMISSIVE: Record<string, string[]> = {
+  line: ["line-emissive-strength"],
+  symbol: ["icon-emissive-strength", "text-emissive-strength"],
+  circle: ["circle-emissive-strength"],
+  fill: ["fill-emissive-strength"],
+};
+function keepOurColors(map: mapboxgl.Map) {
+  for (const layer of map.getStyle()?.layers ?? []) {
+    if (!layer.id.startsWith("atlas-")) continue;
+    for (const prop of EMISSIVE[layer.type] ?? []) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        map.setPaintProperty(layer.id, prop as any, 1);
+      } catch {}
+    }
+  }
 }
