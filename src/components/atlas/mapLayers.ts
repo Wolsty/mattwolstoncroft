@@ -1,5 +1,6 @@
 import type mapboxgl from "mapbox-gl";
-import { ICON_PATHS, ROUTE_COLORS, TYPES, type Place, type Route } from "./types";
+import { ICON_PATHS, ROUTE_COLORS, TYPES, TYPE_BY_ID, type Place, type Route } from "./types";
+import { buildTrips, tripsGeoJSON } from "./trips";
 
 export const BASE_STYLES = {
   topo: "mapbox://styles/mapbox/outdoors-v12", // recolored dark at load, see darkenOutdoors
@@ -597,6 +598,27 @@ export function addDataLayers(map: mapboxgl.Map, places: Place[], routes: Route[
         1, "#fff1d6",
       ],
     },
+  } as AnyLayer);
+
+  // Kimbo road trips: dotted arcs joining each trip's camps in order (see trips.ts).
+  map.addSource("atlas-trips", { type: "geojson", data: tripsGeoJSON(buildTrips(places)) });
+  map.addLayer({
+    id: "atlas-trips",
+    type: "line",
+    source: "atlas-trips",
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": TYPE_BY_ID.kimbo.color,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 3, 1.6, 9, 2.6],
+      "line-dasharray": [0, 2.2],
+      "line-opacity": 0.9,
+    },
+  } as AnyLayer);
+  map.addLayer({
+    id: "atlas-trips-hit",
+    type: "line",
+    source: "atlas-trips",
+    paint: { "line-color": "#000", "line-width": 14, "line-opacity": 0 },
   } as AnyLayer);
 
   // Timeline: a ring that spreads and fades around each newly reached place.

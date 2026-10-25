@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "./atlas.module.css";
 import { PlaceEditor } from "./PlaceEditor";
 import { SearchBox, type SearchHit } from "./SearchBox";
+import { buildTrips, tripsGeoJSON } from "./trips";
 import {
   ICON_PATHS,
   ROUTE_COLORS,
@@ -66,6 +67,7 @@ export function AtlasMap({ token }: { token?: string }) {
   const [hidden, setHidden] = useState<Set<PlaceType>>(new Set());
   const [showRoutes, setShowRoutes] = useState(true); // saved GPS tracks
   const [showStrava, setShowStrava] = useState(true); // live Strava activities
+  const [showTrips, setShowTrips] = useState(true); // Kimbo road trip lines
   const [base, setBase] = useState<BaseStyle>("night");
   const [heat, setHeat] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -96,8 +98,8 @@ export function AtlasMap({ token }: { token?: string }) {
   const [playing, setPlaying] = useState(false);
 
   // Latest values for map event handlers, which are bound once.
-  const latest = useRef({ places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing, timeline, cutoff });
-  latest.current = { places, routes, hidden, showRoutes, showStrava, selected, base, heat, placing, timeline, cutoff };
+  const latest = useRef({ places, routes, hidden, showRoutes, showStrava, showTrips, selected, base, heat, placing, timeline, cutoff });
+  latest.current = { places, routes, hidden, showRoutes, showStrava, showTrips, selected, base, heat, placing, timeline, cutoff };
 
   // First and last day the timeline covers: the earliest dated place or route, through today.
   const span = useMemo(() => {
@@ -219,7 +221,7 @@ export function AtlasMap({ token }: { token?: string }) {
     const pointer = () => (map.getCanvas().style.cursor = "pointer");
     const unpointer = () => (map.getCanvas().style.cursor = "");
     const hover = new mapboxgl.Popup({ closeButton: false, closeOnClick: false, offset: 16, className: styles.hover });
-    for (const layer of ["atlas-pins", "atlas-pins-kimbo", "atlas-clusters", "atlas-routes-hit"]) {
+    for (const layer of ["atlas-pins", "atlas-pins-kimbo", "atlas-clusters", "atlas-routes-hit", "atlas-trips-hit"]) {
       map.on("mouseenter", layer, pointer);
       map.on("mouseleave", layer, () => {
         unpointer();
@@ -231,6 +233,21 @@ export function AtlasMap({ token }: { token?: string }) {
       if (!f) return;
       const p = latest.current.places.find((x) => x.id === f.properties?.id);
       if (p) hover.setLngLat(e.lngLat).setText(placeTitle(p)).addTo(map);
+    });
+    map.on("mousemove", "atlas-trips-hit", (e) => {
+      if (map.queryRenderedFeatures(e.point, { layers: ["atlas-pins", "atlas-pins-kimbo", "atlas-routes-hit"] }).length) return;
+      const label = e.features?.[0]?.properties?.label;
+      if (label) hover.setLngLat(e.lngLat).setText(label).addTo(map);
+    });
+    map.on("click", "atlas-trips-hit", (e) => {
+      if (latest.current.placing) return;
+      if (map.queryRenderedFeatures(e.point, { layers: ["atlas-pins", "atlas-pins-kimbo", "atlas-clusters", "atlas-routes-hit"] }).length) return;
+      const id = e.features?.[0]?.properties?.trip;
+      const trip = buildTrips(latest.current.places).find((t) => t.id === id);
+      if (trip) {
+        setSelected(null);
+        fitTo(map, trip.camps.map((c) => [c.lng, c.lat]));
+      }
     });
     map.on("mousemove", "atlas-routes-hit", (e) => {
       const name = e.features?.[0]?.properties?.name;
@@ -275,6 +292,7 @@ export function AtlasMap({ token }: { token?: string }) {
     src("atlas-heat")?.setData(placesGeoJSON(visible));
     src("atlas-places")?.setData(placesGeoJSON(visible.filter((p) => !UNGROUPED.has(p.type))));
     src("atlas-kimbo")?.setData(placesGeoJSON(visible.filter((p) => UNGROUPED.has(p.type))));
+    src("atlas-trips")?.setData(tripsGeoJSON(buildTrips(visible)));
   }, [visible]);
 
   // Heatmap replaces the pins while it's on.
@@ -282,6 +300,9 @@ export function AtlasMap({ token }: { token?: string }) {
     const on = latest.current.heat;
     if (map.getLayer("atlas-heatmap")) map.setLayoutProperty("atlas-heatmap", "visibility", on ? "visible" : "none");
     for (const id of PIN_LAYERS) if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "none" : "visible");
+    const trips = latest.current.showTrips && !on;
+    for (const id of ["atlas-trips", "atlas-trips-hit"])
+      if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", trips ? "visible" : "none");
   }, []);
 
   useEffect(() => {
@@ -291,6 +312,11 @@ export function AtlasMap({ token }: { token?: string }) {
     if (map) syncHeat(map);
     if (heat) setSelected(null);
   }, [heat, syncHeat]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map) syncHeat(map);
+  }, [showTrips, syncHeat]);
 
   // Full-size photo viewer: arrows step through, Escape closes.
   useEffect(() => {
@@ -675,6 +701,8 @@ export function AtlasMap({ token }: { token?: string }) {
     return { year, count: these.length, miles: Math.round(these.reduce((s, r) => s + r.miles, 0)) };
   }, [stravaList]);
 
+  const tripCount = useMemo(() => buildTrips(places).length, [places]);
+
   const routeCounts = useMemo(() => {
     const strava = routes.filter((r) => r.source === "strava").length;
     return { strava, saved: routes.length - strava };
@@ -863,6 +891,21 @@ export function AtlasMap({ token }: { token?: string }) {
                   <small>GPS tracks from your old maps ({routeCounts.saved})</small>
                 </span>
               </button>
+              {tripCount > 0 && (
+                <button
+                  type="button"
+                  role="menuitemcheckbox"
+                  aria-checked={showTrips}
+                  className={styles.menuItem}
+                  onClick={() => setShowTrips((v) => !v)}
+                >
+                  <span className={styles.check} aria-hidden="true" />
+                  <span>
+                    Kimbo road trips
+                    <small>Camps joined in the order we drove them ({tripCount})</small>
+                  </span>
+                </button>
+              )}
               {routeCounts.strava > 0 && (
                 <button
                   type="button"
