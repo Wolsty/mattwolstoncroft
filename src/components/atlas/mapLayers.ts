@@ -12,12 +12,12 @@ export const BASE_STYLES = {
 export type BaseStyle = keyof typeof BASE_STYLES;
 
 export const BASE_LABELS: Record<BaseStyle, string> = {
-  topo: "Topo",
+  topo: "Dark Outdoors",
   dark: "Dark",
   satellite: "Satellite",
   hybrid: "Hybrid",
   outdoors: "Outdoors",
-  night: "3D Night",
+  night: "Topo",
 };
 export const BASE_NOTES: Record<BaseStyle, string> = {
   topo: "Outdoors detail, dark: trails, peaks, contours",
@@ -25,7 +25,7 @@ export const BASE_NOTES: Record<BaseStyle, string> = {
   satellite: "Imagery with roads and places",
   hybrid: "Imagery with contours and trails",
   outdoors: "Mapbox's daytime topo, most labels",
-  night: "3D terrain and buildings, lit at night",
+  night: "3D terrain at night, the default",
 };
 
 const M_TO_FT = 3.28084;

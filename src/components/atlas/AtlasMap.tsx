@@ -32,7 +32,7 @@ import {
   type BaseStyle,
 } from "./mapLayers";
 
-const MORE_BASES: BaseStyle[] = ["hybrid", "outdoors", "dark"];
+const MORE_BASES: BaseStyle[] = ["topo", "hybrid", "outdoors", "dark"];
 const PIN_LAYERS = ["atlas-fresh-ring", "atlas-clusters", "atlas-cluster-count", "atlas-pins", "atlas-pins-kimbo", "atlas-pin-selected"];
 
 // ---- timeline helpers: dates as whole days since 1970 ----
@@ -776,7 +776,7 @@ export function AtlasMap({ token }: { token?: string }) {
             </form>
           )}
           <div className={styles.baseToggle} role="group" aria-label="Base map">
-            {(["night", "topo", "satellite"] as BaseStyle[]).map((b) => (
+            {(["night", "satellite"] as BaseStyle[]).map((b) => (
               <button key={b} type="button" aria-pressed={base === b} onClick={() => setBase(b)}>
                 {BASE_LABELS[b]}
               </button>
