@@ -70,6 +70,10 @@ export function AtlasMap({ token }: { token?: string }) {
   const [heat, setHeat] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [stravaOpen, setStravaOpen] = useState(false);
+  // The Strava panel starts open on wider screens; on phones it would cover the map.
+  useEffect(() => {
+    if (window.innerWidth > 760) setStravaOpen(true);
+  }, []);
   const [stravaShown, setStravaShown] = useState(40);
   const [stravaSync, setStravaSync] = useState<"idle" | "busy" | "done" | "error">("idle");
   const menuRef = useRef<HTMLDivElement>(null);
@@ -1264,7 +1268,8 @@ function introFlight(map: mapboxgl.Map, places: Place[], sel: Place | null) {
     const b = new mapboxgl.LngLatBounds([places[0].lng, places[0].lat], [places[0].lng, places[0].lat]);
     places.forEach((p) => b.extend([p.lng, p.lat]));
     target = map.cameraForBounds(b, {
-      padding: wide ? { top: 120, bottom: 110, left: 70, right: 70 } : { top: 150, bottom: 60, left: 30, right: 30 },
+      // Leaves room on the left for the Strava panel, which starts open on wide screens.
+      padding: wide ? { top: 120, bottom: 110, left: 420, right: 70 } : { top: 150, bottom: 60, left: 30, right: 30 },
       maxZoom: 13,
     }) ?? undefined;
   }
