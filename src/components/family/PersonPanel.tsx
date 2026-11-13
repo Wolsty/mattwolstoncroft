@@ -68,14 +68,17 @@ export function PersonPanel({ onClose }: { onClose: () => void }) {
               <span className={styles.monogram} aria-hidden>
                 {initials(p)}
               </span>
-              {!p.living && (
-                <button type="button" className={styles.textButton} onClick={() => f.openContribute({ kind: "photo", personId: id })}>
-                  Have a photo of {name}?
-                </button>
-              )}
+              <button type="button" className={styles.textButton} onClick={() => f.openContribute({ kind: "photo", personId: id })}>
+                Have a photo of {name}?
+              </button>
             </div>
           )}
         </div>
+        {portrait && (
+          <button type="button" className={`${styles.textButton} ${styles.addPhoto}`} onClick={() => f.openContribute({ kind: "photo", personId: id })}>
+            Add a photo
+          </button>
+        )}
 
         <p className={styles.eyebrow}>
           <span className={styles.dot} aria-hidden />

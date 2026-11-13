@@ -184,7 +184,8 @@
         "mary",
         "rod",
         "martha-1918"
-      ]
+      ],
+      "photo": "/family-portraits/irvin-jr.jpg"
     },
     "mary": {
       "n": "Mary Wolstoncroft",
@@ -276,7 +277,8 @@
         "yvonne",
         "jack-m",
         "sylvia"
-      ]
+      ],
+      "photo": "/family-portraits/esther.jpg"
     },
     "irvin-sr": {
       "n": "Irvin Clyde Wolstoncroft Sr.",
