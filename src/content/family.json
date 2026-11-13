@@ -42,7 +42,7 @@
     "nag": "Kalman Nagy came from Milota in Hungary's far northeast. He and Isabelle Toth settled in McKeesport, where their daughter Mary was born in 1917.",
     "spe": "Philip Henry Specht, born in Germany, married Anna Deitman, daughter of an immigrant from Rottleben, Thuringia. Their son Ed was born in Punxsutawney and spent his working life at Westinghouse in East Pittsburgh.",
     "mor": "Peter Mortelette arrived from Charleroi, Belgium, in 1892 and settled in McDonald, a Belgian coal and glass town. His son Jules married Julia Jiannino, daughter of an Italian immigrant, and raised Esther beside the Westinghouse works.",
-    "meet": "Ed Specht worked at Westinghouse in East Pittsburgh, where Esther grew up. A generation later Rod grew up in North Versailles and Yvonne in Murrysville, about 10 miles apart."
+    "meet": "Ed Specht worked at Westinghouse in East Pittsburgh, where Esther grew up. A generation later Rod grew up in North Versailles and Yvonne next door in East McKeesport."
   },
   "people": {
     "matthew": {
@@ -120,7 +120,7 @@
       "facts": [
         "Only child of Irvin and Mary Wolstoncroft.",
         "Grew up in North Versailles, near McKeesport, PA.",
-        "Married Yvonne Specht, who grew up about 10 miles away in Murrysville."
+        "Married Yvonne Specht, who grew up next door in East McKeesport."
       ],
       "links": [
         "irvin-jr",
@@ -143,7 +143,7 @@
       "spouse": "rod",
       "facts": [
         "Only daughter of Edward and Esther Specht; brothers Edward, Robert and James.",
-        "Grew up in Murrysville, PA."
+        "Grew up in East McKeesport, PA."
       ],
       "links": [
         "ed",
@@ -205,7 +205,7 @@
       "facts": [
         "Daughter of Hungarian immigrants Kalman Nagy and Isabelle Toth.",
         "Lived in North Versailles. Her funeral was at the First United Methodist Church in McKeesport.",
-        "Sister of Ethel O'Hara.",
+        "Sister of Ethel O'Hara, Charlie Nagy and Elek “Sanders” Nagy.",
         "Her records also list the surname Korenoski, possibly from an earlier marriage."
       ],
       "links": [
@@ -238,7 +238,7 @@
         "Worked many years at Westinghouse in East Pittsburgh and carpooled there with his friend Norbert Onaitis.",
         "Catholic. His Funeral Mass was at Mother of Sorrows Church, Murrysville.",
         "Buried at Good Shepherd Catholic Cemetery, Monroeville, PA (plot 7-2-25-7).",
-        "In 1980 he built a brick home on about 10 acres with a stocked pond at 6141 Terry Lane, Murrysville. The house sold in 1996.",
+        "In 1980 he built a brick home on about 10 acres with a stocked pond in Murrysville. The house sold in 1996.",
         "Father of Edward, Robert, Yvonne and James; six grandchildren and one great-grandchild in 2004."
       ],
       "links": [
@@ -801,18 +801,19 @@
       ]
     },
     "charles-nagy": {
-      "n": "Charles Nagy",
+      "n": "Charles “Charlie” Nagy",
       "sex": "m",
       "line": "nag",
-      "rel": "Great-uncle (likely)",
+      "rel": "Great-uncle",
       "d": "10 Aug 1986",
-      "likely": true,
       "parents": [
         "kalman",
         "isabelle"
       ],
       "facts": [
-        "Buried in Kalman and Isabelle's family plot, which suggests he was Mary's brother."
+        "Mary's brother.",
+        "Served in World War II.",
+        "Buried in Kalman and Isabelle's family plot."
       ],
       "links": [
         "kalman",
@@ -820,18 +821,19 @@
       ]
     },
     "elek-nagy": {
-      "n": "Elek Nagy",
+      "n": "Elek “Sanders” Nagy",
       "sex": "m",
       "line": "nag",
-      "rel": "Great-uncle (likely)",
+      "rel": "Great-uncle",
       "d": "31 Jul 1993",
-      "likely": true,
       "parents": [
         "kalman",
         "isabelle"
       ],
       "facts": [
-        "Buried in Kalman and Isabelle's family plot, which suggests he was Mary's brother."
+        "Mary's brother. The family knew him as “Uncle Sanders.”",
+        "WWII paratrooper.",
+        "Buried in Kalman and Isabelle's family plot."
       ],
       "links": [
         "kalman",
@@ -1559,30 +1561,11 @@
       ]
     },
     {
-      "id": "nagy-brothers",
-      "q": "Were Charles and Elek Nagy Mary's brothers?",
-      "people": [
-        "charles-nagy",
-        "elek-nagy",
-        "mary"
-      ]
-    },
-    {
       "id": "wwii-service",
       "q": "Did Grandpa Ed serve in World War II? Where did Grandpa Irvin serve after he was drafted in 1943?",
       "people": [
         "ed",
         "irvin-jr"
-      ]
-    },
-    {
-      "id": "uncle-sanders",
-      "q": "Who was Dad's “Uncle Sanders,” the WWII paratrooper? Was he Martha Wolstoncroft's husband, or one of Mary's Nagy brothers (Sándor is Hungarian for Alexander)?",
-      "people": [
-        "martha-1918",
-        "charles-nagy",
-        "elek-nagy",
-        "rod"
       ]
     },
     {
@@ -1605,15 +1588,6 @@
       "q": "Martha Wolstoncroft (1918–1990), Irvin's sister: what was her married name?",
       "people": [
         "martha-1918"
-      ]
-    },
-    {
-      "id": "north-versailles-home",
-      "q": "Where in North Versailles did Irvin and Mary live? They were there about 40 years.",
-      "people": [
-        "irvin-jr",
-        "mary",
-        "rod"
       ]
     }
   ],
