@@ -9,6 +9,7 @@
 
 .page {
   --gap-row: 26px;
+  --col-gap: 14px;
   --card-r: 10px;
   max-width: 1480px;
   margin: 0 auto;
@@ -83,10 +84,9 @@
 .intro {
   margin: 18px 0 0;
   max-width: 38em;
-  font-family: var(--font-heading), Georgia, serif;
-  font-style: italic;
-  font-size: clamp(1.125rem, 1.6vw, 1.3rem);
-  line-height: 1.4;
+  font-family: var(--font-sans);
+  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+  line-height: 1.45;
   color: var(--fg-muted);
 }
 
@@ -166,7 +166,7 @@
 .grid {
   display: grid;
   grid-template-columns: 104px repeat(4, minmax(0, 1fr));
-  column-gap: 14px;
+  column-gap: var(--col-gap);
   row-gap: var(--gap-row);
 }
 .rail {
@@ -370,8 +370,8 @@
 .bracket::before {
   content: "";
   position: absolute;
-  left: 25%;
-  right: 25%;
+  left: calc(25% - var(--col-gap) / 4);
+  right: calc(25% - var(--col-gap) / 4);
   top: 50%;
   bottom: calc(-1 * var(--gap-row));
   border: 1px solid var(--rule-strong);
@@ -391,6 +391,7 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: var(--col-gap);
 }
 .parents::before {
   /* the marriage */

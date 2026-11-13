@@ -10,6 +10,7 @@
      every heading below display size.
      --font-body stays on Times New Roman (system-available). */
   --font-body: "Times New Roman", Times, serif;
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
 
   /* Color: light */
   --bg: #FAFAF7;
