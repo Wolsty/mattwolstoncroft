@@ -147,10 +147,7 @@ export function TreeGrid() {
             <p className={styles.colSide}>{l.side}</p>
             <h2 className={styles.colTitle}>{l.title}</h2>
             <p className={styles.colSub}>From {l.from}</p>
-            <details className={styles.story}>
-              <summary>The story</summary>
-              <p>{data.story[l.key]}</p>
-            </details>
+            <p className={styles.story}>{data.story[l.key]}</p>
           </div>
         ))}
 

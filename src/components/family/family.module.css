@@ -220,17 +220,7 @@
   text-wrap: balance;
   color: var(--fg-muted);
 }
-.story { margin-top: 6px; font-size: 0.875rem; }
-.story summary {
-  cursor: pointer;
-  color: var(--lc);
-  font-family: var(--font-heading), Georgia, serif;
-  list-style: none;
-}
-.story summary::-webkit-details-marker { display: none; }
-.story summary::after { content: " +"; }
-.story[open] summary::after { content: " –"; }
-.story p { margin: 6px 0 0; line-height: 1.45; color: var(--fg); }
+.story { margin: 10px 0 0; font-size: 0.875rem; line-height: 1.5; color: var(--fg); }
 
 .cell {
   position: relative;
