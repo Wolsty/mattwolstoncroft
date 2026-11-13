@@ -190,3 +190,26 @@ export function relationshipPath(people: People, viewer: string, target: string)
     return { id: c.id, label: `${whose} ${word}` };
   });
 }
+
+/** Generation of everyone relative to `root` (0): parents +1, children -1, spouses the same. */
+export function generations(people: People, root: string): Map<string, number> {
+  const gen = new Map<string, number>([[root, 0]]);
+  const queue = [root];
+  while (queue.length) {
+    const id = queue.shift()!;
+    const g = gen.get(id)!;
+    const f = familyOf(people, id);
+    const next: [string, number][] = [
+      ...f.parents.map((p) => [p, g + 1] as [string, number]),
+      ...f.children.map((c) => [c, g - 1] as [string, number]),
+      ...(f.spouse ? [[f.spouse, g] as [string, number]] : []),
+    ];
+    for (const [n, ng] of next) {
+      if (!gen.has(n)) {
+        gen.set(n, ng);
+        queue.push(n);
+      }
+    }
+  }
+  return gen;
+}

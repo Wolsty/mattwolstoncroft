@@ -29,7 +29,7 @@ export type FamilyCtx = {
   viewer: string | null;
   setViewer: (id: string | null) => void;
   selected: string;
-  select: (id: string, opts?: { scroll?: boolean }) => void;
+  select: (id: string, opts?: { scroll?: boolean; quiet?: boolean }) => void;
   /** People on the line from the viewer to the selected person, for highlighting. */
   pathIds: Set<string>;
   relLabel: (id: string) => string | null;

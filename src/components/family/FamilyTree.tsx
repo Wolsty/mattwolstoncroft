@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FamilyData, PublicContributions } from "@/lib/family/types";
 import { relationship, relationshipPath } from "@/lib/family/kinship";
+import { shortName } from "@/lib/family/format";
 import { Ctx, store, type ContributeOpts, type FamilyCtx, type PhotoItem, type Sent } from "./context";
 import { Header } from "./Header";
 import { TreeGrid } from "./TreeGrid";
@@ -105,8 +106,9 @@ export function FamilyTree({ data, initial }: { data: FamilyData; initial: Publi
     if (!people[id]) return;
     setSelected(id);
     if (decodeURIComponent(window.location.hash.slice(1)) !== id) history.pushState(null, "", `#${id}`);
-    if (!wide.current) setSheetOpen(true);
-    else if (opts?.scroll) document.getElementById(`card-${id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    if (!wide.current) {
+      if (!opts?.quiet) setSheetOpen(true);
+    } else if (opts?.scroll) document.getElementById(`card-${id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [people]);
 
   const setViewer = useCallback((id: string | null) => {
@@ -121,7 +123,17 @@ export function FamilyTree({ data, initial }: { data: FamilyData; initial: Publi
       if (!p) return null;
       if (viewer === home) return p.rel;
       if (viewer === null) return id === home ? null : `Matthew's ${lowerFirst(p.rel)}`;
-      return relationship(people, viewer, id) ?? (relationshipPath(people, viewer, id) ? "Related by marriage" : null);
+      const blood = relationship(people, viewer, id);
+      if (blood) return blood;
+      // Not related by blood: say who connects them, from the far side of the marriage ("Rod's father").
+      const path = relationshipPath(people, viewer, id);
+      if (!path) return null;
+      const isBlood = (r: string | null) => Boolean(r) && !/marriage|in-law|step|husband|wife/i.test(r!);
+      for (const step of path.slice(1, -1)) {
+        const r = relationship(people, step.id, id);
+        if (isBlood(r)) return `${shortName(people[step.id])}\u2019s ${lowerFirst(r!)}`;
+      }
+      return "Related by marriage";
     },
     [people, viewer, home],
   );

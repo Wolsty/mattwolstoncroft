@@ -24,11 +24,11 @@ const cleanRel = (r: string | null) => r?.replace(/\s*\(likely\)/i, "") ?? null;
  * relatives section. The whole row is the button.
  */
 export function PersonRow({ id, standalone = false }: { id: string; standalone?: boolean }) {
-  const { people, selected, select, pathIds, relLabel, itemsFor } = useFamily();
+  const { people, selected, select, pathIds, relLabel, itemsFor, viewer } = useFamily();
   const p = people[id];
   if (!p) return null;
-  // In the tree the row says the generation, so the relationship only shows on standalone cards.
-  const rel = standalone ? cleanRel(relLabel(id)) : null;
+  const isYou = viewer === id;
+  const rel = isYou ? null : cleanRel(relLabel(id));
   const place = shortPlace(p.bp);
   const memories = itemsFor(id).length;
   return (
@@ -50,9 +50,10 @@ export function PersonRow({ id, standalone = false }: { id: string; standalone?:
           {years(p)}
           {place && !p.living ? ` · ${place}` : ""}
         </span>
-        {(rel || p.imm || p.likely || memories > 0) && (
+        {rel && <span className={styles.rel}>{rel}</span>}
+        {(isYou || p.imm || p.likely || memories > 0) && (
           <span className={styles.tags}>
-            {rel && <span className={styles.rel}>{rel}</span>}
+            {isYou && <span className={`${styles.tag} ${styles.tagYou}`}>You</span>}
             {p.imm && <span className={styles.tag}>Immigrant</span>}
             {p.likely && <span className={`${styles.tag} ${styles.tagLikely}`}>Likely</span>}
             {memories > 0 && (

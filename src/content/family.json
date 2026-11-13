@@ -1287,7 +1287,9 @@
             "irvin-jr"
           ]
         ]
-      ]
+      ],
+      "side": "Rod's father's side",
+      "from": "Radcliffe, Lancashire, England"
     },
     {
       "key": "nag",
@@ -1305,7 +1307,9 @@
             "mary"
           ]
         ]
-      ]
+      ],
+      "side": "Rod's mother's side",
+      "from": "Milota, Hungary"
     },
     {
       "key": "spe",
@@ -1329,7 +1333,9 @@
             "ed"
           ]
         ]
-      ]
+      ],
+      "side": "Yvonne's father's side",
+      "from": "Rottleben, Thuringia, Germany"
     },
     {
       "key": "mor",
@@ -1357,7 +1363,9 @@
             "esther"
           ]
         ]
-      ]
+      ],
+      "side": "Yvonne's mother's side",
+      "from": "Charleroi, Belgium, and Italy"
     }
   ],
   "groups": [

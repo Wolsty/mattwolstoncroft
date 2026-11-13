@@ -21,7 +21,7 @@ export type Person = {
   links?: string[];
 };
 
-export type Line = { key: LineKey; title: string; sub: string; gens: string[][][] };
+export type Line = { key: LineKey; title: string; sub: string; side: string; from: string; gens: string[][][] };
 export type Group = { t: string; note?: string; ids: string[] };
 export type Question = { id: string; q: string; people: string[] };
 export type Source = { label: string; url: string; people?: string[] };

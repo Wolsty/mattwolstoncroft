@@ -2,37 +2,31 @@
 
 import { useMemo } from "react";
 import { useFamily } from "./context";
-import { PersonSearch } from "./PersonSearch";
 import styles from "./family.module.css";
 
 export function Header({ viewerKnown }: { viewerKnown: boolean }) {
-  const { data, select, owner } = useFamily();
+  const { data, owner } = useFamily();
   return (
-    <header className={styles.header}>
-      <p className="meta">Family · shared privately</p>
-      <h1 className={`display ${styles.title}`}>{data.meta.title}</h1>
-      <p className={styles.intro}>{data.meta.intro}</p>
-      <ul className={styles.origins} aria-label="Where the family came from">
-        {data.origins.map((o) => (
-          <li key={o.place}>
-            <button type="button" className={styles.origin} data-line={o.line} onClick={() => select(o.person, { scroll: true })}>
-              <span className={styles.originPlace}>{o.place}</span>
-              <span className={styles.originDetail}>{o.detail}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
-      <div className={styles.toolbar}>
-        <PersonSearch />
-        {viewerKnown && <ViewerControl />}
+    <>
+      <div className={styles.topbar}>
+        <label className={styles.viewer}>
+          <span className={styles.viewerLabel}>Viewing as</span>
+          <ViewerSelect id="viewer-select" />
+        </label>
+        <p className={styles.viewerHint}>Relationships are shown from this person&rsquo;s point of view.</p>
         {owner && (
-          <a className={`${styles.textButton} link-underline`} href="/family/review">
+          <a className={`${styles.topbarLink} link-underline`} href="/family/review">
             Review submissions
           </a>
         )}
       </div>
-      {!viewerKnown && <Welcome />}
-    </header>
+      <header className={styles.header}>
+        <p className="meta">Family · shared privately</p>
+        <h1 className={`display ${styles.title}`}>{data.meta.title}</h1>
+        <p className={styles.intro}>{data.meta.intro}</p>
+        {!viewerKnown && <Welcome />}
+      </header>
+    </>
   );
 }
 
@@ -48,33 +42,27 @@ function useViewerOptions() {
   );
 }
 
-function ViewerSelect({ id, autoFocus }: { id: string; autoFocus?: boolean }) {
-  const { viewer, setViewer } = useFamily();
+function ViewerSelect({ id }: { id: string }) {
+  const { viewer, setViewer, select } = useFamily();
   const options = useViewerOptions();
   return (
     <select
       id={id}
-      autoFocus={autoFocus}
       className={styles.select}
       value={viewer ?? "guest"}
-      onChange={(e) => setViewer(e.target.value === "guest" ? null : e.target.value)}
+      onChange={(e) => {
+        const v = e.target.value === "guest" ? null : e.target.value;
+        setViewer(v);
+        if (v) select(v, { scroll: true, quiet: true });
+      }}
     >
-      <option value="guest">I&rsquo;m not on the tree</option>
+      <option value="guest">Someone not on the tree</option>
       {options.map(([pid, p]) => (
         <option key={pid} value={pid}>
           {p.n}
         </option>
       ))}
     </select>
-  );
-}
-
-function ViewerControl() {
-  return (
-    <label className={styles.viewer}>
-      <span className="meta">Viewing as</span>
-      <ViewerSelect id="viewer-select" />
-    </label>
   );
 }
 
@@ -86,7 +74,8 @@ function Welcome() {
       <div>
         <h2 className={styles.welcomeTitle}>Welcome. Who&rsquo;s looking?</h2>
         <p className={styles.welcomeText}>
-          Pick your name and every card will show how that person is related to you. You can change it any time.
+          Pick your name and every card will say how that person is related to you. You can change it any time at the top
+          of the page.
         </p>
       </div>
       <div className={styles.welcomeActions}>
