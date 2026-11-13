@@ -6,9 +6,10 @@ import styles from "./family.module.css";
 
 /** Portrait if family have shared one, otherwise initials in the line's color. */
 export function Avatar({ id, size = 32 }: { id: string; size?: number }) {
-  const { people, portraitOf } = useFamily();
+  const { people, portraitOf, itemsFor } = useFamily();
   const p = people[id];
-  const url = portraitOf(id);
+  // Same rule as the person panel: the chosen portrait, else their first approved photo.
+  const url = portraitOf(id) ?? itemsFor(id).find((c) => c.photos.length)?.photos[0];
   return (
     <span className={styles.avatar} data-line={p.line} style={{ width: size, height: size, fontSize: size * 0.38 }} aria-hidden>
       {url ? <img src={url} alt="" loading="lazy" /> : initials(p)}
