@@ -83,7 +83,8 @@
       "links": [
         "rod",
         "yvonne"
-      ]
+      ],
+      "photo": "/family-portraits/courtney.jpg"
     },
     "christy": {
       "n": "Christy Wolstoncroft",
@@ -102,7 +103,8 @@
       "links": [
         "rod",
         "yvonne"
-      ]
+      ],
+      "photo": "/family-portraits/christy.jpg"
     },
     "rod": {
       "n": "Rod Wolstoncroft",
@@ -124,7 +126,8 @@
         "irvin-jr",
         "mary",
         "yvonne"
-      ]
+      ],
+      "photo": "/family-portraits/rod.jpg"
     },
     "yvonne": {
       "n": "Yvonne Wolstoncroft",
@@ -149,7 +152,8 @@
         "uncle-edward",
         "uncle-robert",
         "uncle-james"
-      ]
+      ],
+      "photo": "/family-portraits/yvonne.jpg"
     },
     "irvin-jr": {
       "n": "Irvin Clyde Wolstoncroft Jr.",
@@ -211,7 +215,8 @@
         "ethel",
         "charles-nagy",
         "elek-nagy"
-      ]
+      ],
+      "photo": "/family-portraits/mary.jpg"
     },
     "ed": {
       "n": "Edward V. Specht",
@@ -241,7 +246,8 @@
         "esther",
         "yvonne",
         "phillip-t"
-      ]
+      ],
+      "photo": "/family-portraits/ed.jpg"
     },
     "esther": {
       "n": "Esther Marie Specht",
@@ -1010,7 +1016,8 @@
         "esther",
         "yvonne",
         "molly"
-      ]
+      ],
+      "photo": "/family-portraits/uncle-edward.jpg"
     },
     "uncle-robert": {
       "n": "Robert \"Bob\" Specht",
@@ -1063,7 +1070,8 @@
         "esther",
         "yvonne",
         "lisa"
-      ]
+      ],
+      "photo": "/family-portraits/uncle-james.jpg"
     },
     "tracy": {
       "n": "Tracy MacInerney",
@@ -1083,7 +1091,8 @@
         "ed",
         "evan",
         "portia"
-      ]
+      ],
+      "photo": "/family-portraits/tracy.jpg"
     },
     "evan": {
       "n": "Evan MacInerney",
@@ -1100,7 +1109,7 @@
       ]
     },
     "lisa": {
-      "n": "Lisa",
+      "n": "Lisa Campbell",
       "maiden": "Specht",
       "sex": "f",
       "line": "spe",
@@ -1110,15 +1119,21 @@
         "uncle-james"
       ],
       "facts": [
-        "Daughter of Uncle Jim Specht; grandchild of Ed and Esther Specht."
+        "Daughter of Uncle Jim Specht; grandchild of Ed and Esther Specht.",
+        "Married to Bain Campbell; mother of Metta and Landon."
       ],
       "links": [
         "uncle-james",
-        "ed"
-      ]
+        "ed",
+        "bain-campbell",
+        "metta",
+        "landon"
+      ],
+      "spouse": "bain-campbell",
+      "photo": "/family-portraits/lisa.jpg"
     },
     "molly": {
-      "n": "Molly",
+      "n": "Molly Gordon",
       "maiden": "Specht",
       "sex": "f",
       "line": "spe",
@@ -1128,12 +1143,17 @@
         "uncle-edward"
       ],
       "facts": [
-        "Daughter of Uncle Ed and Aunt Alice Specht; grandchild of Ed and Esther Specht."
+        "Daughter of Uncle Ed and Aunt Alice Specht; grandchild of Ed and Esther Specht.",
+        "Married to Matthew Gordon; mother of Logan."
       ],
       "links": [
         "uncle-edward",
-        "ed"
-      ]
+        "ed",
+        "matthew-gordon",
+        "logan"
+      ],
+      "spouse": "matthew-gordon",
+      "photo": "/family-portraits/molly.jpg"
     },
     "portia": {
       "n": "Portia Shondelmeyer",
@@ -1245,6 +1265,93 @@
       "links": [
         "jack-m",
         "leah"
+      ]
+    },
+    "bain-campbell": {
+      "n": "Bain Campbell",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Lisa's husband",
+      "living": true,
+      "spouse": "lisa",
+      "facts": [
+        "Married to Lisa (Specht) Campbell; father of Metta and Landon."
+      ],
+      "links": [
+        "lisa",
+        "metta",
+        "landon"
+      ]
+    },
+    "metta": {
+      "n": "Metta Campbell",
+      "sex": "f",
+      "line": "spe",
+      "rel": "First cousin once removed",
+      "living": true,
+      "parents": [
+        "lisa",
+        "bain-campbell"
+      ],
+      "facts": [
+        "Daughter of Lisa and Bain Campbell."
+      ],
+      "links": [
+        "lisa",
+        "bain-campbell",
+        "landon"
+      ]
+    },
+    "landon": {
+      "n": "Landon Campbell",
+      "sex": "m",
+      "line": "spe",
+      "rel": "First cousin once removed",
+      "living": true,
+      "parents": [
+        "lisa",
+        "bain-campbell"
+      ],
+      "facts": [
+        "Son of Lisa and Bain Campbell."
+      ],
+      "links": [
+        "lisa",
+        "bain-campbell",
+        "metta"
+      ]
+    },
+    "matthew-gordon": {
+      "n": "Matthew Gordon",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Molly's husband",
+      "living": true,
+      "spouse": "molly",
+      "facts": [
+        "Married to Molly (Specht) Gordon; father of Logan."
+      ],
+      "links": [
+        "molly",
+        "logan"
+      ]
+    },
+    "logan": {
+      "n": "Logan James Gordon",
+      "sex": "m",
+      "line": "spe",
+      "rel": "First cousin once removed",
+      "living": true,
+      "parents": [
+        "molly",
+        "matthew-gordon"
+      ],
+      "facts": [
+        "Son of Molly and Matthew Gordon."
+      ],
+      "links": [
+        "molly",
+        "matthew-gordon"
       ]
     }
   },
@@ -1404,10 +1511,15 @@
       "note": "Ed and Esther's other grandchildren and great-grandchildren",
       "ids": [
         "tracy",
-        "lisa",
-        "molly",
         "evan",
-        "portia"
+        "portia",
+        "lisa",
+        "bain-campbell",
+        "metta",
+        "landon",
+        "molly",
+        "matthew-gordon",
+        "logan"
       ]
     },
     {
@@ -1437,14 +1549,6 @@
     }
   ],
   "questions": [
-    {
-      "id": "lisa-molly-children",
-      "q": "Do Lisa and Molly have children who should be added?",
-      "people": [
-        "lisa",
-        "molly"
-      ]
-    },
     {
       "id": "korenoski",
       "q": "Mary Nagy's records also list the name Korenoski. Was she married before Irvin?",

@@ -17,6 +17,7 @@ export function isFamilyPath(pathname: string) {
     pathname === "/family" ||
     pathname.startsWith("/family/") ||
     pathname.startsWith("/family-photos/") ||
+    pathname.startsWith("/family-portraits/") ||
     pathname.startsWith("/api/family/") ||
     pathname === "/api/family-auth"
   );

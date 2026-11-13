@@ -38,7 +38,7 @@ export async function middleware(req: NextRequest) {
     const expected = process.env.FAMILY_PASSWORD;
     const cookie = req.cookies.get(FAMILY_COOKIE)?.value;
     if (expected && cookie && cookie === (await familyToken(expected))) return NextResponse.next();
-    if (pathname.startsWith("/api/") || pathname.startsWith("/family-photos/")) {
+    if (pathname.startsWith("/api/") || pathname.startsWith("/family-photos/") || pathname.startsWith("/family-portraits/")) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const url = req.nextUrl.clone();

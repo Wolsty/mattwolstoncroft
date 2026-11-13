@@ -19,6 +19,8 @@ export type Person = {
   spouse?: string;
   facts?: string[];
   links?: string[];
+  /** Portrait shipped with the site, in public/family-portraits/. A photo family share and Matthew picks wins. */
+  photo?: string;
 };
 
 export type Line = { key: LineKey; title: string; sub: string; side: string; from: string; gens: string[][][] };

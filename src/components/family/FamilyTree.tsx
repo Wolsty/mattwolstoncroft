@@ -153,7 +153,7 @@ export function FamilyTree({ data, initial }: { data: FamilyData; initial: Publi
       select,
       pathIds,
       relLabel,
-      portraitOf: (id) => contrib.portraits[id],
+      portraitOf: (id) => contrib.portraits[id] ?? people[id]?.photo,
       itemsFor: (id) => contrib.items.filter((c) => c.personId === id && !c.questionId),
       answersFor: (qid) => contrib.items.filter((c) => c.questionId === qid),
       sentFor: (id) => sent.filter((s) => s.personId === id),
