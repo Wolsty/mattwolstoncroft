@@ -1,0 +1,1623 @@
+{
+  "meta": {
+    "title": "The Wolstoncroft–Specht Family",
+    "intro": "Four family lines that met in the Turtle Creek and Mon valleys east of Pittsburgh, traced back to Lancashire, Hungary, Belgium, Italy and Germany.",
+    "home": "matthew",
+    "compiled": "Compiled November 2026 from public obituaries, cemetery records, census entries, WWII enlistment records and the Ancestry public record index. Dates are as recorded and may contain errors."
+  },
+  "origins": [
+    {
+      "place": "England",
+      "detail": "Radcliffe, Lancashire, 1700s",
+      "line": "wol",
+      "person": "george"
+    },
+    {
+      "place": "Hungary",
+      "detail": "Milota, c.1890s–1910s",
+      "line": "nag",
+      "person": "kalman"
+    },
+    {
+      "place": "Germany",
+      "detail": "Rottleben, Thuringia, and Philip Specht, 1800s",
+      "line": "spe",
+      "person": "theodore"
+    },
+    {
+      "place": "Belgium",
+      "detail": "Charleroi, 1890s",
+      "line": "mor",
+      "person": "peter"
+    },
+    {
+      "place": "Italy",
+      "detail": "Jiannino line, 1800s",
+      "line": "mor",
+      "person": "vincent"
+    }
+  ],
+  "story": {
+    "wol": "James Woolstencroft and Alice Collier lived around Radcliffe, Lancashire. Their son George brought the family to Pennsylvania by 1858. Four generations later, Irvin Jr. was drafted in 1943, married Mary Nagy and settled in North Versailles.",
+    "nag": "Kalman Nagy came from Milota in Hungary's far northeast. He and Isabelle Toth settled in McKeesport, where their daughter Mary was born in 1917.",
+    "spe": "Philip Henry Specht, born in Germany, married Anna Deitman, daughter of an immigrant from Rottleben, Thuringia. Their son Ed was born in Punxsutawney and spent his working life at Westinghouse in East Pittsburgh.",
+    "mor": "Peter Mortelette arrived from Charleroi, Belgium, in 1892 and settled in McDonald, a Belgian coal and glass town. His son Jules married Julia Jiannino, daughter of an Italian immigrant, and raised Esther beside the Westinghouse works.",
+    "meet": "Ed Specht worked at Westinghouse in East Pittsburgh, where Esther grew up. A generation later Rod grew up in North Versailles and Yvonne in Murrysville, about 10 miles apart."
+  },
+  "people": {
+    "matthew": {
+      "n": "Matthew Wolstoncroft",
+      "sex": "m",
+      "line": "wol",
+      "rel": "You",
+      "living": true,
+      "parents": [
+        "rod",
+        "yvonne"
+      ],
+      "facts": [
+        "Son of Rod and Yvonne Wolstoncroft.",
+        "Put this tree together in November 2026."
+      ],
+      "links": [
+        "rod",
+        "yvonne",
+        "courtney",
+        "christy"
+      ]
+    },
+    "courtney": {
+      "n": "Courtney Wolstoncroft",
+      "sex": "f",
+      "line": "wol",
+      "rel": "Sister",
+      "living": true,
+      "parents": [
+        "rod",
+        "yvonne"
+      ],
+      "facts": [
+        "Daughter of Rod and Yvonne.",
+        "Named as a grandchild in both Mary Wolstoncroft's (2006) and Edward Specht's (2004) obituaries."
+      ],
+      "links": [
+        "rod",
+        "yvonne"
+      ]
+    },
+    "christy": {
+      "n": "Christy Wolstoncroft",
+      "sex": "f",
+      "line": "wol",
+      "rel": "Sister",
+      "living": true,
+      "parents": [
+        "rod",
+        "yvonne"
+      ],
+      "facts": [
+        "Daughter of Rod and Yvonne.",
+        "Named as a grandchild in both Mary Wolstoncroft's (2006) and Edward Specht's (2004) obituaries."
+      ],
+      "links": [
+        "rod",
+        "yvonne"
+      ]
+    },
+    "rod": {
+      "n": "Rod Wolstoncroft",
+      "sex": "m",
+      "line": "wol",
+      "rel": "Father",
+      "living": true,
+      "parents": [
+        "irvin-jr",
+        "mary"
+      ],
+      "spouse": "yvonne",
+      "facts": [
+        "Only child of Irvin and Mary Wolstoncroft.",
+        "Grew up in North Versailles, near McKeesport, PA.",
+        "Married Yvonne Specht, who grew up about 10 miles away in Murrysville."
+      ],
+      "links": [
+        "irvin-jr",
+        "mary",
+        "yvonne"
+      ]
+    },
+    "yvonne": {
+      "n": "Yvonne Wolstoncroft",
+      "maiden": "Specht",
+      "sex": "f",
+      "line": "spe",
+      "rel": "Mother",
+      "living": true,
+      "parents": [
+        "ed",
+        "esther"
+      ],
+      "spouse": "rod",
+      "facts": [
+        "Only daughter of Edward and Esther Specht; brothers Edward, Robert and James.",
+        "Grew up in Murrysville, PA."
+      ],
+      "links": [
+        "ed",
+        "esther",
+        "rod",
+        "uncle-edward",
+        "uncle-robert",
+        "uncle-james"
+      ]
+    },
+    "irvin-jr": {
+      "n": "Irvin Clyde Wolstoncroft Jr.",
+      "sex": "m",
+      "line": "wol",
+      "rel": "Grandfather",
+      "b": "31 Jul 1923",
+      "bp": "Grove City, Mercer County, PA",
+      "d": "6 Feb 2014",
+      "dp": "Cincinnati, Ohio",
+      "parents": [
+        "irvin-sr",
+        "fay"
+      ],
+      "spouse": "mary",
+      "facts": [
+        "Son of Irvin Clyde Wolstoncroft Sr. and Fay Estella Byers; older sister Martha.",
+        "Married Mary Nagy and lived in North Versailles, PA.",
+        "After Mary died in 2006 he moved to Cincinnati to be near family, and lived to 90.",
+        "WWII Army veteran. Drafted from Mercer County and entered the Army at Pittsburgh on 17 February 1943 as a Private, serial number 33426655, enlisted for the duration of the war plus six months.",
+        "When he enlisted he was 19, single, a high school graduate, and working as a stock clerk.",
+        "He was buried with military honors, including a rifle salute.",
+        "Buried at Lebanon Church Cemetery, West Mifflin, PA, back home in the Mon Valley."
+      ],
+      "links": [
+        "irvin-sr",
+        "fay",
+        "mary",
+        "rod",
+        "martha-1918"
+      ]
+    },
+    "mary": {
+      "n": "Mary Wolstoncroft",
+      "maiden": "Nagy",
+      "sex": "f",
+      "line": "nag",
+      "rel": "Grandmother",
+      "b": "13 Mar 1917",
+      "bp": "McKeesport, PA",
+      "d": "24 Jul 2006",
+      "dp": "UPMC McKeesport, PA",
+      "parents": [
+        "kalman",
+        "isabelle"
+      ],
+      "spouse": "irvin-jr",
+      "facts": [
+        "Daughter of Hungarian immigrants Kalman Nagy and Isabelle Toth.",
+        "Lived in North Versailles. Her funeral was at the First United Methodist Church in McKeesport.",
+        "Sister of Ethel O'Hara.",
+        "Her records also list the surname Korenoski, possibly from an earlier marriage."
+      ],
+      "links": [
+        "kalman",
+        "isabelle",
+        "irvin-jr",
+        "rod",
+        "ethel",
+        "charles-nagy",
+        "elek-nagy"
+      ]
+    },
+    "ed": {
+      "n": "Edward V. Specht",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Grandfather",
+      "b": "9 Dec 1919",
+      "bp": "Punxsutawney, Jefferson County, PA",
+      "d": "12 Oct 2004",
+      "dp": "Murrysville, PA",
+      "parents": [
+        "philip",
+        "anna"
+      ],
+      "spouse": "esther",
+      "facts": [
+        "Son of Philip Henry Specht and Anna J. Deitman; brother Phillip.",
+        "Worked many years at Westinghouse in East Pittsburgh and carpooled there with his friend Norbert Onaitis.",
+        "Catholic. His Funeral Mass was at Mother of Sorrows Church, Murrysville.",
+        "Buried at Good Shepherd Catholic Cemetery, Monroeville, PA (plot 7-2-25-7).",
+        "In 1980 he built a brick home on about 10 acres with a stocked pond at 6141 Terry Lane, Murrysville. The house sold in 1996.",
+        "Father of Edward, Robert, Yvonne and James; six grandchildren and one great-grandchild in 2004."
+      ],
+      "links": [
+        "philip",
+        "anna",
+        "esther",
+        "yvonne",
+        "phillip-t"
+      ]
+    },
+    "esther": {
+      "n": "Esther Marie Specht",
+      "maiden": "Mortelette",
+      "sex": "f",
+      "line": "mor",
+      "rel": "Grandmother",
+      "b": "21 Aug 1923",
+      "bp": "Pennsylvania",
+      "d": "6 Jul 1999",
+      "dp": "Murrysville, PA",
+      "parents": [
+        "jules",
+        "julia"
+      ],
+      "spouse": "ed",
+      "facts": [
+        "Daughter of Jules Mortelette and Julia Jiannino.",
+        "In the 1940 census she was 17, living in East Pittsburgh with her parents, brother John, sister Sylvia and uncle Peter.",
+        "Grew up beside the Westinghouse works, where Ed later worked."
+      ],
+      "links": [
+        "jules",
+        "julia",
+        "ed",
+        "yvonne",
+        "jack-m",
+        "sylvia"
+      ]
+    },
+    "irvin-sr": {
+      "n": "Irvin Clyde Wolstoncroft Sr.",
+      "sex": "m",
+      "line": "wol",
+      "rel": "Great-grandfather",
+      "b": "7 Aug 1888",
+      "bp": "Carnegie, Allegheny County, PA",
+      "d": "7 Jan 1966",
+      "dp": "Wilkinsburg, PA",
+      "parents": [
+        "james-1850",
+        "annie"
+      ],
+      "spouse": "fay",
+      "facts": [
+        "Son of James Wolstoncroft and Annie Elizabeth Corbett.",
+        "Married Fay Estella Byers; children Martha (1918) and Irvin Jr. (1923). The family was in Grove City in the 1920s.",
+        "Brother of Robert Gray Wolstoncroft Sr., who moved to California.",
+        "Buried beside Fay at Crestview Memorial Park, Grove City, PA. His memorial lists him as \"Ivan C.\""
+      ],
+      "links": [
+        "james-1850",
+        "annie",
+        "fay",
+        "irvin-jr",
+        "martha-1918",
+        "robert-gray"
+      ]
+    },
+    "fay": {
+      "n": "Fay Estella Wolstoncroft",
+      "maiden": "Byers",
+      "sex": "f",
+      "line": "wol",
+      "rel": "Great-grandmother",
+      "b": "5 Nov 1888",
+      "bp": "Jefferson County, PA",
+      "d": "11 Mar 1950",
+      "dp": "Grove City, PA",
+      "parents": [
+        "john-byers",
+        "priscilla"
+      ],
+      "spouse": "irvin-sr",
+      "facts": [
+        "Daughter of John Samuel \"Smiley\" Byers and Priscilla Clara McQuown.",
+        "Martha's middle name, Byers, came from her.",
+        "Buried at Crestview Memorial Park, Grove City, PA."
+      ],
+      "links": [
+        "john-byers",
+        "priscilla",
+        "irvin-sr",
+        "irvin-jr"
+      ]
+    },
+    "john-byers": {
+      "n": "John Samuel \"Smiley\" Byers",
+      "sex": "m",
+      "line": "wol",
+      "rel": "2nd great-grandfather",
+      "spouse": "priscilla",
+      "facts": [
+        "Father of Fay Estella Byers.",
+        "Possibly the John Smiley Byers born 1860 in Covode, Indiana County, PA, who died in 1928. Not confirmed."
+      ],
+      "links": [
+        "priscilla",
+        "fay"
+      ]
+    },
+    "priscilla": {
+      "n": "Priscilla Clara Byers",
+      "maiden": "McQuown",
+      "sex": "f",
+      "line": "wol",
+      "rel": "2nd great-grandmother",
+      "spouse": "john-byers",
+      "facts": [
+        "Mother of Fay Estella Byers."
+      ],
+      "links": [
+        "john-byers",
+        "fay"
+      ]
+    },
+    "james-1850": {
+      "n": "James Wolstoncroft",
+      "sex": "m",
+      "line": "wol",
+      "rel": "2nd great-grandfather",
+      "b": "1850",
+      "d": "1921",
+      "likely": true,
+      "parents": [
+        "george",
+        "rebecca"
+      ],
+      "spouse": "annie",
+      "facts": [
+        "Father of Irvin Clyde Sr. (born 1888, Carnegie, PA).",
+        "His dates match George Wolstoncroft's son James (1850–1921), which links this line to Lancashire. George is buried in Carnegie, the town where Irvin Sr. was born, which strengthens the link.",
+        "Children included Irvin Clyde (1888) and Robert Gray (1896).",
+        "Buried with Annie at Mount Calvary Cemetery, McKees Rocks, PA."
+      ],
+      "links": [
+        "annie",
+        "george",
+        "irvin-sr",
+        "robert-gray"
+      ]
+    },
+    "annie": {
+      "n": "Annie Elizabeth \"Betsy Ann\" Wolstoncroft",
+      "maiden": "Corbett",
+      "sex": "f",
+      "line": "wol",
+      "rel": "2nd great-grandmother",
+      "b": "1857",
+      "d": "1956",
+      "spouse": "james-1850",
+      "facts": [
+        "Mother of Irvin Clyde Sr. and Robert Gray.",
+        "Lived to about 99.",
+        "Buried at Mount Calvary Cemetery, McKees Rocks, PA."
+      ],
+      "links": [
+        "james-1850",
+        "irvin-sr",
+        "robert-gray"
+      ]
+    },
+    "george": {
+      "n": "George Wolstoncroft",
+      "sex": "m",
+      "line": "wol",
+      "rel": "3rd great-grandfather",
+      "b": "17 Sep 1820",
+      "bp": "Lancashire, England",
+      "d": "10 Dec 1890",
+      "dp": "Carnegie area, PA",
+      "imm": true,
+      "likely": true,
+      "parents": [
+        "james-1776",
+        "alice"
+      ],
+      "spouse": "rebecca",
+      "facts": [
+        "Son of James Woolstencroft and Alice Collier.",
+        "Married Rebecca Hamilton (1821–1883).",
+        "Children included George (1848), James (1850), Anna Emma (1853), Jane (1855), John (1858, born in Pennsylvania) and Rebecca (1861).",
+        "The family was in Pennsylvania by 1858. In 1880 every Wolstoncroft family in the US lived in Pennsylvania.",
+        "Buried in Section C of Chartiers Cemetery, Carnegie, PA, alongside Rebecca, sons George Jr. and John, and many other Wolstoncrofts."
+      ],
+      "links": [
+        "rebecca",
+        "james-1776",
+        "james-1850",
+        "martha-1815"
+      ]
+    },
+    "rebecca": {
+      "n": "Rebecca Wolstoncroft",
+      "maiden": "Hamilton",
+      "sex": "f",
+      "line": "wol",
+      "rel": "3rd great-grandmother",
+      "b": "14 Jan 1821",
+      "d": "25 Jun 1883",
+      "likely": true,
+      "spouse": "george",
+      "facts": [
+        "Wife of George Wolstoncroft and mother of his children.",
+        "Buried in Section C of Chartiers Cemetery, Carnegie, PA."
+      ],
+      "links": [
+        "george"
+      ]
+    },
+    "james-1776": {
+      "n": "James Woolstencroft",
+      "sex": "m",
+      "line": "wol",
+      "rel": "4th great-grandfather",
+      "b": "1776",
+      "bp": "Lancashire, England",
+      "d": "1843",
+      "likely": true,
+      "spouse": "alice",
+      "facts": [
+        "The earliest name found on the Wolstoncroft line.",
+        "His daughter Martha was born in Radcliffe, Lancashire, in 1815, which points to Radcliffe, near Manchester, as the family's hometown."
+      ],
+      "links": [
+        "alice",
+        "george",
+        "martha-1815"
+      ]
+    },
+    "alice": {
+      "n": "Alice Woolstencroft",
+      "maiden": "Collier",
+      "sex": "f",
+      "line": "wol",
+      "rel": "4th great-grandmother",
+      "b": "1777",
+      "d": "1841",
+      "likely": true,
+      "spouse": "james-1776",
+      "facts": [
+        "Wife of James Woolstencroft; mother of George and Martha."
+      ],
+      "links": [
+        "james-1776"
+      ]
+    },
+    "kalman": {
+      "n": "Kalman Karl Nagy",
+      "sex": "m",
+      "line": "nag",
+      "rel": "Great-grandfather",
+      "b": "12 Aug 1890",
+      "bp": "Milota, Szabolcs-Szatmár-Bereg, Hungary",
+      "d": "2 Aug 1968",
+      "dp": "McKeesport, PA",
+      "imm": true,
+      "spouse": "isabelle",
+      "facts": [
+        "Hungarian immigrant from a village in Hungary's far northeast corner.",
+        "Buried in McKeesport & Versailles Cemetery, Section Z, Lot 25, Grave 1, beside Isabelle."
+      ],
+      "links": [
+        "isabelle",
+        "mary",
+        "ethel",
+        "charles-nagy",
+        "elek-nagy"
+      ]
+    },
+    "isabelle": {
+      "n": "Isabelle Nagy",
+      "maiden": "Toth",
+      "sex": "f",
+      "line": "nag",
+      "rel": "Great-grandmother",
+      "b": "c. 1893",
+      "bp": "Hungary",
+      "d": "4 Mar 1972",
+      "dp": "McKeesport, PA",
+      "imm": true,
+      "spouse": "kalman",
+      "facts": [
+        "Hungarian immigrant.",
+        "Buried in McKeesport & Versailles Cemetery, Section Z, Lot 25, Grave 2."
+      ],
+      "links": [
+        "kalman",
+        "mary",
+        "ethel"
+      ]
+    },
+    "philip": {
+      "n": "Philip Henry Specht",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Great-grandfather",
+      "b": "1876",
+      "bp": "Germany",
+      "d": "25 May 1942",
+      "dp": "Turtle Creek, PA",
+      "imm": true,
+      "spouse": "anna",
+      "facts": [
+        "Born in Germany; his hometown is not yet known.",
+        "Married Anna J. Deitman; sons included Phillip Theodore (1906) and Edward (1919).",
+        "The family lived near Punxsutawney before moving to the Turtle Creek valley, where he died.",
+        "Buried at New Saint Joseph's Cemetery, North Versailles, PA (Section D-2, Lot 225). His stone reads \"FATHER.\""
+      ],
+      "links": [
+        "anna",
+        "ed",
+        "phillip-t"
+      ]
+    },
+    "anna": {
+      "n": "Anna J. Specht",
+      "maiden": "Deitman",
+      "sex": "f",
+      "line": "spe",
+      "rel": "Great-grandmother",
+      "b": "12 Feb 1885",
+      "bp": "Punxsutawney, PA",
+      "d": "17 Dec 1952",
+      "dp": "McKees Rocks, PA",
+      "parents": [
+        "theodore",
+        "antonia"
+      ],
+      "spouse": "philip",
+      "facts": [
+        "Daughter of German immigrant Theodore Henry Deitman and Antonia Shayers."
+      ],
+      "links": [
+        "theodore",
+        "antonia",
+        "philip",
+        "ed"
+      ]
+    },
+    "theodore": {
+      "n": "Theodore Henry Deitman",
+      "sex": "m",
+      "line": "spe",
+      "rel": "2nd great-grandfather",
+      "b": "10 Oct 1860",
+      "bp": "Rottleben, Thuringia, Germany",
+      "d": "16 Oct 1941",
+      "dp": "Commodore, Indiana County, PA",
+      "imm": true,
+      "spouse": "antonia",
+      "facts": [
+        "Son of Henry and Anna Deitman of Germany.",
+        "Died in Commodore, a coal company town founded in 1919, so the family likely worked in or around the mines."
+      ],
+      "links": [
+        "antonia",
+        "anna"
+      ]
+    },
+    "antonia": {
+      "n": "Antonia A. Deitman",
+      "maiden": "Shayers",
+      "sex": "f",
+      "line": "spe",
+      "rel": "2nd great-grandmother",
+      "spouse": "theodore",
+      "facts": [
+        "Wife of Theodore Henry Deitman; mother of Anna and Theodore Martin Deitman."
+      ],
+      "links": [
+        "theodore",
+        "anna"
+      ]
+    },
+    "jules": {
+      "n": "Jules Mortelette",
+      "sex": "m",
+      "line": "mor",
+      "rel": "Great-grandfather",
+      "b": "7 Sep 1897",
+      "bp": "Washington County, PA",
+      "d": "Jun 1974",
+      "dp": "Pittsburgh, PA",
+      "parents": [
+        "peter",
+        "charlotte"
+      ],
+      "spouse": "julia",
+      "facts": [
+        "Son of Belgian immigrants Peter Mortelette and Charlotte Clavier.",
+        "In 1940 he lived in East Pittsburgh with Julia, their children and his brother Peter."
+      ],
+      "links": [
+        "peter",
+        "charlotte",
+        "julia",
+        "esther",
+        "jack-m",
+        "sylvia",
+        "peter-jr"
+      ]
+    },
+    "julia": {
+      "n": "Julia Mortelette",
+      "maiden": "Jiannino",
+      "sex": "f",
+      "line": "mor",
+      "rel": "Great-grandmother",
+      "b": "30 Jul 1897",
+      "bp": "Washington County, PA",
+      "d": "Jun 1974",
+      "dp": "Pittsburgh, PA",
+      "parents": [
+        "vincent",
+        "silvia"
+      ],
+      "spouse": "jules",
+      "facts": [
+        "Daughter of Italian immigrant Vincent Joseph Jiannino and Silvia Deveraux."
+      ],
+      "links": [
+        "vincent",
+        "silvia",
+        "jules",
+        "esther"
+      ]
+    },
+    "peter": {
+      "n": "Peter Joseph Mortelette",
+      "sex": "m",
+      "line": "mor",
+      "rel": "2nd great-grandfather",
+      "b": "7 Jul 1861",
+      "bp": "Charleroi, Hainaut, Belgium",
+      "d": "4 Apr 1928",
+      "dp": "Robinson Township, Washington County, PA",
+      "imm": true,
+      "spouse": "charlotte",
+      "facts": [
+        "Son of another Peter Mortelette.",
+        "Arrived in the US in 1892 and declared his intent to become a citizen on 1 May 1894.",
+        "Settled in McDonald, PA, a Belgian coal and glass community.",
+        "At least seven children, including Samuel (1890), Peter/Eugene (1892), Jules (1897), George (1901), Rene (1906) and Eli, plus a daughter born in 1899.",
+        "Buried beside Charlotte at Robb Cemetery, McDonald, PA."
+      ],
+      "links": [
+        "charlotte",
+        "jules",
+        "peter-jr"
+      ]
+    },
+    "charlotte": {
+      "n": "Charlotte Mortelette",
+      "maiden": "Clavier (Claver)",
+      "sex": "f",
+      "line": "mor",
+      "rel": "2nd great-grandmother",
+      "b": "6 Apr 1865",
+      "bp": "Belgium",
+      "d": "10 Jan 1923",
+      "dp": "McDonald area, PA",
+      "imm": true,
+      "spouse": "peter",
+      "facts": [
+        "Daughter of Melchior Joseph Clavier and Marie Therese Hardy.",
+        "Buried at Robb Cemetery, McDonald, PA."
+      ],
+      "links": [
+        "peter",
+        "jules"
+      ]
+    },
+    "vincent": {
+      "n": "Vincent Joseph Jiannino",
+      "sex": "m",
+      "line": "mor",
+      "rel": "2nd great-grandfather",
+      "b": "6 Sep 1855",
+      "bp": "Italy",
+      "d": "7 Mar 1922",
+      "dp": "North Fayette Township, PA",
+      "imm": true,
+      "spouse": "silvia",
+      "facts": [
+        "Italian immigrant who settled in the coal country west of Pittsburgh."
+      ],
+      "links": [
+        "silvia",
+        "julia"
+      ]
+    },
+    "silvia": {
+      "n": "Silvia Jiannino",
+      "maiden": "Deveraux",
+      "sex": "f",
+      "line": "mor",
+      "rel": "2nd great-grandmother",
+      "spouse": "vincent",
+      "facts": [
+        "Wife of Vincent Joseph Jiannino; mother of Julia."
+      ],
+      "links": [
+        "vincent",
+        "julia"
+      ]
+    },
+    "martha-1918": {
+      "n": "Martha Byers Wolstoncroft",
+      "sex": "f",
+      "line": "wol",
+      "rel": "Great-aunt",
+      "b": "1918",
+      "d": "1990",
+      "parents": [
+        "irvin-sr",
+        "fay"
+      ],
+      "facts": [
+        "Older sister of Grandpa Irvin. Married name not yet found."
+      ],
+      "links": [
+        "irvin-sr",
+        "fay",
+        "irvin-jr"
+      ]
+    },
+    "ethel": {
+      "n": "Ethel O'Hara",
+      "maiden": "Nagy",
+      "sex": "f",
+      "line": "nag",
+      "rel": "Great-aunt",
+      "parents": [
+        "kalman",
+        "isabelle"
+      ],
+      "facts": [
+        "Sister of Mary; married John O'Hara.",
+        "Raised three daughters, Karen, Virginia and Ellen, in the McKeesport area."
+      ],
+      "links": [
+        "mary",
+        "kalman",
+        "isabelle",
+        "karen",
+        "ginny",
+        "ellen"
+      ]
+    },
+    "charles-nagy": {
+      "n": "Charles Nagy",
+      "sex": "m",
+      "line": "nag",
+      "rel": "Great-uncle (likely)",
+      "d": "10 Aug 1986",
+      "likely": true,
+      "parents": [
+        "kalman",
+        "isabelle"
+      ],
+      "facts": [
+        "Buried in Kalman and Isabelle's family plot, which suggests he was Mary's brother."
+      ],
+      "links": [
+        "kalman",
+        "mary"
+      ]
+    },
+    "elek-nagy": {
+      "n": "Elek Nagy",
+      "sex": "m",
+      "line": "nag",
+      "rel": "Great-uncle (likely)",
+      "d": "31 Jul 1993",
+      "likely": true,
+      "parents": [
+        "kalman",
+        "isabelle"
+      ],
+      "facts": [
+        "Buried in Kalman and Isabelle's family plot, which suggests he was Mary's brother."
+      ],
+      "links": [
+        "kalman",
+        "mary"
+      ]
+    },
+    "phillip-t": {
+      "n": "Phillip Theodore Specht",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Great-uncle",
+      "b": "1 Apr 1906",
+      "bp": "Young Township, Jefferson County, PA",
+      "d": "1953",
+      "parents": [
+        "philip",
+        "anna"
+      ],
+      "facts": [
+        "Older brother of Grandpa Ed.",
+        "Listed as Philip T. Specht (1906–1953) on his father's grave memorial."
+      ],
+      "links": [
+        "philip",
+        "anna",
+        "ed"
+      ]
+    },
+    "jack-m": {
+      "n": "John \"Jack\" Mortelette",
+      "sex": "m",
+      "line": "mor",
+      "rel": "Great-uncle",
+      "b": "8 Feb 1924",
+      "bp": "McDonald, PA",
+      "d": "11 May 1989",
+      "dp": "Brunswick, Ohio",
+      "parents": [
+        "jules",
+        "julia"
+      ],
+      "spouse": "leah",
+      "facts": [
+        "Younger brother of Grandma Esther.",
+        "Served in the US Army from March 9, 1943 to March 8, 1946.",
+        "Wounded at Anzio, Italy, on February 21, 1944, and awarded the Purple Heart.",
+        "Married Leah Bage of Wilmerding in June 1945, a few months after coming home; children Lynn and Jack.",
+        "Buried at Eastlawn Memory Gardens, Brunswick, Ohio."
+      ],
+      "links": [
+        "jules",
+        "julia",
+        "esther",
+        "leah",
+        "lynn",
+        "jack-jr"
+      ]
+    },
+    "leah": {
+      "n": "Leah Mae Mortelette",
+      "maiden": "Bage",
+      "sex": "f",
+      "line": "mor",
+      "rel": "Great-aunt (by marriage)",
+      "b": "19 Jan 1925",
+      "bp": "Wilmerding, PA",
+      "d": "4 Mar 2025",
+      "dp": "Brunswick, Ohio",
+      "spouse": "jack-m",
+      "facts": [
+        "Married Jack Mortelette in June 1945.",
+        "Celebrated her 100th birthday shortly before she died."
+      ],
+      "links": [
+        "jack-m",
+        "lynn",
+        "jack-jr"
+      ]
+    },
+    "sylvia": {
+      "n": "Sylvia Mortelette",
+      "sex": "f",
+      "line": "mor",
+      "rel": "Great-aunt",
+      "b": "c. 1938",
+      "parents": [
+        "jules",
+        "julia"
+      ],
+      "facts": [
+        "Youngest sibling of Grandma Esther, 15 years younger."
+      ],
+      "links": [
+        "jules",
+        "julia",
+        "esther"
+      ]
+    },
+    "peter-jr": {
+      "n": "Peter Joseph Mortelette",
+      "sex": "m",
+      "line": "mor",
+      "rel": "Great-grand-uncle",
+      "b": "6 Feb 1892",
+      "bp": "Charleroi, Belgium",
+      "imm": true,
+      "parents": [
+        "peter",
+        "charlotte"
+      ],
+      "facts": [
+        "Brother of Jules, born in Belgium before the family emigrated.",
+        "Lived with Jules's family in East Pittsburgh in 1940.",
+        "Probably the Eugene P. Mortelette with the same birth date (6 Feb 1892) who died 15 Mar 1975 and is buried at Grandview Cemetery, North Versailles."
+      ],
+      "links": [
+        "peter",
+        "charlotte",
+        "jules"
+      ]
+    },
+    "robert-gray": {
+      "n": "Robert Gray Wolstoncroft Sr.",
+      "sex": "m",
+      "line": "wol",
+      "rel": "Great-grand-uncle",
+      "b": "16 Dec 1896",
+      "d": "12 Jan 1952",
+      "dp": "California",
+      "parents": [
+        "james-1850",
+        "annie"
+      ],
+      "facts": [
+        "Son of James Wolstoncroft and Annie Corbett; younger brother of Irvin Clyde Sr.",
+        "A military veteran who moved west. Buried at Rose Hills Memorial Park, Whittier, California."
+      ],
+      "links": [
+        "james-1850",
+        "annie",
+        "irvin-sr"
+      ]
+    },
+    "martha-1815": {
+      "n": "Martha Woolstencroft",
+      "sex": "f",
+      "line": "wol",
+      "rel": "4th great-aunt",
+      "b": "5 Feb 1815",
+      "bp": "Radcliffe, Lancashire, England",
+      "d": "1 Jun 1888",
+      "dp": "Wellsville, Cache County, Utah",
+      "imm": true,
+      "parents": [
+        "james-1776",
+        "alice"
+      ],
+      "facts": [
+        "Daughter of James Woolstencroft and Alice Collier; sister of George.",
+        "A Lancashire woman who died in Cache Valley, Utah, in that era was very likely a Mormon convert who crossed the plains."
+      ],
+      "links": [
+        "james-1776",
+        "alice",
+        "george"
+      ]
+    },
+    "uncle-edward": {
+      "n": "Edward Specht",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Uncle",
+      "living": true,
+      "parents": [
+        "ed",
+        "esther"
+      ],
+      "facts": [
+        "Son of Ed and Esther Specht; married to Alice.",
+        "Father of Molly."
+      ],
+      "links": [
+        "ed",
+        "esther",
+        "yvonne",
+        "molly"
+      ]
+    },
+    "uncle-robert": {
+      "n": "Robert \"Bob\" Specht",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Uncle",
+      "b": "19 Oct 1947",
+      "bp": "Pittsburgh, PA",
+      "d": "26 Mar 2023",
+      "dp": "Venice, Florida",
+      "parents": [
+        "ed",
+        "esther"
+      ],
+      "facts": [
+        "Son of Ed and Esther Specht.",
+        "Graduated from Westinghouse High School in 1965 and worked as a welder for Westinghouse, like his father before him.",
+        "Lived for years near Saltsburg, PA, where he loved gardening and tinkering and built a tree house in the woods on his property.",
+        "Remembered for his unique personality and his love of classic country music.",
+        "His partner of 22 years was Debbie S. Grillo.",
+        "Father of Tracy; stepfather of John Forte; grandfather of Evan and Portia."
+      ],
+      "links": [
+        "ed",
+        "esther",
+        "yvonne",
+        "tracy",
+        "evan",
+        "portia",
+        "uncle-edward",
+        "uncle-james"
+      ]
+    },
+    "uncle-james": {
+      "n": "James \"Jim\" Specht",
+      "sex": "m",
+      "line": "spe",
+      "rel": "Uncle",
+      "living": true,
+      "parents": [
+        "ed",
+        "esther"
+      ],
+      "facts": [
+        "Son of Ed and Esther Specht.",
+        "Father of Lisa."
+      ],
+      "links": [
+        "ed",
+        "esther",
+        "yvonne",
+        "lisa"
+      ]
+    },
+    "tracy": {
+      "n": "Tracy MacInerney",
+      "maiden": "Specht",
+      "sex": "f",
+      "line": "spe",
+      "rel": "First cousin",
+      "living": true,
+      "parents": [
+        "uncle-robert"
+      ],
+      "facts": [
+        "Daughter of Uncle Bob Specht; grandchild of Ed and Esther Specht."
+      ],
+      "links": [
+        "uncle-robert",
+        "ed",
+        "evan",
+        "portia"
+      ]
+    },
+    "evan": {
+      "n": "Evan MacInerney",
+      "sex": "m",
+      "line": "spe",
+      "rel": "First cousin once removed",
+      "living": true,
+      "facts": [
+        "Grandson of Uncle Bob Specht."
+      ],
+      "links": [
+        "uncle-robert",
+        "tracy"
+      ]
+    },
+    "lisa": {
+      "n": "Lisa",
+      "maiden": "Specht",
+      "sex": "f",
+      "line": "spe",
+      "rel": "First cousin",
+      "living": true,
+      "parents": [
+        "uncle-james"
+      ],
+      "facts": [
+        "Daughter of Uncle Jim Specht; grandchild of Ed and Esther Specht."
+      ],
+      "links": [
+        "uncle-james",
+        "ed"
+      ]
+    },
+    "molly": {
+      "n": "Molly",
+      "maiden": "Specht",
+      "sex": "f",
+      "line": "spe",
+      "rel": "First cousin",
+      "living": true,
+      "parents": [
+        "uncle-edward"
+      ],
+      "facts": [
+        "Daughter of Uncle Ed and Aunt Alice Specht; grandchild of Ed and Esther Specht."
+      ],
+      "links": [
+        "uncle-edward",
+        "ed"
+      ]
+    },
+    "portia": {
+      "n": "Portia Shondelmeyer",
+      "sex": "f",
+      "line": "spe",
+      "rel": "First cousin once removed",
+      "living": true,
+      "facts": [
+        "Granddaughter of Uncle Bob Specht.",
+        "Ed Specht's only great-grandchild as of 2004."
+      ],
+      "links": [
+        "uncle-robert",
+        "tracy",
+        "ed"
+      ]
+    },
+    "karen": {
+      "n": "Karen Anne O'Hara",
+      "sex": "f",
+      "line": "nag",
+      "rel": "Dad's first cousin",
+      "b": "1951",
+      "bp": "McKeesport, PA",
+      "d": "27 Jul 2018",
+      "dp": "Lynchburg, VA",
+      "parents": [
+        "ethel"
+      ],
+      "facts": [
+        "Eldest of Ethel and John O'Hara's three daughters.",
+        "Lived most of her life in Dravosburg, PA, and later in Lynchburg, VA."
+      ],
+      "links": [
+        "ethel",
+        "ginny",
+        "ellen"
+      ]
+    },
+    "ginny": {
+      "n": "Virginia \"Ginny\" Killian",
+      "maiden": "O'Hara",
+      "sex": "f",
+      "line": "nag",
+      "rel": "Dad's first cousin",
+      "living": true,
+      "parents": [
+        "ethel"
+      ],
+      "facts": [
+        "Youngest daughter of Ethel and John O'Hara; married to Doug Killian."
+      ],
+      "links": [
+        "ethel",
+        "karen",
+        "ellen"
+      ]
+    },
+    "ellen": {
+      "n": "Ellen O'Hara",
+      "sex": "f",
+      "line": "nag",
+      "rel": "Dad's first cousin",
+      "living": true,
+      "parents": [
+        "ethel"
+      ],
+      "facts": [
+        "Daughter of Ethel and John O'Hara."
+      ],
+      "links": [
+        "ethel",
+        "karen",
+        "ginny"
+      ]
+    },
+    "lynn": {
+      "n": "Lynn Frantz",
+      "maiden": "Mortelette",
+      "sex": "f",
+      "line": "mor",
+      "rel": "Mom's first cousin",
+      "living": true,
+      "parents": [
+        "jack-m",
+        "leah"
+      ],
+      "facts": [
+        "Daughter of Jack and Leah Mortelette."
+      ],
+      "links": [
+        "jack-m",
+        "leah"
+      ]
+    },
+    "jack-jr": {
+      "n": "Jack Mortelette",
+      "sex": "m",
+      "line": "mor",
+      "rel": "Mom's first cousin",
+      "living": true,
+      "parents": [
+        "jack-m",
+        "leah"
+      ],
+      "facts": [
+        "Son of Jack and Leah Mortelette."
+      ],
+      "links": [
+        "jack-m",
+        "leah"
+      ]
+    }
+  },
+  "lines": [
+    {
+      "key": "wol",
+      "title": "Wolstoncroft",
+      "sub": "Dad's father's line · England",
+      "gens": [
+        [
+          [
+            "james-1776",
+            "alice"
+          ]
+        ],
+        [
+          [
+            "george",
+            "rebecca"
+          ]
+        ],
+        [
+          [
+            "james-1850",
+            "annie"
+          ],
+          [
+            "john-byers",
+            "priscilla"
+          ]
+        ],
+        [
+          [
+            "irvin-sr",
+            "fay"
+          ]
+        ],
+        [
+          [
+            "irvin-jr"
+          ]
+        ]
+      ]
+    },
+    {
+      "key": "nag",
+      "title": "Nagy",
+      "sub": "Dad's mother's line · Hungary",
+      "gens": [
+        [
+          [
+            "kalman",
+            "isabelle"
+          ]
+        ],
+        [
+          [
+            "mary"
+          ]
+        ]
+      ]
+    },
+    {
+      "key": "spe",
+      "title": "Specht",
+      "sub": "Mom's father's line · Germany",
+      "gens": [
+        [
+          [
+            "theodore",
+            "antonia"
+          ]
+        ],
+        [
+          [
+            "philip",
+            "anna"
+          ]
+        ],
+        [
+          [
+            "ed"
+          ]
+        ]
+      ]
+    },
+    {
+      "key": "mor",
+      "title": "Mortelette",
+      "sub": "Mom's mother's line · Belgium & Italy",
+      "gens": [
+        [
+          [
+            "peter",
+            "charlotte"
+          ],
+          [
+            "vincent",
+            "silvia"
+          ]
+        ],
+        [
+          [
+            "jules",
+            "julia"
+          ]
+        ],
+        [
+          [
+            "esther"
+          ]
+        ]
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "t": "Rod's aunts and uncles",
+      "ids": [
+        "martha-1918",
+        "ethel",
+        "charles-nagy",
+        "elek-nagy"
+      ],
+      "note": "Siblings of Irvin and Mary"
+    },
+    {
+      "t": "Yvonne's aunts and uncles",
+      "ids": [
+        "phillip-t",
+        "jack-m",
+        "leah",
+        "sylvia",
+        "peter-jr"
+      ],
+      "note": "Siblings of Ed and Esther, and Jack's wife Leah"
+    },
+    {
+      "t": "Yvonne's brothers",
+      "note": "Sons of Ed and Esther Specht",
+      "ids": [
+        "uncle-edward",
+        "uncle-robert",
+        "uncle-james"
+      ]
+    },
+    {
+      "t": "Specht cousins",
+      "note": "Ed and Esther's other grandchildren and great-grandchildren",
+      "ids": [
+        "tracy",
+        "lisa",
+        "molly",
+        "evan",
+        "portia"
+      ]
+    },
+    {
+      "t": "Rod's first cousins",
+      "note": "Daughters of Ethel (Nagy) O'Hara",
+      "ids": [
+        "karen",
+        "ginny",
+        "ellen"
+      ]
+    },
+    {
+      "t": "Yvonne's first cousins",
+      "note": "Children of Jack and Leah Mortelette",
+      "ids": [
+        "lynn",
+        "jack-jr"
+      ]
+    },
+    {
+      "t": "Further back",
+      "note": "Wolstoncroft relatives who went west",
+      "ids": [
+        "robert-gray",
+        "martha-1815"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "lisa-molly-children",
+      "q": "Do Lisa and Molly have children who should be added?",
+      "people": [
+        "lisa",
+        "molly"
+      ]
+    },
+    {
+      "id": "korenoski",
+      "q": "Mary Nagy's records also list the name Korenoski. Was she married before Irvin?",
+      "people": [
+        "mary"
+      ]
+    },
+    {
+      "id": "nagy-brothers",
+      "q": "Were Charles and Elek Nagy Mary's brothers?",
+      "people": [
+        "charles-nagy",
+        "elek-nagy",
+        "mary"
+      ]
+    },
+    {
+      "id": "wwii-service",
+      "q": "Did Grandpa Ed serve in World War II? Where did Grandpa Irvin serve after he was drafted in 1943?",
+      "people": [
+        "ed",
+        "irvin-jr"
+      ]
+    },
+    {
+      "id": "uncle-sanders",
+      "q": "Who was Dad's “Uncle Sanders,” the WWII paratrooper? Was he Martha Wolstoncroft's husband, or one of Mary's Nagy brothers (Sándor is Hungarian for Alexander)?",
+      "people": [
+        "martha-1918",
+        "charles-nagy",
+        "elek-nagy",
+        "rod"
+      ]
+    },
+    {
+      "id": "philip-hometown",
+      "q": "Philip Henry Specht was born in Germany in 1876. Does anyone know which town?",
+      "people": [
+        "philip"
+      ]
+    },
+    {
+      "id": "ed-esther-meet",
+      "q": "How did Ed and Esther meet? Was it through Westinghouse in East Pittsburgh?",
+      "people": [
+        "ed",
+        "esther"
+      ]
+    },
+    {
+      "id": "martha-married-name",
+      "q": "Martha Wolstoncroft (1918–1990), Irvin's sister: what was her married name?",
+      "people": [
+        "martha-1918"
+      ]
+    },
+    {
+      "id": "north-versailles-home",
+      "q": "Where in North Versailles did Irvin and Mary live? They were there about 40 years.",
+      "people": [
+        "irvin-jr",
+        "mary",
+        "rod"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "label": "Edward V. Specht obituary (2004)",
+      "url": "https://www.legacy.com/us/obituaries/legacyremembers/edward-specht-obituary?id=27276655",
+      "people": [
+        "ed"
+      ]
+    },
+    {
+      "label": "Mary (Nagy) Wolstoncroft obituary (2006)",
+      "url": "https://www.legacy.com/us/obituaries/legacyremembers/mary-wolstoncroft-obituary?id=26051474",
+      "people": [
+        "mary"
+      ]
+    },
+    {
+      "label": "Robert “Bob” Specht obituary (2023)",
+      "url": "https://www.indianagazette.com/obituaries/robert-bob-specht/article_bf40aa68-50c5-5288-966c-640fc27a3b5c.html",
+      "people": [
+        "uncle-robert"
+      ]
+    },
+    {
+      "label": "Karen Anne O'Hara obituary (2018)",
+      "url": "https://www.tributearchive.com/obituaries/3169589/Karen-Anne-OHara",
+      "people": [
+        "karen"
+      ]
+    },
+    {
+      "label": "Leah Bage Mortelette obituary (2025)",
+      "url": "https://www.legacy.com/us/obituaries/name/leah-mortelette-obituary?id=57743785",
+      "people": [
+        "leah",
+        "jack-m"
+      ]
+    },
+    {
+      "label": "Find a Grave: Irvin C. Wolstoncroft",
+      "url": "https://www.findagrave.com/memorial/125024242/irvin-c-wolstoncroft",
+      "people": [
+        "irvin-jr"
+      ]
+    },
+    {
+      "label": "Find a Grave: Irvin C. Sr. (“Ivan C.”)",
+      "url": "https://www.findagrave.com/memorial/69085993/ivan-c-wolstoncroft",
+      "people": [
+        "irvin-sr"
+      ]
+    },
+    {
+      "label": "Find a Grave: James Wolstoncroft",
+      "url": "https://www.findagrave.com/memorial/133244524/james-wolstoncroft",
+      "people": [
+        "james-1850"
+      ]
+    },
+    {
+      "label": "Find a Grave: Philip H. Specht",
+      "url": "https://www.findagrave.com/memorial/146148861/philip-h-specht",
+      "people": [
+        "philip",
+        "phillip-t"
+      ]
+    },
+    {
+      "label": "Find a Grave: Peter J. Mortelette",
+      "url": "https://www.findagrave.com/memorial/64142885/peter-joseph-mortelette",
+      "people": [
+        "peter"
+      ]
+    },
+    {
+      "label": "Find a Grave: John J. Mortelette",
+      "url": "https://www.findagrave.com/memorial/217772525/john-jules-mortelette",
+      "people": [
+        "jules"
+      ]
+    },
+    {
+      "label": "National Archives WWII Army Enlistment Records",
+      "url": "https://aad.archives.gov/aad/fielded-search.jsp?dt=893&cat=WR26&tf=F&bc=,sl",
+      "people": [
+        "irvin-jr"
+      ]
+    },
+    {
+      "label": "McKeesport & Versailles Cemetery records",
+      "url": "https://www.interment.net/data/us/pa/allegheny/mckee_vers/records-n.htm",
+      "people": [
+        "kalman",
+        "isabelle",
+        "charles-nagy",
+        "elek-nagy"
+      ]
+    },
+    {
+      "label": "Mortelette household, 1940 census",
+      "url": "https://www.ancestry.com/1940-census/usa/Pennsylvania/John-J-Mortelette_pqcm9",
+      "people": [
+        "jules",
+        "julia",
+        "esther",
+        "jack-m",
+        "sylvia",
+        "peter-jr"
+      ]
+    },
+    {
+      "label": "George Wolstoncroft (1820–1890), Ancestry",
+      "url": "https://www.ancestry.com/genealogy/records/george-wolstoncroft-24-21f2l12",
+      "people": [
+        "george"
+      ]
+    }
+  ]
+}

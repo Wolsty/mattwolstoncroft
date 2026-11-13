@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ATLAS_COOKIE, atlasToken, isAtlasPath } from "@/lib/atlasAuth";
 import { SITE_COOKIE, siteToken } from "@/lib/siteAuth";
+import { FAMILY_COOKIE, familyToken, isFamilyPath } from "@/lib/familyAuth";
 
 /**
- * Two password gates.
+ * Three password gates.
  *  - The Atlas (/atlas and its data, photos and Strava feed) uses ATLAS_PASSWORD and
  *    its own cookie. The portfolio password does not open it, and it does not open
  *    the portfolio.
+ *  - The family tree (/family, its photos and API) uses FAMILY_PASSWORD and its own
+ *    cookie, so family can be given the tree without the portfolio or the Atlas.
  *  - Everything else uses SITE_PASSWORD, the `site-auth` cookie and /login.
  * Both cookies hold a hash of their password, so neither can be forged.
  * Static assets, the login page itself, and the auth API routes are excluded via
@@ -27,6 +30,22 @@ export async function middleware(req: NextRequest) {
     url.pathname = "/atlas/login";
     url.search = "";
     if (pathname !== "/atlas") url.searchParams.set("next", pathname + search);
+    return NextResponse.redirect(url);
+  }
+
+  if (isFamilyPath(pathname)) {
+    if (pathname === "/family/login" || pathname === "/api/family-auth") return NextResponse.next();
+    const expected = process.env.FAMILY_PASSWORD;
+    const cookie = req.cookies.get(FAMILY_COOKIE)?.value;
+    if (expected && cookie && cookie === (await familyToken(expected))) return NextResponse.next();
+    if (pathname.startsWith("/api/") || pathname.startsWith("/family-photos/")) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    const url = req.nextUrl.clone();
+    url.pathname = "/family/login";
+    url.search = "";
+    if (pathname !== "/family") url.searchParams.set("next", pathname + search);
+    // Keep a shared link's person (#ed) through sign-in: the login page restores it.
     return NextResponse.redirect(url);
   }
 

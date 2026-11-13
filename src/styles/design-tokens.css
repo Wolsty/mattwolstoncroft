@@ -29,6 +29,13 @@
   /* Overlay */
   --overlay: rgba(0, 0, 0, 0.3);
 
+  /* Family tree: one muted accent per ancestral line. Earth tones so they sit
+     with the warm paper ground instead of reading as UI color. */
+  --line-wol: #4C6A88;      /* Wolstoncroft, England: slate blue */
+  --line-nag: #A0583A;      /* Nagy, Hungary: terracotta */
+  --line-spe: #5C7642;      /* Specht, Germany: moss */
+  --line-mor: #84506F;      /* Mortelette, Belgium & Italy: plum */
+
   /* Type scales (fluid) */
   --type-display: clamp(3.5rem, 8vw, 7rem);
   --type-h1: clamp(2.25rem, 5vw, 3.5rem);
@@ -65,6 +72,11 @@
   --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.5), 0 14px 32px rgba(0, 0, 0, 0.45);
 
   --overlay: rgba(0, 0, 0, 0.6);
+
+  --line-wol: #93AECB;
+  --line-nag: #D9926F;
+  --line-spe: #A3BC86;
+  --line-mor: #CB93B6;
 }
 
 /* No OS-preference fallback: the site defaults to light, and dark applies

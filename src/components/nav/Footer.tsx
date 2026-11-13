@@ -1,11 +1,16 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useTheme } from "@/lib/theme";
 
 const EMAIL = "wolstoncroft.1@gmail.com";
 
 export function Footer() {
   const { theme, toggle } = useTheme();
+  const pathname = usePathname();
+
+  // The family tree is shared with family, not portfolio visitors: it has its own footer.
+  if (pathname === "/family" || pathname?.startsWith("/family/")) return null;
 
   const openCmdK = () => {
     window.dispatchEvent(new Event("cmdk:open"));
