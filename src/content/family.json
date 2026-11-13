@@ -832,7 +832,7 @@
       ],
       "facts": [
         "Mary's brother. The family knew him as “Uncle Sanders.”",
-        "WWII paratrooper.",
+        "Army paratrooper, in World War II or possibly the Korean War.",
         "Buried in Kalman and Isabelle's family plot."
       ],
       "links": [
@@ -1588,6 +1588,14 @@
       "q": "Martha Wolstoncroft (1918–1990), Irvin's sister: what was her married name?",
       "people": [
         "martha-1918"
+      ]
+    },
+    {
+      "id": "sanders-war",
+      "q": "Did Uncle Sanders (Elek Nagy) serve as a paratrooper in World War II or in the Korean War? What year was he born?",
+      "people": [
+        "elek-nagy",
+        "rod"
       ]
     }
   ],
