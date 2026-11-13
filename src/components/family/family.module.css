@@ -77,9 +77,9 @@
   margin-bottom: 36px;
 }
 .title {
-  font-size: clamp(2.6rem, 6.4vw, 5.25rem);
-  margin: 10px 0 0;
-  max-width: 16ch;
+  font-size: clamp(2.1rem, 4.2vw, 3.5rem);
+  margin: 0;
+  max-width: 22ch;
 }
 .intro {
   margin: 18px 0 0;
@@ -198,7 +198,15 @@
   color: var(--lc);
 }
 .colTitle { font-size: 1.375rem; margin: 0; line-height: 1.1; }
-.colSub { margin: 4px 0 0; font-size: 0.8125rem; color: var(--fg-muted); }
+.colSub {
+  margin: 4px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  /* Always two lines tall, so every column's "The story" sits on the same line */
+  min-height: calc(2 * 1.45em);
+  text-wrap: balance;
+  color: var(--fg-muted);
+}
 .story { margin-top: 6px; font-size: 0.875rem; }
 .story summary {
   cursor: pointer;

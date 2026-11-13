@@ -21,7 +21,6 @@ export function Header({ viewerKnown }: { viewerKnown: boolean }) {
         )}
       </div>
       <header className={styles.header}>
-        <p className="meta">Family · shared privately</p>
         <h1 className={`display ${styles.title}`}>{data.meta.title}</h1>
         <p className={styles.intro}>{data.meta.intro}</p>
         {!viewerKnown && <Welcome />}
