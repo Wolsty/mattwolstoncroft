@@ -66,6 +66,7 @@
 }
 .viewerLabel {
   font-size: var(--type-meta);
+  line-height: 1;
   font-variant-caps: all-small-caps;
   letter-spacing: 0.08em;
   color: var(--fg-muted);
@@ -77,9 +78,10 @@
   margin-bottom: 36px;
 }
 .title {
-  font-size: clamp(2.1rem, 4.2vw, 3.5rem);
+  /* One line at desktop widths; only wraps on narrow phones */
+  font-size: clamp(1.75rem, 3.6vw, 3rem);
   margin: 0;
-  max-width: 22ch;
+  text-wrap: balance;
 }
 .intro {
   margin: 18px 0 0;
@@ -97,11 +99,22 @@
   padding: 0 34px 0 12px;
   border: 1px solid var(--rule-strong);
   border-radius: 6px;
-  background: var(--card);
+  /* Own the arrow so the text and chevron center the same in every browser */
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--card);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--fg-muted) 50%),
+    linear-gradient(135deg, var(--fg-muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
   color: var(--fg);
   font: inherit;
   font-size: 1rem;
+  line-height: 1.2;
 }
+.select:hover { border-color: var(--fg-muted); }
 
 .welcome {
   display: flex;
